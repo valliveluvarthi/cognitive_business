@@ -1,0 +1,111 @@
+<fa-icon [icon]="faTimes" [classes]="['close']" (click)="close()"></fa-icon>
+<ng-container *ngIf="loading">
+    <div class="loading">
+        <div class="spinner-border text-custom">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="!loading">
+    <div class="control">
+        <label>Transfer Status</label>
+        <div class="status-wrapper">
+            <span class="icon-wrapper success" [class.active]="forSuccess" (click)="forSuccess = true">
+                <fa-icon [icon]="faCheckCircle" [classes]="['tick']">
+                </fa-icon>Success
+            </span>
+            <span class="icon-wrapper cancelled" [class.active]="!forSuccess" (click)="forSuccess = false">
+                <fa-icon [icon]="faExclamation" [classes]="['excalamation']"></fa-icon>Cancelled
+            </span>
+        </div>
+    </div>
+    <div class="inline">
+        <div class="control flex-grow-1">
+            <label>Date of Transfer</label>
+            <div class="date-picker">
+                <input placeholder="Date" [(ngModel)]="form.date" name="date" ngbDatepicker #sd="ngbDatepicker"
+                    (click)="sd.toggle()">
+                <fa-icon [icon]="faCalender" (click)="sd.toggle()"></fa-icon>
+            </div>
+        </div>
+        <div class="control">
+            <label>From</label>
+            <div ngbDropdown class="dd">
+                <button ngbDropdownToggle>{{form.from}}
+                    <fa-icon [icon]="faChevronDown"></fa-icon>
+                </button>
+                <div ngbDropdownMenu class="dd-menu">
+                    <ng-container *ngFor="let item of fromSlots">
+                        <button (click)="form.from = item;timeChanged('from')" ngbDropdownItem
+                            [class.selected]="form.from == item">{{item}}</button>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <div class="control">
+            <label>To</label>
+            <div ngbDropdown class="dd">
+                <button ngbDropdownToggle>{{form.to}}
+                    <fa-icon [icon]="faChevronDown"></fa-icon>
+                </button>
+                <div ngbDropdownMenu class="dd-menu">
+                    <ng-container *ngFor="let item of toSlots">
+                        <button (click)="form.to = item;timeChanged('to')" ngbDropdownItem
+                            [class.selected]="form.to == item">{{item}}</button>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="control" *ngIf="!forSuccess">
+        <label>Reason</label>
+        <ng-container *ngFor="let item of data.cancellationReasons;let i = index">
+            <div class="checkbox">
+                <input type="checkbox" id="toggle{{i}}" class="visually-hidden" [checked]="item.checked"
+                    [(ngModel)]="item.checked">
+                <label for="toggle{{i}}">
+                    <fa-icon [icon]="faCheckSquare"></fa-icon>
+                    <fa-icon [icon]="faSquare"></fa-icon>{{item.title}}
+                </label>
+            </div>
+        </ng-container>
+    </div>
+    <!-- <div class="control">
+        <label>Trubine</label>
+        <div ngbDropdown class="dd" container="body">
+            <button ngbDropdownToggle>{{form.turbine}}
+                <fa-icon [icon]="faChevronDown"></fa-icon>
+            </button>
+            <div ngbDropdownMenu class="dd-menu">
+                <ng-container *ngFor="let item of data.turbines">
+                    <button (click)="form.turbine = item.key" ngbDropdownItem
+                        [class.selected]="form.turbine == item.key">{{item.key}}</button>
+                </ng-container>
+            </div>
+        </div>
+    </div> -->
+    <!-- <div class="control">
+        <label>Vessel</label>
+        <div ngbDropdown class="dd" container="body">
+            <button ngbDropdownToggle>{{form.vessel.name}}
+                <fa-icon [icon]="faChevronDown"></fa-icon>
+            </button>
+            <div ngbDropdownMenu class="dd-menu">
+                <ng-container *ngFor="let item of data.vessels">
+                    <button (click)="form.vessel = item" ngbDropdownItem
+                        [class.selected]="form.vessel == item">{{item.name}}</button>
+                </ng-container>
+            </div>
+        </div>
+    </div> -->
+    <div class="control">
+        <label>Notes</label>
+        <textarea [(ngModel)]="form.note" rows="3"></textarea>
+    </div>
+    <div class="btn-container">
+        <button class="btn btn-custom" (click)="saveLog()" [disabled]="saving || clearingLog">{{ saving
+            ?'Saving...':'Save'}}</button>
+        <button class="btn btn-custom" [hidden]="!selectedData.data" (click)="deleteLog()"
+            [disabled]="saving || clearingLog">{{ !clearingLog ? 'Clear Log': 'Clearing...'}}</button>
+    </div>
+</ng-container>

@@ -1,0 +1,17 @@
+@import "variables";
+
+.footer-wrapper{
+    background: $base-color;
+    text-align: center;
+    padding-bottom: 20px;
+    span{
+      font-family: 'Roboto', sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 16px;
+      color: $white-64;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }

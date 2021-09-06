@@ -1,0 +1,294 @@
+@import "variables";
+@import "decision-header";
+
+:host {
+  display: block;
+  height: 100%;
+  position: relative;
+  background-color: $black-24;
+  color: $white-88;
+}
+.wrapper {
+  height: 100%;
+  width: 100%;
+}
+section {
+  border-top: 72px solid transparent;
+  height: 100%;
+  overflow: auto;
+  background-color: $base-color;
+  text-align: center;
+}
+.content {
+  overflow: hidden;
+  > div {
+    margin-top: 85px;
+    overflow: auto;
+    height: calc(100% - 93px);
+    max-height: 1188px;
+    table {
+      margin-left: auto;
+      margin-right: auto;
+      width: 1315px;
+      &:first-child {
+        position: sticky;
+        position: -webkit-sticky;
+        top: 0;
+        background-color: $base-color;
+      }
+    }
+  }
+}
+table {
+  th {
+    height: 60px;
+    margin-right: 8px;
+    &:first-child div {
+      background-color: transparent;
+    }
+    div {
+      width: 153px;
+      display: flex;
+      flex-direction: column;
+      background-color: $black-20;
+      height: 100%;
+      justify-content: center;
+      align-content: center;
+      margin-right: 8px;
+      &.today {
+        background-color: $black-12;
+      }
+      span {
+        font-size: 16px;
+        font-weight: normal;
+      }
+      .month {
+        font-size: 14px;
+        color: $white-64;
+      }
+    }
+  }
+  td {
+    > div {
+      height: 56px;
+      width: 153px;
+      background-color: $black-24;
+      margin-top: 8px;
+      margin-right: 8px;
+      display: flex;
+      align-items: center;
+      &.time {
+        background-color: $black-16;
+        font-size: 14px;
+        font-weight: normal;
+        color: $white-88;
+        padding-left: 24px;
+      }
+      fa-icon {
+        font-size: 20px;
+        cursor: pointer;
+      }
+      &.today {
+        background-color: $black-22;
+      }
+      &.no-value {
+        .icon-wrapper {
+          height: 40px;
+          width: 40px;
+          border-radius: 50%;
+          background-color: transparent;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &:active,
+          &:hover {
+            &.cancelled {
+              background: rgba(255, 90, 89, 0.1);
+            }
+            &.success {
+              background: rgba(71, 179, 80, 0.1);
+            }
+            fa-icon {
+              opacity: 1;
+            }
+          }
+          fa-icon {
+            opacity: 0.5;
+          }
+        }
+        > div {
+          display: none;
+          justify-content: space-evenly;
+          width: 100%;
+        }
+        &:hover {
+          background-color: $black-20;
+          > div {
+            display: flex;
+          }
+        }
+      }
+      &.hasValue {
+        .icon-wrapper {
+          height: 40px;
+          width: 40px;
+          border-radius: 50%;
+          background-color: transparent;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &:hover {
+            &.cancelled {
+              background: rgba(255, 90, 89, 0.1);
+            }
+            &.success {
+              background: rgba(71, 179, 80, 0.1);
+            }
+          }
+        }
+        > div {
+          display: flex;
+          justify-content: space-evenly;
+          width: 100%;
+        }
+        &:hover {
+          background-color: $black-20;
+        }
+      }
+    }
+  }
+}
+.popup-container {
+  z-index: 12;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.38);
+  border-top: 0;
+  .popup-content {
+    width: 1224px;
+    &.add-edit-popup {
+      width: auto;
+      text-align: left;
+      max-height: 100vh;
+      overflow: auto;
+    }
+    header {
+      position: inherit;
+      box-shadow: inset 0px 1px 0px $black-28, inset 0px -1px 0px $black-28;
+      .title {
+        font-size: 20px;
+      }
+    }
+    .body-content {
+      padding-top: 48px;
+      padding-bottom: 96px;
+      background-color: $black-24;
+      position: relative;
+      .loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      .calendar-container {
+        padding: 0 0 0 96px;
+        overflow: auto;
+        max-height: calc(100vh - 300px);
+      }
+      .note {
+        padding: 0 96px;
+        margin-top: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        .color {
+          height: 12px;
+          width: 12px;
+          display: inline-block;
+          margin-right: 4px;
+        }
+        .text {
+          margin-right: 24px;
+          font-size: 12px;
+          color: $white-64;
+        }
+      }
+    }
+  }
+}
+ngb-datepicker {
+  border: none;
+  ::ng-deep.ngb-dp-content {
+    display: flex;
+    flex-wrap: wrap;
+    > div {
+      margin-top: 48px;
+      margin-right: 48px;
+      .month-text {
+        color: $white-88;
+        font-size: 16px;
+        text-align: left;
+        margin-bottom: 8px;
+      }
+      .ngb-dp-weekdays {
+        border: none;
+        margin-bottom: 8px;
+        .ngb-dp-weekday {
+          font-style: normal;
+          font-size: 12px;
+          width: 12px;
+          height: 16px;
+          margin-right: 8px;
+          line-height: normal;
+          display: flex;
+          color: $white-54;
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+      .ngb-dp-week {
+        margin-bottom: 8px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+        .ngb-dp-day {
+          height: 12px;
+          width: 12px;
+          margin-right: 8px;
+          &:last-child {
+            margin-right: 0;
+          }
+          div {
+            height: 12px;
+            width: 12px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  section {
+    border-top: 0;
+    height: unset;
+  }
+  .content {
+    overflow: hidden;
+    padding: 20px 10px;
+    > div {
+      margin-top: unset;
+      height: unset;
+      max-height: unset;
+    }
+  }
+}

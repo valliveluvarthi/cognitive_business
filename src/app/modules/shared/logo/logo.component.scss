@@ -1,0 +1,23 @@
+@import "variables";
+
+.img-logo-wrapper{
+    text-align: center;
+}
+.wave-logo{
+    width: 100px;
+}
+.login-header{
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: $white-92;
+    letter-spacing: 0.15px;
+    text-align: center;
+    padding-top: 16px;
+}
+.login-description{
+    font-size: 16px;
+    padding-top: 2px;
+}

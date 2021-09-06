@@ -1,0 +1,197 @@
+.flex {
+  display: flex;
+}
+
+.flex_none {
+  flex: none;
+}
+
+.flex_column {
+  flex-direction: column;
+}
+
+.overflow_hidden {
+  overflow: hidden;
+}
+
+.overflow_auto {
+  overflow: auto;
+}
+
+.fixed_table {
+  height: 100%;
+  font-size: 12px;
+  .date {
+    padding: 18px 18px 18px 24px;
+    color: $white-88;
+    background-color: $black-18;
+    font-size: 14px;
+  }
+  .fixed-column {
+    width: 192px;
+  }
+
+  #table_header_scroller {
+    .card-custom {
+      background-color: $black-20;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 18px 8px;
+      &:last-child {
+        margin-right: 17px;
+      }
+      &.now {
+        background-color: $black-16;
+      }
+    }
+
+    .spacer {
+      width: 18px;
+    }
+  }
+
+  .fixed_table_content {
+    height: calc(100% - 55px);
+    overflow: hidden;
+
+    #table_body_header_scroller {
+      overflow: visible;
+      position: relative;
+
+      .card-custom {
+        background-color: $black-22;
+        padding: 16px 24px;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 8px;
+        &.has-unit .row-title {
+          max-width: 118px;
+          display: inline-block;
+        }
+        &.direction {
+          min-height: 72px;
+        }
+        &.chart {
+          min-height: 192px;
+          .wave-discription-wrapper {
+            margin-top: 16px;
+            display: block;
+          }
+          ::ng-deep .open-chart {
+            display: inline-block;
+            position: absolute;
+            right: 24px;
+            cursor: pointer;
+            bottom: 16px;
+          }
+        }
+        ::ng-deep .open-chart {
+          display: none;
+        }
+        .wave-discription-wrapper {
+          display: none;
+        }
+      }
+    }
+    #table_body_content_scroller {
+      position: relative;
+      width: 100%;
+      .flex {
+        position: relative;
+      }
+      .scroll-content {
+        display: inline-block;
+      }
+      .card-custom {
+        background-color: $black-24;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 8px;
+        height: auto;
+        min-height: 56px;
+        fa-icon {
+          font-size: 20px;
+        }
+        &.now {
+          background-color: $black-22;
+        }
+        &.chart {
+          height: 192px;
+        }
+        .percent {
+          padding: 4px 8px;
+          height: 28px;
+          font-size: 16px;
+          border-radius: 4px;
+          &.danger {
+            background-color: $red-400;
+          }
+          &.warning {
+            background-color: $yellow;
+          }
+        }
+        .direction {
+          height: 72px;
+          display: flex;
+          flex-direction: column;
+          fa-icon {
+            margin-top: 18px;
+            font-size: 16px;
+          }
+          span {
+            font-size: 12px;
+            color: $white-64;
+          }
+        }
+      }
+      .chart-wrapper {
+        height: 192px;
+        z-index: 1;
+        position: absolute;
+        width: 100%;
+        padding-left: 12px;
+        padding-right: 45px;
+        background-color: transparent;
+        margin-bottom: 8px;
+        canvas {
+          width: 100%;
+        }
+      }
+    }
+    .fixed-column {
+      margin-bottom: 17px;
+    }
+  }
+
+  .card-custom {
+    width: 100px;
+    min-height: 56px;
+    margin: 0px;
+    padding: 18px 8px;
+    text-align: center;
+    position: relative;
+    font-size: 14px;
+    letter-spacing: 0.25px;
+    color: $white-88;
+    flex: none;
+    overflow: hidden;
+    background-color: $black-20;
+  }
+}
+.popup {
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  header {
+    box-shadow: inset 0px 1px 0px #474747, inset 0px -1px 0px #474747;
+    .title {
+      font-size: 20px;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+@import "variables";
+@import "decision-header";
+
+:host {
+  display: block;
+  height: 100%;
+  position: relative;
+}

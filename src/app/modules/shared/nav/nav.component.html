@@ -1,0 +1,13 @@
+<aside class="side-nav__container" [ngClass]="{'side-nav__container--show' : isOpen}">
+    <ul class="side-nav__list">
+        <ng-container *ngFor="let item of navItems;">
+            <li *ngIf="item.type === 'title'" class="side-nav__list__item title">
+                <span>{{item.label}}</span>
+            </li>
+            <li *ngIf="item.type === 'link'" class="side-nav__list__item link" [ngClass]="{'active': (item.index === selectedNavIndex)}" (click)="navigate(item.path, item.index)">
+                <a>{{item.label}}</a>
+            </li>
+        </ng-container>
+    </ul>
+</aside>
+<div class="overlay__container" [ngClass]="{'overlay__container--show' : isOpen }" (click)="overlayOnClick();"></div>

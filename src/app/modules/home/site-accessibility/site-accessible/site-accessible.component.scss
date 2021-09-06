@@ -1,0 +1,18 @@
+@import "variables";
+@import "decision-header";
+
+:host {
+  display: block;
+  height: 100%;
+  position: relative;
+}
+.avg {
+  color: $green;
+  background-color: $green;
+}
+.add-year {
+  cursor: pointer;
+}
+.left span {
+  margin-right: 10px;
+}

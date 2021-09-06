@@ -1,0 +1,57 @@
+<div *ngIf="dialogType === 'deactivate'">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Deactive {{ headerTitle }} {{headerTitle > 1 ? 'Users':'User'}}</h4>
+    <fa-icon
+      (click)="activeModal.dismiss()"
+      [icon]="faTimes"
+      class="icon-circle icon-cross"
+    ></fa-icon>
+  </div>
+  <div class="modal-body">
+      <div class="form-group">
+        <label>You’re deactivating {{ headerTitle }} {{headerTitle > 1 ? 'users accounts':'user account'}}. Would you like to continue?</label>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <div class="modal-btn-cancel" (click)="activeModal.close()">Cancel</div>
+    <div class="modal-btn-save modal-btn-deactivate" (click)="deactivateAccounts()">Yes, Deactivate</div>
+  </div>  
+</div>
+
+
+<!-- update role modal -->
+<div *ngIf="dialogType === 'update_role'">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Updating {{headerTitle > 1 ? 'Users':'User'}} Roles</h4>
+    <fa-icon
+      (click)="activeModal.dismiss()"
+      [icon]="faTimes"
+      class="icon-circle icon-cross"
+    ></fa-icon>
+  </div>
+  <div class="modal-body">
+      <div class="form-group">
+          <label>You’re updating roles for {{ headerTitle }} {{headerTitle > 1 ? 'users':'user'}} accounts. Select a role to continue</label>
+          
+          <div ngbDropdown class="d-inline-block dd dropdown-input">
+            <mat-form-field class="example-full-width" appearance="fill" ngbDropdownToggle>
+              <mat-label>User Role *</mat-label>
+              <input matInput value="{{ selectedUserRole }}" readonly>
+              <fa-icon [icon]="faChevronDown" class="icon-circle icon-cross dropdown-input-down-arrow"></fa-icon>
+            </mat-form-field>
+            <div ngbDropdownMenu class="dd-menu dropdown-input-menu">
+              <ng-container *ngFor="let item of userRoles">
+                <button (click)="selectUserRole(item)" ngbDropdownItem>
+                  {{ item }}
+                </button>
+              </ng-container>
+            </div>
+          </div>
+          <div class="dropdown-label">This role applied to all the selected users</div>
+        </div>
+  </div>
+  <div class="modal-footer">
+    <div class="modal-btn-cancel" (click)="activeModal.close()">Cancel</div>
+    <div class="modal-btn-save" (click)="updateUsersRole()">Update Role</div>
+  </div>
+</div>

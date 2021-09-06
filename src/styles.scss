@@ -1,0 +1,294 @@
+@import "custom-bootstrap";
+@import "variables";
+
+html,
+body {
+  height: 100%;
+  font-family: Roboto;
+}
+
+.dd {
+  &.show {
+    > button {
+      background-color: $black-12;
+    }
+  }
+  > button {
+    background: transparent;
+    color: $white-88;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    &::after {
+      display: none;
+    }
+    fa-icon {
+      margin-left: 6px;
+      font-size: 12px;
+    }
+  }
+}
+.dd-menu {
+  padding: 0;
+  margin-right: 16px;
+  border: 1px solid $black-18;
+  border-radius: 0;
+  max-height: 200px;
+  overflow: auto;
+  min-width: auto;
+  background-color: $black-24;
+  button {
+    background-color: $black-24;
+    color: $white-88 !important;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    &:focus,
+    &:hover,
+    &.selected {
+      background-color: $black-20;
+      border: none;
+      outline: none;
+    }
+  }
+}
+
+.live-tag {
+  height: 16px;
+  width: 40px;
+  background-color: $red-600;
+  display: inline-block;
+  padding: 0 3px;
+  border-radius: 2px;
+  font-size: 10px !important;
+  .circle {
+    display: inline-block;
+    height: 4px;
+    width: 4px;
+    margin: auto 3px;
+    background-color: white;
+    border-radius: 50%;
+  }
+}
+.tick {
+  color: $green;
+}
+.excalamation {
+  color: $red-400;
+}
+.excalamation-tirangle {
+  color: $yellow;
+}
+.loading {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+}
+.disabled-color {
+  color: $white-64;
+  cursor: not-allowed;
+}
+.overview-popover {
+  background-color: $black-18;
+  box-shadow: 0px 2px 2.62px rgba(0, 0, 0, 0.23);
+  border-radius: 4px;
+  padding: 16px 24px;
+  .selected-date {
+    font-size: 14px;
+    color: white;
+    margin-bottom: 16px;
+  }
+  .color {
+    height: 12px;
+    width: 12px;
+    display: inline-block;
+    margin-right: 8px;
+  }
+  .text {
+    font-size: 16px;
+    color: $white-88;
+  }
+}
+.no-transfer {
+  background-color: $black-28;
+}
+.all-cancelled {
+  background-color: $red-400;
+}
+.cancelled-success {
+  background-color: $yellow;
+}
+.all-sucess {
+  background-color: $green;
+}
+
+.date-picker {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  align-items: center;
+  width: 160px;
+  box-shadow: inset 0px -1px 0px #8a8a8a;
+  margin-right: 24px;
+  fa-icon {
+    columns: $white-64;
+    cursor: pointer;
+  }
+  input {
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    font-size: 14px;
+    background: transparent;
+    outline: none;
+    border: none;
+    color: $white-88;
+  }
+}
+.green {
+  color: $green;
+}
+.bg-red {
+  background-color: $red-400;
+}
+.bg-green {
+  background-color: $green;
+}
+.bg-yellow {
+  background-color: $yellow;
+}
+.red {
+  color: $red-400;
+}
+.graph-wrapper {
+  border-top: 76px solid transparent;
+  width: 100%;
+  height: 100%;
+  .details {
+    height: 100%;
+    background-color: $black-22;
+    width: 192px;
+    float: left;
+    padding: 18px 18px 18px 24px;
+  }
+  .chart {
+    height: 100%;
+    overflow: hidden;
+    background-color: $black-24;
+    padding: 18px;
+  }
+}
+.unit {
+  float: right;
+  color: $white-64;
+}
+.wave-discription {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 14px;
+  }
+  hr {
+    width: 16px;
+    background-color: transparent;
+    border: 2px dashed yellow;
+    margin: 3px 8px 3px 0px;
+    display: inline-block;
+  }
+  &.live {
+    .live-tag {
+      display: inline-block;
+    }
+    hr {
+      border-style: solid;
+    }
+  }
+  .live-tag {
+    float: right;
+    display: none;
+  }
+}
+.wave-discription-wrapper {
+  margin-top: 16px;
+}
+
+.modal-wrapper {
+  .modal-lg,
+  .modal-xl {
+    max-width: 660px;
+    padding-right: 17px;
+  }
+  .modal-content {
+    background-color: $black-24;
+    border-radius: 0;
+  }
+}
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  .mat-table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    display: table;
+    border-collapse: collapse;
+    margin: 0px;
+  }
+  .mat-row,
+  .mat-header-row {
+    display: table-row;
+  }
+  .mat-cell,
+  .mat-header-cell {
+    word-wrap: initial;
+    display: table-cell;
+    padding: 0px 5px;
+    line-break: unset;
+    width: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  // border-radius: 10px;
+  background: $base-color;
+  border: solid 4px transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $black-18;
+  border-radius: 16px;
+  border: 1.5px solid $white-54;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $black-22;
+}
+
+@media screen and (max-width: 768px) {
+  .graph-wrapper {
+    border-top: 76px solid transparent;
+  }
+}
+
+@import "date-picker";
+@import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";

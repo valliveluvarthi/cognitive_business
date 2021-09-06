@@ -1,0 +1,144 @@
+<div class="wrapper" *ngIf="loading">
+  <div class="loading">
+    <div class="spinner-border text-custom" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</div>
+<div class="content-wrapper" *ngIf="!loading">
+  <div class="wrapper-header">
+    <div class="header-title">User Notifications</div>
+    <div class="header-divider"></div>
+    <div class="header-description">
+      Configure which user groups receive which reports
+    </div>
+  </div>
+  <div class="card-wrapper">
+    <div class="card" *ngFor="let report of reportTypes; let i=index">
+      <div class="card-header">
+        <div class="title">{{ report.name }}</div>
+        <div class="dropdown-wrapper">
+          <div class="description">{{ report.description }}</div>
+          <div ngbDropdown class="d-inline-block dd" *ngIf="report.scheduledTime">
+            <button ngbDropdownToggle>
+              {{ selectedTime[i] }}
+              <fa-icon [icon]="faChevronDown"></fa-icon>
+            </button>
+            <div ngbDropdownMenu class="dd-menu">
+              <ng-container *ngFor="let item of timeRange">
+                <button
+                  (click)="updateTime(item, content, i)"
+                  ngbDropdownItem
+                  [class.selected]="item == selectedTime[i]"
+                >
+                  {{ item }}
+                </button>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list-wrapper">
+        <div class="item-wrapper" *ngFor="let item of report.roles">
+          <div class="item">{{ item }}</div>
+          <div
+            (click)="removeReportRole(item, i)"
+            placement="bottom"
+            ngbTooltip="Remove Role"
+            class="icon-cross"
+            tooltipClass="icon-cross-tooltip"
+          >
+            <fa-icon [icon]="faTimesCircle" class="icon-circle icon-cross"></fa-icon>
+          </div>
+        </div>
+  
+        <div
+          class="item-wrapper add-role"
+          (click)="openModal(contentForcast, i)"
+        >
+          <div class="item">
+            <fa-icon [icon]="faPlusCircle" class="icon-circle"></fa-icon>
+            Add User Role
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- subscription switch -->
+    <div class="card" *ngIf="reportSubscriptions.length > 0">
+      <div class="card-header">
+        <div class="title subscription-title">Configure Email notifications</div>
+      </div>
+      
+      <div class="list-wrapper">
+        <div class="item-wrapper" *ngFor="let item of reportSubscriptions">
+          <div class="item">
+            <mat-slide-toggle [checked]="item.isSubscribed" (change)="toggle($event, item.reportId)">{{ item.name }}</mat-slide-toggle>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- modal 1 change forcast time -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      {{ modalHeaderTitle }}
+    </h4>
+    <fa-icon (click)="modal.dismiss()" [icon]="faTimes" class="icon-circle icon-cross"></fa-icon>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label
+          >Time for daily report updated from
+          {{ previousSelectedTime }} to {{ newSelectedTime }}.
+          Would you like to save the change?</label
+        >
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="modal-btn-cancel" (click)="modal.close()">Cancel</div>
+    <div class="modal-btn-save" (click)="closeForcastModal()">Save</div>
+  </div>
+</ng-template>
+
+<!-- modal 2 Add new role forcast -->
+<ng-template #contentForcast let-modal>
+  <div class="modal-header role-modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      {{ modalHeaderTitle }}
+    </h4>
+    <fa-icon (click)="modal.dismiss()" [icon]="faTimes" class="icon-circle icon-cross"></fa-icon>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label class="label-user-role">User Role *</label>
+      
+      <div ngbDropdown class="d-inline-block dd dropdown-input">
+        <input
+          readonly
+          type="text"
+          value="{{ selectedUserRole[currentIndex] }}"
+          [(ngModel)]="selectedUserRole[currentIndex]"
+          ngbDropdownToggle
+        />
+        <fa-icon [icon]="faChevronDown" class="icon-circle icon-cross dropdown-input-down-arrow"></fa-icon>
+        <div ngbDropdownMenu class="dd-menu dropdown-input-menu">
+          <ng-container *ngFor="let item of reportUserRoles[currentIndex]">
+            <button (click)="selectUserRole(item)" ngbDropdownItem>
+              {{ item }}
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="modal-btn-cancel" (click)="modal.close()">Cancel</div>
+    <div class="modal-btn-save" (click)="closeAddUserRoleModal()">Add Role</div>
+  </div>
+</ng-template>

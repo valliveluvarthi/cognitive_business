@@ -1,0 +1,32 @@
+    
+<div class="wrapper">
+    <div class="card">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" #f="ngForm">
+            <cb-logo [headerTitle]=title></cb-logo>
+            <div class="field-wrapper">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                        formControlName="username"
+                        [ngClass]="{'submitted': formSubmitted}">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label second-label">Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" formControlName="password"
+                        [ngClass]="{'submitted': formSubmitted}">
+                </div>
+                <div class="button-wrapper">
+                    <span><a routerLink="../{{Paths.FORGOT_PASSWORD}}">Forgot password?</a></span>
+                    <button type="submit" class="btn btn-custom" >Sign In</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="link-wrapper">
+        <span><a href="#">Support</a></span>
+        <span><a href="#">Contact</a></span>
+        <span><a href="#">Privacy</a></span>
+        <span><a href="#">Terms</a></span>
+    </div>
+</div>
+<cb-footer></cb-footer>

@@ -1,0 +1,152 @@
+@import "variables";
+
+:host {
+  padding: 35px;
+  min-height: 400px;
+  background-color: $black-16;
+  position: relative;
+  display: inline-block;
+  width: 430px;
+  > fa-icon {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+}
+
+.inline {
+  display: flex;
+  > div {
+    margin-right: 24px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+.control {
+  margin-bottom: 32px;
+  label {
+    font-size: 12px;
+    color: $white-54;
+    margin-bottom: 4px;
+  }
+  .date-picker {
+    height: 34px;
+    box-shadow: inset 0px -1px 0px $white-88;
+    input {
+      padding-left: 0;
+    }
+  }
+  .checkbox {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    &:first-child {
+      margin-top: 8px;
+    }
+    input:checked ~ label {
+      fa-icon {
+        &:last-child {
+          display: none;
+        }
+        &:first-child {
+          display: inline-block;
+        }
+      }
+    }
+    label {
+      font-size: 14px;
+      color: $white-92;
+      display: flex;
+      margin-bottom: 0;
+      fa-icon {
+        font-size: 15px;
+        color: $white-88;
+        margin-right: 10px;
+        &:first-child {
+          display: none;
+        }
+      }
+    }
+  }
+  > textarea,
+  > input {
+    border: none;
+    border-bottom: 1px solid $white-88;
+    border-radius: 0px;
+    font-size: 14px;
+    color: $white-88;
+    width: 100%;
+    display: block;
+    background-color: $black-16;
+    &:focus,
+    &:focus-visible {
+      outline: none;
+    }
+  }
+  .dd {
+    > button {
+      height: 32px;
+      border-bottom: 1px solid $white-88;
+      border-radius: 0px;
+      font-size: 14px;
+      padding: 0 13px 0 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  .status-wrapper {
+    display: flex;
+    .icon-wrapper {
+      margin-right: 16px;
+      padding: 10px 18px;
+      font-size: 16px;
+      color: $white-88;
+      background-color: $black-12;
+      opacity: 0.4;
+      cursor: pointer;
+      border-radius: 4px;
+      display: flex;
+      line-height: 20px;
+      fa-icon {
+        font-size: 20px;
+        margin-right: 6px;
+      }
+      &.active,
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+.btn-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  .btn-custom {
+    color: $white-88;
+    background-color: $black-24;
+    border-color: $black-24;
+    padding: 10px 16px;
+    font-size: 16px;
+    line-height: 16px;
+    &:hover {
+      background-color: $black-28;
+      border-color: $black-28;
+    }
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  left: -100vw;
+}
+
+.loading {
+  min-height: 400px;
+}

@@ -1,0 +1,64 @@
+<header>
+    <span class="title">Site Accessible vs Accessibility</span>
+    <div class="left">
+        <!-- <div ngbDropdown class="d-inline-block dd">
+            <button ngbDropdownToggle>{{selectedFilter.name}}
+                <fa-icon [icon]="faChevronDown"></fa-icon>
+            </button>
+            <div ngbDropdownMenu class="dd-menu">
+                <ng-container *ngFor="let item of filters">
+                    <button (click)="selectedFilter = item;onFilterChanged()" ngbDropdownItem
+                        [class.selected]="item == selectedFilter">{{item.name}}</button>
+                </ng-container>
+            </div>
+        </div> -->
+        <div ngbDropdown class="d-inline-block dd" *ngIf="selectedFilter.key == 'yearly'">
+            <button ngbDropdownToggle>{{selectedYear.year}}
+                <fa-icon [icon]="faChevronDown"></fa-icon>
+            </button>
+            <div ngbDropdownMenu class="dd-menu">
+                <ng-container *ngFor="let item of yearlyData?.years">
+                    <button (click)="selectedYear = item;setGraphDataByYear()" ngbDropdownItem
+                        [class.selected]="item == selectedYear">{{item.year}}</button>
+                </ng-container>
+            </div>
+        </div>
+        <ng-container *ngIf="selectedFilter.key == 'range'">
+            <div class="date-picker">
+                <input placeholder="Start Date" name="startDate" ngbDatepicker #sd="ngbDatepicker" [(ngModel)]="from"
+                    (ngModelChange)="dateChanged($event, 'from')">
+                <fa-icon [icon]="faCalender" (click)="sd.toggle()"></fa-icon>
+            </div>
+            <div class="date-picker">
+                <input placeholder="End Date" name="endDate" ngbDatepicker #ed="ngbDatepicker" [(ngModel)]="to"
+                    [minDate]="from" (ngModelChange)="dateChanged($event, 'to')">
+                <fa-icon [icon]="faCalender" (click)="ed.toggle()"></fa-icon>
+            </div>
+        </ng-container>
+    </div>
+</header>
+<div class="graph-wrapper">
+    <div class="details">
+        <span class="row-title" *ngIf="selectedFilter.key == 'yearly'">Yearly Accessible vs
+            Accessibility</span>
+        <span class="row-title" *ngIf="selectedFilter.key != 'yearly'">Accessible vs Accessibility by
+            Range</span>
+        <span class="unit">h</span>
+        <div class="wave-discription-wrapper">
+            <div class="wave-discription">
+                <div>
+                    <div class="box accessed"></div>Accessed
+                </div>
+            </div>
+            <div class="wave-discription">
+                <div>
+                    <div class="box accessible"></div>Accessible
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chart">
+        <canvas baseChart [datasets]="data" [labels]="labels" [options]="options" [legend]="false" [type]="'bar'">
+        </canvas>
+    </div>
+</div>

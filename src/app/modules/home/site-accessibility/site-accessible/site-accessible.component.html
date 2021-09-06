@@ -1,0 +1,27 @@
+<header>
+    <span class="title">{{ for.title }}</span>
+    <div class="left">
+        <span>From:</span>
+        <span>{{from}}</span>
+        <span>To:</span>
+        <span>{{to}}</span>
+    </div>
+</header>
+<div class="graph-wrapper">
+    <div class="details">
+        <span class="row-title">{{ for.desc }}</span>
+        <span class="unit">%</span>
+        <div class="wave-discription-wrapper">
+            <div class="wave-discription" *ngFor="let year of yearlyData?.years">
+                <div>
+                    <div class="box" [style.backgroundColor]="year.color"></div>
+                    {{year.year}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chart">
+        <canvas baseChart [datasets]="data" [labels]="labels" [options]="options" [legend]="false" [type]="'line'">
+        </canvas>
+    </div>
+</div>

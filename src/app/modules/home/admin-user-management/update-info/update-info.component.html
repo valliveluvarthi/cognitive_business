@@ -1,0 +1,93 @@
+<div>
+  <form [formGroup]="form" #f="ngForm">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Updating Info</h4>
+      <fa-icon
+        (click)="activeModal.dismiss()"
+        [icon]="faTimes"
+        class="icon-circle icon-cross"
+      ></fa-icon>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <!-- Name -->
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Name *</mat-label>
+          <input
+            matInput
+            formControlName="name"
+            name="userName"
+            autocomplete="off"
+          />
+        </mat-form-field>
+
+        <!-- Role -->
+        <div ngbDropdown class="d-inline-block dd dropdown-input">
+          <mat-form-field
+            class="example-full-width"
+            appearance="fill"
+            ngbDropdownToggle
+          >
+            <mat-label>Role *</mat-label>
+            <input
+              matInput
+              formControlName="role"
+              value="{{ selectedUserRole }}"
+              name="userRole"
+              readonly
+            />
+            <fa-icon
+              [icon]="faChevronDown"
+              class="icon-circle icon-cross dropdown-input-down-arrow"
+            ></fa-icon>
+          </mat-form-field>
+          <div ngbDropdownMenu class="dd-menu dropdown-input-menu">
+            <ng-container *ngFor="let item of userRoles">
+              <button (click)="selectUserRole(item)" ngbDropdownItem>
+                {{ item }}
+              </button>
+            </ng-container>
+          </div>
+        </div>
+        <!-- Email -->
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Email *</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            name="userEmail"
+            autocomplete="off"
+          />
+        </mat-form-field>
+        <!-- Status -->
+        <mat-form-field class="disabled-field" appearance="fill">
+          <mat-label>Status</mat-label>
+          <input matInput value="{{ item.status }}" [disabled]="true" />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div
+        class="modal-btn-save modal-btn-resend-invitation"
+        (click)="resendInvitation()"
+        [ngClass]="{ hide_resend: status !== 'pending' }"
+      >
+        Resend Invitation
+      </div>
+      <div
+        class="modal-btn-save modal-btn-deactivate"
+        (click)="deactivateAccount()"
+        [ngClass]="{ hide_deactive: status !== 'active' }"
+      >
+        Deactivate User
+      </div>
+      <div class="footer-right-wrapper">
+        <div class="modal-btn-cancel" (click)="activeModal.close()">Cancel</div>
+        <div class="modal-btn-save" (click)="updateUserInfo()">
+          Update Information
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

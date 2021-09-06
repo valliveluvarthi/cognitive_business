@@ -1,0 +1,27 @@
+@import "variables";
+
+ngb-datepicker.dropdown-menu {
+  background-color: $black-24 !important;
+  .ngb-dp-arrow-btn {
+    color: $white-88;
+    outline: none;
+    box-shadow: none;
+    &:hover {
+      color: $white-88;
+      background-color: $black-18;
+    }
+  }
+  .custom-select {
+    outline: none;
+    box-shadow: none;
+    color: $white-88;
+    background-color: transparent;
+    option {
+      color: $black-18;
+    }
+  }
+  .ngb-dp-weekday {
+    color: $white-88;
+    font-style: normal;
+  }
+}

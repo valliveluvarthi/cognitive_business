@@ -1,0 +1,89 @@
+<div class="wrapper">
+    <div class="loading" *ngIf="loading">
+        <div class="spinner-border text-custom" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <header *ngIf="!loading">
+        <span class="title">Tidal Gate</span>
+        <div class="left">
+            <div ngbDropdown class="d-inline-block dd">
+                <button ngbDropdownToggle>{{selectedSite.key}}
+                    <fa-icon [icon]="faChevronDown"></fa-icon>
+                </button>
+                <div ngbDropdownMenu class="dd-menu">
+                    <ng-container *ngFor="let item of sites">
+                        <button (click)="changeSite(item)" ngbDropdownItem
+                            [class.selected]="item == selectedSite">{{item.key}}</button>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section *ngIf="!loading" class="popup">
+        <header>
+            <span class="title">Tide</span>
+            <div class="left">
+                <span class="switch">
+                    <span [class.active]="filter == 'p30d'" (click)="changeFilter('p30d')">Past 30 days</span>
+                    <span [class.active]="filter == 'p7d'" (click)="changeFilter('p7d')">Past 7 days</span>
+                    <span [class.active]="filter == 'n7d'" (click)="changeFilter('n7d')">Next 7 days</span>
+                    <span [class.active]="filter == 'n30d'" (click)="changeFilter('n30d')">Next 30 days</span>
+                    <span [class.active]="filter == 'custom'" (click)="changeFilter('custom')">Date Range</span>
+                </span>
+                <ng-container *ngIf="filter == 'custom'">
+                    <div class="date-picker">
+                        <input placeholder="Start Date" name="startDate" ngbDatepicker #sd="ngbDatepicker"
+                            [(ngModel)]="from" (ngModelChange)="startDateChanged($event, 'from')">
+                        <fa-icon [icon]="faCalender" (click)="sd.toggle()"></fa-icon>
+                    </div>
+                    <div class="date-picker">
+                        <input placeholder="End Date" name="endDate" ngbDatepicker #ed="ngbDatepicker" [(ngModel)]="to"
+                            [minDate]="from" (ngModelChange)="startDateChanged($event, 'to')">
+                        <fa-icon [icon]="faCalender" (click)="ed.toggle()"></fa-icon>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="right">
+                <span>Threshold:&nbsp;</span>
+                <span class="switch">
+                    <span (click)="openPopup(content)">{{threshold?.lowerLimit + ' m'}}</span>
+                </span>
+            </div>
+        </header>
+        <div class="graph-wrapper">
+
+            <div class="details">
+                <span class="row-title">Tide</span><span class="unit">m</span>
+            </div>
+            <div class="chart">
+                <ng-container *ngIf="!loadingChartData && !loading">
+                    <canvas baseChart [datasets]="data" [labels]="labels" [options]="options" [legend]="false"
+                        [type]="'line'">
+                    </canvas>
+                </ng-container>
+                <div class="loading" *ngIf="loadingChartData">
+                    <div class="spinner-border text-custom" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">
+            New Threshold
+        </h4>
+        <fa-icon (click)="modal.dismiss()" [icon]="faTimes" class="icon-circle icon-cross"></fa-icon>
+    </div>
+    <div class="modal-body">
+        <input type="number" class="form-control" [(ngModel)]="this.threshold.lowerLimit">
+    </div>
+    <div class="modal-footer">
+        <div class="modal-btn-cancel" (click)="modal.dismiss()">Cancel</div>
+        <div class="modal-btn-save" (click)="modal.close()">Save</div>
+    </div>
+</ng-template>
