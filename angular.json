@@ -139,6 +139,7 @@
   },
   "defaultProject": "cognitive-business",
   "cli": {
+    "analytics": "5007a34b-8afa-4071-a739-c148edcc4cc6",
     "defaultCollection": "@angular-eslint/schematics"
   }
 }

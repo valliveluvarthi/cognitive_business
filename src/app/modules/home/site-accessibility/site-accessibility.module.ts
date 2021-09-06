@@ -9,7 +9,7 @@ import { SiteAccessibilityRoutingModule } from './site-accessibility-routing.mod
 import { SiteAccessibilityComponent } from './site-accessibility/site-accessibility.component';
 import { SiteAVsBComponent } from './site-a-vs-b/site-a-vs-b.component';
 import { SiteAccessibleComponent } from './site-accessible/site-accessible.component';
-import { ChartsModule } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,7 @@ import { ChartsModule } from 'ng2-charts';
     FormsModule,
     NgbDropdownModule,
     NgbDatepickerModule,
-    ChartsModule,
+    NgChartsModule,
     FontAwesomeModule,
     SiteAccessibilityRoutingModule
   ]
