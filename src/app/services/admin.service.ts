@@ -51,4 +51,17 @@ export class AdminService {
     }
     return false;
   }
+
+  getUserSitesList(userId){
+    return this.http.get(ApiConstant.USER_SITES.replace("{{userId}}", userId));
+  }
+  getSiteRoles(){
+    return this.http.get(ApiConstant.SITE_ROLES);
+  }
+  deleteSiteFromUser(userId,siteKey){
+    return this.http.delete(ApiConstant.DELETE_SITE_FROM_USER.replace("{{userId}}", userId).replace('{{siteKey}}', siteKey));
+  }
+  addSiteToUser(userId,siteKey,data){
+    return this.http.post(ApiConstant.ADD_SITE_TO_USER.replace("{{userId}}", userId).replace('{{siteKey}}', siteKey),data);
+  }
 }
