@@ -2,7 +2,7 @@
 
 .content-wrapper{
   height: 100%;
-  background-color: #3d3d3d;
+  background-color: #3d3d3d;padding-bottom: 2rem;
 }
 .modal-header {
     border-bottom: 1px solid $black-28;
@@ -123,7 +123,7 @@ input[type="text"]:focus-visible{
   outline: none;
 }
 .container{
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 .col-sm{
   padding-top: 0.25em;
@@ -138,5 +138,11 @@ input[type="text"]:focus-visible{
   }
   &-site-select{
     width: 30%;
+  }
+}
+
+.row{
+  &-padding{
+    padding: 1rem 0.5rem;
   }
 }
