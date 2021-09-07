@@ -24,7 +24,7 @@ export interface UserElement {
 })
 export class AdminUserManagementComponent implements OnInit {
 
-  displayedColumns: string[] = ['select', 'id', 'name', 'role', 'email', 'status', 'updateinfo', 'resendinvite'];
+  displayedColumns: string[] = ['select', 'id', 'name', 'role', 'email', 'status', 'updateinfo','editsites', 'resendinvite'];
   ELEMENT_DATA: UserElement[] = [];
   dataSource = new MatTableDataSource<UserElement>(this.ELEMENT_DATA);
   selection = new SelectionModel<UserElement>(true, []);

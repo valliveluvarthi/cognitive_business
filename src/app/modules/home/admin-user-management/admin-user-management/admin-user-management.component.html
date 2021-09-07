@@ -80,6 +80,17 @@
           </button>
         </td>
       </ng-container>
+
+      <!--Edit sites-->
+      <ng-container matColumnDef="editsites">
+        <th mat-header-cell class="mtable__header" *matHeaderCellDef> Edit Sites </th>
+        
+        <td mat-cell class="action__btn--color64 mtable__row" *matCellDef="let element">
+          <button mat-icon-button (click)="openUpdateInfoModal(element)">
+            <mat-icon aria-label="Edit">edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
     
       <!-- Resend Invitation Column -->
       <ng-container matColumnDef="resendinvite">
