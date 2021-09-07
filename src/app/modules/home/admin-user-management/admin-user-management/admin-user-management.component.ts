@@ -2,8 +2,9 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DeactivateUserComponent } from '../deactivate-user/deactivate-user.component'; 
+import { DeactivateUserComponent } from '../deactivate-user/deactivate-user.component';
 import { UpdateInfoComponent } from '../update-info/update-info.component';
+import { EditSitesComponent } from '../edit-sites/edit-sites.component';
 import { InviteUserComponent } from '../invite-user/invite-user.component';
 import { AdminService } from 'src/app/services/admin.service';
 import { CommonUtilService } from 'src/app/services/common-util.service';
@@ -24,7 +25,7 @@ export interface UserElement {
 })
 export class AdminUserManagementComponent implements OnInit {
 
-  displayedColumns: string[] = ['select', 'id', 'name', 'role', 'email', 'status', 'updateinfo','editsites', 'resendinvite'];
+  displayedColumns: string[] = ['select', 'id', 'name', 'role', 'email', 'status', 'updateinfo', 'editsites', 'resendinvite'];
   ELEMENT_DATA: UserElement[] = [];
   dataSource = new MatTableDataSource<UserElement>(this.ELEMENT_DATA);
   selection = new SelectionModel<UserElement>(true, []);
@@ -54,40 +55,40 @@ export class AdminUserManagementComponent implements OnInit {
           role: element['role'],
           email: element['email'],
           status: element['status']
-        } 
+        }
         this.ELEMENT_DATA.push(user);
       });
-      
+
       this.dataSource = new MatTableDataSource<UserElement>(this.ELEMENT_DATA);
       this.changeDetectorRefs.detectChanges();
-      
+
       this.totalRow = this.ELEMENT_DATA.length;
-  
+
     },
-    (err) => {
-      this.util.notification.error({
-        title: "Error",
-        msg: err
+      (err) => {
+        this.util.notification.error({
+          title: "Error",
+          msg: err
+        });
       });
-    });
   }
 
   getUserRoles() {
     this.adminService.getUserRoles().subscribe((data: string[]) => {
       this.userRoles = data;
     },
-    (err) => {
-      this.util.notification.error({
-        title: "Error",
-        msg: err
+      (err) => {
+        this.util.notification.error({
+          title: "Error",
+          msg: err
+        });
       });
-    });
   }
 
   getSelectedUserIds() {
     let selected = this.selection.selected;
     let userIds = []
-    if(selected.length > 0) {
+    if (selected.length > 0) {
       selected.forEach(element => {
         userIds.push(element['id'])
       });
@@ -97,8 +98,8 @@ export class AdminUserManagementComponent implements OnInit {
 
   resendInvitation(userId?) {
     let userIds = userId ? [userId] : this.getSelectedUserIds();
-    
-    if(userIds) {  
+
+    if (userIds) {
       this.adminService.resendInvitations(userIds).subscribe((data) => {
         this.util.notification.success({
           title: 'Success',
@@ -106,9 +107,9 @@ export class AdminUserManagementComponent implements OnInit {
         });
         this.selection.clear();
       },
-      (err) => {
-        console.log(err);
-      });
+        (err) => {
+          console.log(err);
+        });
     }
   }
 
@@ -164,6 +165,15 @@ export class AdminUserManagementComponent implements OnInit {
 
   openUpdateInfoModal(item) {
     const modalRef = this.modalService.open(UpdateInfoComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true, windowClass: "modal-wrapper" });
+    modalRef.componentInstance.userRoles = this.userRoles;
+    modalRef.componentInstance.item = item;
+    modalRef.componentInstance.onSuccess.subscribe(() => {
+      this.reloadUserData();
+    });
+  }
+
+  openEditSiteModal(item) {
+    const modalRef = this.modalService.open(EditSitesComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true, windowClass: "modal-wrapper" });
     modalRef.componentInstance.userRoles = this.userRoles;
     modalRef.componentInstance.item = item;
     modalRef.componentInstance.onSuccess.subscribe(() => {

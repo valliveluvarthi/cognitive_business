@@ -1,0 +1,21 @@
+@import "variables";
+
+.modal-header {
+    border-bottom: 1px solid $black-28;
+    padding: 24px;
+}
+.modal-title {
+    margin-bottom: 0;
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    color: $white-92;
+}
+.icon-cross {
+    color: $white-64;
+    font-size: 17px;
+    cursor: pointer;
+}

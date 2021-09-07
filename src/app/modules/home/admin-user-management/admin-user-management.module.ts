@@ -15,6 +15,7 @@ import { AdminUserManagementRoutingModule } from './admin-user-management-routin
 import { DeactivateUserComponent } from './deactivate-user/deactivate-user.component';
 import { UpdateInfoComponent } from './update-info/update-info.component';
 import { InviteUserComponent } from './invite-user/invite-user.component';
+import { EditSitesComponent } from './edit-sites/edit-sites.component';
 
 
 
@@ -23,7 +24,8 @@ import { InviteUserComponent } from './invite-user/invite-user.component';
     AdminUserManagementComponent,
     DeactivateUserComponent,
     UpdateInfoComponent,
-    InviteUserComponent
+    InviteUserComponent,
+    EditSitesComponent
   ],
   imports: [
     CommonModule,
