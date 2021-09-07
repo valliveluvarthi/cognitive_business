@@ -29,7 +29,6 @@ export class EditSitesComponent implements OnInit {
   dataSource = new MatTableDataSource<UserElement>(this.ELEMENT_DATA);
   selectedUserRole: string = "";
   selectedUserSite: string = "";
-  roles = ['Admin', 'Marine Coordinator', 'Operations Management']
 
   @Input() headerTitle: number;
   @Input() dialogType: string;
@@ -69,6 +68,7 @@ export class EditSitesComponent implements OnInit {
         this.form.addControl(user.site, this.fb.control(this.item.role));
       });
       console.log(this.ELEMENT_DATA);
+      this.selectedUserSite = this.ELEMENT_DATA[0].site;
       this.dataSource = new MatTableDataSource<UserElement>(this.ELEMENT_DATA);
     },
       (err) => {
