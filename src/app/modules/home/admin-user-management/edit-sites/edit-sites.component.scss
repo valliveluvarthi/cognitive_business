@@ -114,13 +114,10 @@ input[type="text"]:focus-visible{
   background-color:$white-92;
 }
 
-.btn{
+.add{
   color: $white-92;
   font-size: 1rem;
-}
-.btn:focus,.btn:active{
-  border: none;
-  outline: none;
+  cursor: pointer;
 }
 .container{
   margin-top: 1rem;
@@ -133,7 +130,7 @@ input[type="text"]:focus-visible{
     padding-top: 1.3rem;
   }
   &-button-padding{
-    padding-top: 0.5rem;
+    padding-top: 1.5rem;
     text-align: center;
   }
   &-site-select{

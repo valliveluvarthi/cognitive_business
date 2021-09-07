@@ -39,7 +39,9 @@
                         </div>
                     </div>
                     <div class="col-sm column-button-padding">
-                            <button class="btn btn-default" (click)="onDelete(i,row)">Delete</button>
+                            <span class="add" (click)="onDelete(i,row)">
+                                Delete
+                            </span>
                     </div>
                 </div>
                 <div class="row">
@@ -79,7 +81,9 @@
                         </div>
                     </div>
                     <div class="col-sm column-button-padding">
-                        <button class="btn btn-default" (click)="addSiteToUser()">Add</button>
+                        <span class="add" (click)="addSiteToUser()">
+                            Add
+                        </span>
                     </div>
                 </div>
             </div>

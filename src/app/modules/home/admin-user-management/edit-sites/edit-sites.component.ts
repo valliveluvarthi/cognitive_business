@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { faChevronDown, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminService } from 'src/app/services/admin.service';
-import { MatTableDataSource } from '@angular/material/table';
 import { CommonUtilService } from 'src/app/services/common-util.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -24,9 +23,7 @@ export class EditSitesComponent implements OnInit {
   form: FormGroup;
   faTimes = faTimes;
   faChevronDown = faChevronDown;
-  displayedColumns: string[] = ["site", "role", "button"];
   ELEMENT_DATA: UserElement[] = [];
-  dataSource = new MatTableDataSource<UserElement>(this.ELEMENT_DATA);
   selectedUserRole: string = "";
   selectedUserSite: string = "";
 
@@ -46,10 +43,9 @@ export class EditSitesComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      'site': ["", Validators.compose([Validators.required])],
+      'site': [""],
       'role': [this.item.role, Validators.compose([Validators.required])],
     });
-    console.log(this.item);
     this.getUserSites();
     this.getUserRoles();
   }
@@ -67,9 +63,9 @@ export class EditSitesComponent implements OnInit {
         this.ELEMENT_DATA.push(user);
         this.form.addControl(user.site, this.fb.control(this.item.role));
       });
-      console.log(this.ELEMENT_DATA);
-      this.selectedUserSite = this.ELEMENT_DATA[0].site;
-      this.dataSource = new MatTableDataSource<UserElement>(this.ELEMENT_DATA);
+      if(this.ELEMENT_DATA.length > 0){
+        this.selectedUserSite = this.ELEMENT_DATA[0].site;
+      }
     },
       (err) => {
         this.util.notification.error({
@@ -105,7 +101,6 @@ export class EditSitesComponent implements OnInit {
     this.form.controls['site'].setErrors(null);
   }
   onDelete(i, row) {
-    console.log(i);
     let userId = this.item.id;
     let siteKey = row.site;
     this.ELEMENT_DATA.splice(i, 1);
@@ -124,7 +119,6 @@ export class EditSitesComponent implements OnInit {
     var siteelement = document.getElementById("site-menu");
     var roleelement = document.getElementById("role-menu");
     let siteKey = roleelement['value'];
-    console.log(siteelement, roleelement);
     let data = {
       site: siteelement['value'],
       role: roleelement['value']
