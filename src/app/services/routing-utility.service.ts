@@ -24,7 +24,8 @@ export class RoutingUtilityService {
       sectionLabel: "Admin",
       items: [
         { path: [`/${PATHS.HOME}/${PATHS.USER_NOTIFICATIONS}`], label: "User Notifications", accessibility: [ROLES.ADMIN] },
-        { path: [`/${PATHS.HOME}/${PATHS.USER_MANAGEMENT}`], label: "User Management", accessibility: [ROLES.ADMIN] }
+        { path: [`/${PATHS.HOME}/${PATHS.USER_MANAGEMENT}`], label: "User Management", accessibility: [ROLES.ADMIN] },
+        { path: [`/${PATHS.HOME}/${PATHS.SITES}`], label: "Sites", accessibility: [ROLES.ADMIN] }
       ]
     },
     {

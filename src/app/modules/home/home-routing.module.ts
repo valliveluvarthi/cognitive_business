@@ -80,6 +80,17 @@ const routes: Routes = [
     },
   },
   {
+    path: PATHS.SITES,
+    loadChildren: () =>
+      import('./admin-sites/admin-sites.module').then(
+        (mod) => mod.AdminSitesModule
+      ),
+    canActivateChild: [AuthGuard],
+    data: {
+      allowedRoles: [ROLES.ADMIN],
+    },
+  },
+  {
     path: '',
     redirectTo: PATHS.DAILY_DASHBOARD,
     pathMatch: 'full',
