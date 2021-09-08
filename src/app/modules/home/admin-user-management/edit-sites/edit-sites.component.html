@@ -7,21 +7,21 @@
         <div class="modal-body">
             <div class="container">
                 <div class="row row-padding">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                         Site
                     </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                         Role
                     </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
 
                     </div>
                 </div>
                 <div class="row" *ngFor="let row of ELEMENT_DATA; let i = index;">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 column-padding">
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 column-padding">
                         <span>{{row.site}}</span>
                     </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                         <div ngbDropdown class="d-inline-block dd dropdown-input">
                             <mat-form-field class="example-full-width ip-field" appearance="fill" ngbDropdownToggle>
                                 <input matInput formControlName="{{row.site}}" readonly />
@@ -37,14 +37,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 column-button-padding">
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 column-button-padding">
                         <span class="add" (click)="onDelete(i,row)">
                             Delete
                         </span>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                         <div ngbDropdown class="d-inline-block dd dropdown-input">
                             <mat-form-field class="example-full-width" appearance="fill" ngbDropdownToggle>
                                 <input matInput formControlName="site" name="userSite" id="site-menu"
@@ -61,7 +61,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                         <div ngbDropdown class="d-inline-block dd dropdown-input">
                             <mat-form-field class="example-full-width ip-field" appearance="fill" ngbDropdownToggle>
                                 <input matInput formControlName="role" id="role-menu" readonly />
@@ -77,7 +77,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 column-button-padding">
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 column-button-padding">
                         <span class="add" (click)="addSiteToUser()">
                             Add
                         </span>
