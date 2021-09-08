@@ -65,6 +65,7 @@ export class EditSitesComponent implements OnInit {
       });
       if(this.ELEMENT_DATA.length > 0){
         this.selectedUserSite = this.ELEMENT_DATA[0].site;
+        this.form.controls['site'].setValue(this.selectedUserSite);
       }
     },
       (err) => {
@@ -116,14 +117,14 @@ export class EditSitesComponent implements OnInit {
   }
   addSiteToUser() {
     let userId = this.item.id;
-    var siteelement = document.getElementById("site-menu");
-    var roleelement = document.getElementById("role-menu");
-    let siteKey = roleelement['value'];
     let data = {
-      site: siteelement['value'],
-      role: roleelement['value']
+      role : this.form.controls['role'].value,
     }
-    this.adminService.addSiteToUser(userId, siteKey, data).subscribe((data: Array<Object>) => {
+    this.adminService.addSiteToUser(userId,this.form.controls['site'].value,data).subscribe((data: Array<Object>) => {
+      this.util.notification.success({
+        title: 'Success',
+        msg: "User add to site successfully."
+      });
       this.activeModal.dismiss();
     },
       (err) => {
