@@ -7,25 +7,24 @@
         <div class="modal-body">
             <div class="container">
                 <div class="row row-padding">
-                    <div class="col-sm">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         Site
                     </div>
-                    <div class="col-sm">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         Role
                     </div>
-                    <div class="col-sm">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 
                     </div>
                 </div>
                 <div class="row" *ngFor="let row of ELEMENT_DATA; let i = index;">
-                    <div class="col-sm column-padding">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 column-padding">
                         <span>{{row.site}}</span>
                     </div>
-                    <div class="col-sm">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div ngbDropdown class="d-inline-block dd dropdown-input">
                             <mat-form-field class="example-full-width ip-field" appearance="fill" ngbDropdownToggle>
-                                <input matInput formControlName="{{row.site}}"
-                                    readonly />
+                                <input matInput formControlName="{{row.site}}" readonly />
                                 <fa-icon [icon]="faChevronDown"
                                     class="icon-circle icon-cross dropdown-input-down-arrow"></fa-icon>
                             </mat-form-field>
@@ -38,36 +37,34 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm column-button-padding">
-                            <span class="add" (click)="onDelete(i,row)">
-                                Delete
-                            </span>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 column-button-padding">
+                        <span class="add" (click)="onDelete(i,row)">
+                            Delete
+                        </span>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm column-site-select">
-                            <div ngbDropdown class="d-inline-block dd dropdown-input">
-                                <mat-form-field class="example-full-width" appearance="fill" ngbDropdownToggle>
-                                    <input matInput formControlName="site" name="userSite"
-                                    id="site-menu" value="{{selectedUserSite}}"
-                                        readonly />
-                                    <fa-icon [icon]="faChevronDown"
-                                        class="icon-circle icon-cross dropdown-input-down-arrow"></fa-icon>
-                                </mat-form-field>
-                                <div ngbDropdownMenu class="dd-menu dropdown-input-menu">
-                                    <ng-container *ngFor="let item of ELEMENT_DATA">
-                                        <button (click)="selectUserSite(item)" ngbDropdownItem>
-                                            {{ item.site }}
-                                        </button>
-                                    </ng-container>
-                                </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div ngbDropdown class="d-inline-block dd dropdown-input">
+                            <mat-form-field class="example-full-width" appearance="fill" ngbDropdownToggle>
+                                <input matInput formControlName="site" name="userSite" id="site-menu"
+                                    value="{{selectedUserSite}}" readonly />
+                                <fa-icon [icon]="faChevronDown"
+                                    class="icon-circle icon-cross dropdown-input-down-arrow"></fa-icon>
+                            </mat-form-field>
+                            <div ngbDropdownMenu class="dd-menu dropdown-input-menu">
+                                <ng-container *ngFor="let item of ELEMENT_DATA">
+                                    <button (click)="selectUserSite(item)" ngbDropdownItem>
+                                        {{ item.site }}
+                                    </button>
+                                </ng-container>
                             </div>
+                        </div>
                     </div>
-                    <div class="col-sm">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div ngbDropdown class="d-inline-block dd dropdown-input">
                             <mat-form-field class="example-full-width ip-field" appearance="fill" ngbDropdownToggle>
-                                <input matInput formControlName="role"  id="role-menu"
-                                    readonly />
+                                <input matInput formControlName="role" id="role-menu" readonly />
                                 <fa-icon [icon]="faChevronDown"
                                     class="icon-circle icon-cross dropdown-input-down-arrow"></fa-icon>
                             </mat-form-field>
@@ -80,12 +77,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm column-button-padding">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 column-button-padding">
                         <span class="add" (click)="addSiteToUser()">
                             Add
                         </span>
                     </div>
                 </div>
+
             </div>
         </div>
     </form>
