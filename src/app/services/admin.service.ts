@@ -64,4 +64,7 @@ export class AdminService {
   addSiteToUser(userId,siteKey,data){
     return this.http.post(ApiConstant.ADD_SITE_TO_USER.replace("{{userId}}", userId).replace('{{siteKey}}', siteKey),data);
   }
+  getSitesList(){
+    return this.http.get(ApiConstant.SITES);
+  }
 }
