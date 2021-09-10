@@ -42,5 +42,8 @@ export const ApiConstant = {
     USER_SITES : `${API_URL}/api/users/{{userId}}/sites`,
     SITE_ROLES : `${API_URL}/api/sites/{{siteKey}}/roles`,
     DELETE_SITE_FROM_USER : `${API_URL}/api/users/{{userId}}/sites/{{siteKey}}`,
-    ADD_SITE_TO_USER : `${API_URL}/api/users/{{userId}}/sites/{{siteKey}}`
+    ADD_SITE_TO_USER : `${API_URL}/api/users/{{userId}}/sites/{{siteKey}}`,
+    SITE_USERS : `${API_URL}/api/sites/{{siteKey}}/users`,
+    DELETE_USER_FROM_SITE : `${API_URL}/api/sites/{{siteKey}}/users/{{userId}}`,
+    ADD_USER_TO_SITE : `${API_URL}/api/sites/{{siteKey}}/users/{{userId}}`,
 }
