@@ -38,5 +38,12 @@ export const ApiConstant = {
     DAILY_SITE_CHARTS: `${API_URL}/api/sites/{{siteKey}}/charts/daily`,
     WEEKLY_SITE_CHARTS: `${API_URL}/api/sites/{{siteKey}}/charts/weekly`,
     SITE_FORECAST_SIGNAL: `${API_URL}/api/sites/{{siteKey}}/forecast/{{signalKey}}`,
-    CHANGE_SIGNAL_LIMITS: `${API_URL}/api/sites/{{siteKey}}/signal-limits/{{limitTemplate}}`
+    CHANGE_SIGNAL_LIMITS: `${API_URL}/api/sites/{{siteKey}}/signal-limits/{{limitTemplate}}`,
+    USER_SITES : `${API_URL}/api/users/{{userId}}/sites`,
+    SITE_ROLES : `${API_URL}/api/sites/{{siteKey}}/roles`,
+    DELETE_SITE_FROM_USER : `${API_URL}/api/users/{{userId}}/sites/{{siteKey}}`,
+    ADD_SITE_TO_USER : `${API_URL}/api/users/{{userId}}/sites/{{siteKey}}`,
+    SITE_USERS : `${API_URL}/api/sites/{{siteKey}}/users`,
+    DELETE_USER_FROM_SITE : `${API_URL}/api/sites/{{siteKey}}/users/{{userId}}`,
+    ADD_USER_TO_SITE : `${API_URL}/api/sites/{{siteKey}}/users/{{userId}}`,
 }

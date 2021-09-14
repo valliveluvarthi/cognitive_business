@@ -1,0 +1,147 @@
+@import "variables";
+
+.content-wrapper{
+  height: 100%;
+  background-color: #3d3d3d;padding-bottom: 2rem;
+}
+.modal-header {
+    border-bottom: 1px solid $black-28;
+    padding: 24px;
+}
+.modal-title {
+    margin-bottom: 0;
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    color: $white-92;
+}
+.icon-cross {
+    color: $white-64;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+
+  .modal-body {
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.15px;
+    color: $white-88;
+    padding-top: 0;
+    padding-bottom: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  .dropdown-input{
+    display: block !important;
+  }
+  .dropdown-input-down-arrow{
+    margin-left: -20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+  .dropdown-input-menu{
+    width: 100%;
+    background-color: $black-24;
+  }
+  input[type="text"],
+.form-control, .mat-form-field {
+  background: transparent;
+  border: none;
+  // border-bottom: 1px solid $white-92;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+  color: $white-92;
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1rem;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  width: 100%;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: $white-92 !important;
+    caret-color: $white-92;
+}
+input[type="text"]:focus-visible{
+  outline: none;
+}
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex{
+  padding: 0 !important;
+  background-color: transparent;
+}
+::ng-deep .mat-form-field-wrapper{
+  margin-bottom: -1.25em;
+}
+.dropdown-toggle::after{
+  display: none;
+}
+/* Border */
+::ng-deep .mat-form-field-label{
+  color:$white-64;
+}
+::ng-deep .mat-form-field-appearance-fill.mat-form-field-disabled .mat-form-field-label {
+  color:$white-64;
+}
+// caret color
+::ng-deep .mat-input-element{
+  caret-color: $white-92;
+}
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label{
+
+  color:$white-64;
+}
+::ng-deep .mat-form-field-underline .mat-form-field-ripple{
+
+  background-color:$white-92;
+}
+::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple{
+
+  background-color:$white-92;
+}
+
+.add{
+  color: $white-92;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.container{
+  margin-top: 1rem;
+}
+.col-sm{
+  padding-top: 0.25em;
+}
+.column{
+  &-padding{
+    padding-top: 1.3rem;
+  }
+  &-button-padding{
+    padding-top: 1.1rem;
+    text-align: center;
+    padding-left: 1rem;
+  }
+}
+
+.row{
+  &-padding{
+    padding: 1rem 0;
+  }
+}
+
+.ip-field{
+  width :  100%;
+}

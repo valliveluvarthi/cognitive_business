@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminUserManagementComponent } from './admin-user-management/admin-user-management.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -10,22 +9,15 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-
-import { AdminUserManagementRoutingModule } from './admin-user-management-routing.module';
-import { DeactivateUserComponent } from './deactivate-user/deactivate-user.component';
-import { UpdateInfoComponent } from './update-info/update-info.component';
-import { InviteUserComponent } from './invite-user/invite-user.component';
-import { EditSitesComponent } from './edit-sites/edit-sites.component';
-
+import { AdminSitesComponent } from './admin-sites/admin-sites.component';
+import { AdminSitesRoutingModule } from './admin-sites-routing.module';
+import { EditUserInfoComponent } from './edit-user-info/edit-user-info.component';
 
 
 @NgModule({
   declarations: [
-    AdminUserManagementComponent,
-    DeactivateUserComponent,
-    UpdateInfoComponent,
-    InviteUserComponent,
-    EditSitesComponent
+    AdminSitesComponent,
+    EditUserInfoComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +31,7 @@ import { EditSitesComponent } from './edit-sites/edit-sites.component';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
-    AdminUserManagementRoutingModule
+    AdminSitesRoutingModule,
   ]
 })
-export class AdminUserManagementModule { }
+export class AdminSitesModule { }

@@ -1,0 +1,90 @@
+<div class="content-wrapper">
+    <form [formGroup]="form" #f="ngForm">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Current Access</h4>
+            <fa-icon (click)="activeModal.dismiss()" [icon]="faTimes" class="icon-circle icon-cross"></fa-icon>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <div class="row row-padding">
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                        Site
+                    </div>
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                        Role
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+
+                    </div>
+                </div>
+                <div class="row" *ngFor="let row of ELEMENT_DATA; let i = index;">
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 column-padding">
+                        <span>{{row.site}}</span>
+                    </div>
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                        <div ngbDropdown class="d-inline-block dd dropdown-input">
+                            <mat-form-field class="example-full-width ip-field" appearance="fill" ngbDropdownToggle>
+                                <input matInput formControlName="{{row.site}}" readonly />
+                                <fa-icon [icon]="faChevronDown"
+                                    class="icon-circle icon-cross dropdown-input-down-arrow"></fa-icon>
+                            </mat-form-field>
+                            <div ngbDropdownMenu class="dd-menu dropdown-input-menu">
+                                <ng-container *ngFor="let item of userRoles">
+                                    <button (click)="selectUserRole(item,i,row)" ngbDropdownItem>
+                                        {{ item }}
+                                    </button>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 column-button-padding">
+                        <span class="add" (click)="onDelete(i,row)">
+                            Delete
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                        <div ngbDropdown class="d-inline-block dd dropdown-input">
+                            <mat-form-field class="example-full-width" appearance="fill" ngbDropdownToggle>
+                                <input matInput formControlName="site" name="userSite" id="site-menu"
+                                    value="{{selectedUserSite}}" readonly />
+                                <fa-icon [icon]="faChevronDown"
+                                    class="icon-circle icon-cross dropdown-input-down-arrow"></fa-icon>
+                            </mat-form-field>
+                            <div ngbDropdownMenu class="dd-menu dropdown-input-menu">
+                                <ng-container *ngFor="let item of ELEMENT_DATA">
+                                    <button (click)="selectUserSite(item)" ngbDropdownItem>
+                                        {{ item.site }}
+                                    </button>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                        <div ngbDropdown class="d-inline-block dd dropdown-input">
+                            <mat-form-field class="example-full-width ip-field" appearance="fill" ngbDropdownToggle>
+                                <input matInput formControlName="role" id="role-menu" readonly />
+                                <fa-icon [icon]="faChevronDown"
+                                    class="icon-circle icon-cross dropdown-input-down-arrow"></fa-icon>
+                            </mat-form-field>
+                            <div ngbDropdownMenu class="dd-menu dropdown-input-menu">
+                                <ng-container *ngFor="let item of userRoles">
+                                    <button (click)="selectUserRole(item,'','')" ngbDropdownItem>
+                                        {{ item }}
+                                    </button>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 column-button-padding">
+                        <span class="add" (click)="addSiteToUser()">
+                            Add
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>

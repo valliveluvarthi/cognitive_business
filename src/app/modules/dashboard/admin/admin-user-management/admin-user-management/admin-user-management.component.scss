@@ -208,6 +208,14 @@ table {
     display: none;
   }
 }
+.mtable{
+  &__header{
+    text-align: center;
+  }
+  &__row{
+    text-align: center;
+  }
+}
 @media screen and (max-width: 1350px) {
   .wrapper-header {
     .align-right {
