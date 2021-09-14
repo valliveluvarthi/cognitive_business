@@ -49,7 +49,6 @@ export class EditSitesComponent implements OnInit {
     this.getUserSites();
     this.getUserRoles();
   }
-
   getUserSites() {
     let userId = this.item.id;
     this.adminService.getUserSitesList(userId).subscribe((data: Array<Object>) => {
@@ -76,15 +75,19 @@ export class EditSitesComponent implements OnInit {
       });
   }
   getUserRoles() {
-    // this.adminService.getSiteRoles().subscribe((data) => {
-    //   console.log(data)
-    // },
-    //   (err) => {
-    //     this.util.notification.error({
-    //       title: "Error",
-    //       msg: err
-    //     });
-    //   });
+    this.adminService.getSiteRoles().subscribe((data) => {
+      console.log(data)
+      this.userRoles = data;
+      if(this.userRoles.length > 0){
+        this.selectedUserRole = this.userRoles[0];
+      }
+    },
+      (err) => {
+        this.util.notification.error({
+          title: "Error",
+          msg: err
+        });
+      });
   }
   selectUserRole(selectedRole, i,row) {
     this.selectedUserRole = selectedRole;

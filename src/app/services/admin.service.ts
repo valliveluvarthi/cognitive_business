@@ -55,8 +55,8 @@ export class AdminService {
   getUserSitesList(userId){
     return this.http.get(ApiConstant.USER_SITES.replace("{{userId}}", userId));
   }
-  getSiteRoles(siteKey){
-    return this.http.get(ApiConstant.SITE_ROLES.replace('{{siteKey}}', siteKey));
+  getSiteRoles(){
+    return this.http.get(ApiConstant.USER_ROLES);
   }
   deleteSiteFromUser(userId,siteKey){
     return this.http.delete(ApiConstant.DELETE_SITE_FROM_USER.replace("{{userId}}", userId).replace('{{siteKey}}', siteKey));
@@ -70,10 +70,10 @@ export class AdminService {
   getSiteUsers(siteKey){
     return this.http.get(ApiConstant.SITE_USERS.replace('{{siteKey}}', siteKey));
   }
-  deleteUserFromSite(siteKey,userId){
+  deleteUserFromSite(userId,siteKey){
     return this.http.delete(ApiConstant.DELETE_USER_FROM_SITE.replace("{{userId}}", userId).replace('{{siteKey}}', siteKey));
   }
-  addUserToSite(siteKey,userId,data){
-    return this.http.post(ApiConstant.ADD_USER_TO_SITE.replace("{{userId}}", userId).replace('{{siteKey}}', siteKey),data);
+  addUserToSite(userId,siteKey,data){
+    return this.http.post(ApiConstant.ADD_USER_TO_SITE.replace('{{siteKey}}', siteKey).replace("{{userId}}", userId),data);
   }
 }

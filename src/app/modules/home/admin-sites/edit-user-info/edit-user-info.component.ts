@@ -11,6 +11,14 @@ export interface UserElement {
   siteRole: string;
 }
 
+export interface UserData {
+  id: number;
+  name: string;
+  role: string;
+  email: string;
+  status: string;
+}
+
 @Component({
   selector: 'cb-edit-user-info',
   templateUrl: './edit-user-info.component.html',
@@ -22,6 +30,7 @@ export class EditUserInfoComponent implements OnInit {
   faTimes = faTimes;
   faChevronDown = faChevronDown;
   ELEMENT_DATA: UserElement[] = [];
+  USER_DATA: UserData[] = [];
   selectedUserRole: string = "";
   selectedUser: string = "";
 
@@ -32,6 +41,7 @@ export class EditUserInfoComponent implements OnInit {
 
   @Output() onSuccess: EventEmitter<any> = new EventEmitter();
   siteKey: any;
+  userId: any;
 
   constructor(
     private fb: FormBuilder,
@@ -48,8 +58,35 @@ export class EditUserInfoComponent implements OnInit {
     });
     this.getSiteUsers();
     this.getUserRoles();
+    this.getAdminUsers();
   }
-
+  getAdminUsers() {
+    this.adminService.getAdminUsers().subscribe((data: Array<Object>) => {
+      console.log("admin data",data);
+      this.USER_DATA = [];
+      data.forEach(element => {
+        let user: UserData = {
+          id: element['id'],
+          name: element['firstname'] + " " + element['lastname'],
+          role: element['role'],
+          email: element['email'],
+          status: element['status']
+        }
+        this.USER_DATA.push(user);
+      });
+      if(this.USER_DATA.length > 0){
+        this.userId = this.USER_DATA[0].id;
+        this.selectedUser = this.USER_DATA[0].email;
+        this.form.controls['user'].setValue(this.selectedUser);
+      }
+    },
+      (err) => {
+        this.util.notification.error({
+          title: "Error",
+          msg: err
+        });
+      });
+  }
   getSiteUsers() {
     this.adminService.getSiteUsers(this.siteKey).subscribe((data: Array<Object>) => {
       console.log(data);
@@ -61,12 +98,9 @@ export class EditUserInfoComponent implements OnInit {
       //     siteRole: element['siteRole']
       //   }
       //   this.ELEMENT_DATA.push(user);
+      //dont forget to make the form dynamic
       //   this.form.addControl(user.site, this.fb.control(this.item.role));
       // });
-      // if(this.ELEMENT_DATA.length > 0){
-      //   this.selectedUser = this.ELEMENT_DATA[0].site;
-      //   this.form.controls['site'].setValue(this.selectedUser);
-      // }
     },
       (err) => {
         this.util.notification.error({
@@ -76,11 +110,12 @@ export class EditUserInfoComponent implements OnInit {
       });
   }
   getUserRoles() {
-    this.adminService.getSiteRoles(this.siteKey).subscribe((data) => {
+    this.adminService.getSiteRoles().subscribe((data) => {
       console.log(data)
       this.userRoles = data;
       if(this.userRoles.length > 0){
         this.selectedUserRole = this.userRoles[0];
+        this.form.controls['role'].setValue(this.selectedUserRole);
       }
     },
       (err) => {
@@ -100,14 +135,15 @@ export class EditUserInfoComponent implements OnInit {
       this.form.controls[row.site].setErrors(null);
     }
   }
-  selectUserSite(selectedSite) {
-    this.selectedUser = selectedSite.site;
-    this.form.controls['site'].setValue(selectedSite.site);
-    this.form.controls['site'].setErrors(null);
+  selectSiteUser(selectedUser) {
+    this.userId = selectedUser.id;
+    this.selectedUser = selectedUser.email;
+    this.form.controls['user'].setValue(selectedUser.email);
+    this.form.controls['user'].setErrors(null);
   }
   onDelete(i, row) {
-    let userId = this.item.id;
-    let siteKey = row.site;
+    let userId = row.id;
+    let siteKey = this.item.key;;
     this.ELEMENT_DATA.splice(i, 1);
     this.adminService.deleteUserFromSite(userId, siteKey).subscribe((data: Array<Object>) => {
       this.util.notification.success({
@@ -122,15 +158,13 @@ export class EditUserInfoComponent implements OnInit {
         });
       });
   }
-  addSiteToUser() {
-    let userId = 3;
+  addUserToSite() {
     let sitekey = this.item.key;
     let data = {
-      role : "Admin",
+      role : this.form.controls['role'].value,
     }
 
-    // this.adminService.addUserToSite(userId,this.form.controls['site'].value,data).subscribe((data: Array<Object>) => {
-    this.adminService.deleteUserFromSite(userId,sitekey).subscribe((data: Array<Object>) => {
+    this.adminService.addUserToSite(this.userId,sitekey,data).subscribe((data: Array<Object>) => {
       this.util.notification.success({
         title: 'Success',
         msg: "User add to site successfully."
