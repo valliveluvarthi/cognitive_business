@@ -10,6 +10,9 @@ export interface UserElement {
   name: string;
   siteRole: string;
 }
+export interface SiteData {
+  site : string;
+}
 
 @Component({
   selector: 'cb-edit-sites',
@@ -24,6 +27,7 @@ export class EditSitesComponent implements OnInit {
   faTimes = faTimes;
   faChevronDown = faChevronDown;
   ELEMENT_DATA: UserElement[] = [];
+  SITE_DATA: SiteData[] = [];
   selectedUserRole: string = "";
   selectedUserSite: string = "";
 
@@ -48,6 +52,28 @@ export class EditSitesComponent implements OnInit {
     });
     this.getUserSites();
     this.getUserRoles();
+    this.allSites();
+  }
+  allSites(){
+    this.adminService.getAllSites().subscribe((data: Array<Object>) => {
+      this.SITE_DATA = [];
+      data.forEach((element, index) => {
+        let site: SiteData = {
+          site: element['key']
+        }
+        this.SITE_DATA.push(site);
+      });
+      if(this.SITE_DATA.length > 0){
+        this.selectedUserSite = this.SITE_DATA[0].site;
+        this.form.controls['site'].setValue(this.selectedUserSite);
+      }
+    },
+      (err) => {
+        this.util.notification.error({
+          title: "Error",
+          msg: err
+        });
+      });
   }
   getUserSites() {
     let userId = this.item.id;
@@ -62,10 +88,6 @@ export class EditSitesComponent implements OnInit {
         this.ELEMENT_DATA.push(user);
         this.form.addControl(user.site, this.fb.control(this.item.role));
       });
-      if(this.ELEMENT_DATA.length > 0){
-        this.selectedUserSite = this.ELEMENT_DATA[0].site;
-        this.form.controls['site'].setValue(this.selectedUserSite);
-      }
     },
       (err) => {
         this.util.notification.error({
@@ -76,7 +98,6 @@ export class EditSitesComponent implements OnInit {
   }
   getUserRoles() {
     this.adminService.getSiteRoles().subscribe((data) => {
-      console.log(data)
       this.userRoles = data;
       if(this.userRoles.length > 0){
         this.selectedUserRole = this.userRoles[0];

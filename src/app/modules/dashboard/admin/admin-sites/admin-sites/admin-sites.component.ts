@@ -34,7 +34,6 @@ export class AdminSitesComponent implements OnInit {
   }
   getSitesList() {
     this.adminService.getSitesList().subscribe((data: Array<Object>) => {
-      console.log(data);
       this.ELEMENT_DATA = [];
       data.forEach(element => {
         let user: UserElement = {

@@ -52,6 +52,9 @@ export class AdminService {
     return false;
   }
 
+  getAllSites(){
+    return this.http.get(ApiConstant.SITES);
+  }
   getUserSitesList(userId){
     return this.http.get(ApiConstant.USER_SITES.replace("{{userId}}", userId));
   }

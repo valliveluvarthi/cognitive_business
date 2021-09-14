@@ -62,7 +62,6 @@ export class EditUserInfoComponent implements OnInit {
   }
   getAdminUsers() {
     this.adminService.getAdminUsers().subscribe((data: Array<Object>) => {
-      console.log("admin data",data);
       this.USER_DATA = [];
       data.forEach(element => {
         let user: UserData = {
@@ -89,18 +88,7 @@ export class EditUserInfoComponent implements OnInit {
   }
   getSiteUsers() {
     this.adminService.getSiteUsers(this.siteKey).subscribe((data: Array<Object>) => {
-      console.log(data);
-      // this.ELEMENT_DATA = [];
-      // data.forEach((element, index) => {
-      //   let user: UserElement = {
-      //     site: element['key'],
-      //     name: element['name'],
-      //     siteRole: element['siteRole']
-      //   }
-      //   this.ELEMENT_DATA.push(user);
-      //dont forget to make the form dynamic
-      //   this.form.addControl(user.site, this.fb.control(this.item.role));
-      // });
+      //code will be added on getting the site users list
     },
       (err) => {
         this.util.notification.error({
@@ -111,7 +99,6 @@ export class EditUserInfoComponent implements OnInit {
   }
   getUserRoles() {
     this.adminService.getSiteRoles().subscribe((data) => {
-      console.log(data)
       this.userRoles = data;
       if(this.userRoles.length > 0){
         this.selectedUserRole = this.userRoles[0];
