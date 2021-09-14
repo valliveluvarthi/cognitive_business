@@ -1,12 +1,18 @@
-div {
+.header__cnt {
   padding: 12px 24px;
   background-color: black;
   color: white;
+  height: 100%;
+  display: flex;
   fa-icon {
     cursor: pointer;
   }
   span {
     font-weight: 500;
     font-size: 14px;
+  }
+  .site__selection{
+    margin-top: -8px;
+    margin-left: auto;
   }
 }

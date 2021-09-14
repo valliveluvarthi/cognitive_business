@@ -1,0 +1,9 @@
+<header>
+    <cb-header (siteOnChange)="siteOnChange($event)" (toggleNavBar)="toggleNavBar($event)" [sites]="sites" [selectedSite]="selectedSite" (onLogoClicked)="navigateToHome()"></cb-header>
+</header>
+<div class="content">
+    <cb-nav [isOpen]="showNav" (toggleNavBar)="toggleNavBar($event)" [navItems]="navItems" [selectedNavIndex]="selectedNavIndex" (closeSideNav)="closeSideNav();" ></cb-nav>
+    <section>
+        <router-outlet></router-outlet>
+    </section>
+</div>

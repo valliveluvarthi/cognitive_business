@@ -1,0 +1,420 @@
+<div class="wrapper" #$element>
+  <div class="loading" *ngIf="loading || loadingTurbineData">
+    <div class="spinner-border text-custom" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  <header *ngIf="!loading">
+    <span class="title">Weekly Dashboard</span>
+    <div class="left">
+      <span class="switch">
+        <span
+          [class.active]="activeTab == 'charts'"
+          (click)="changeTab('charts')"
+          >Charts</span
+        >
+        <span [class.active]="activeTab == 'map'" (click)="changeTab('map')"
+          >Map</span
+        >
+      </span>
+      <!-- <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab == 'map'">
+        <button ngbDropdownToggle>
+          {{ selectedSite.key }}
+          <fa-icon [icon]="faChevronDown"></fa-icon>
+        </button>
+        <div ngbDropdownMenu class="dd-menu">
+          <ng-container *ngFor="let item of sites">
+            <button
+              (click)="changeSite(item)"
+              ngbDropdownItem
+              [class.selected]="item == selectedSite"
+            >
+              {{ item.key }}
+            </button>
+          </ng-container>
+        </div>
+      </div> -->
+      <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab != 'map'">
+        <button
+          ngbDropdownToggle
+          *ngIf="selectedTurbine && selectedTurbine.key"
+        >
+          {{ selectedTurbine.key }}
+          <fa-icon [icon]="faChevronDown"></fa-icon>
+        </button>
+        <div ngbDropdownMenu class="dd-menu">
+          <ng-container *ngFor="let item of turbines">
+            <button
+              (click)="changeTurbine(item)"
+              ngbDropdownItem
+              [class.selected]="item == selectedTurbine"
+            >
+              {{ item.key }}
+            </button>
+          </ng-container>
+        </div>
+      </div>
+      <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab != 'map'">
+        <button ngbDropdownToggle>
+          {{ selectedPeriod.value }}
+          <fa-icon [icon]="faChevronDown"></fa-icon>
+        </button>
+        <div ngbDropdownMenu class="dd-menu">
+          <ng-container *ngFor="let item of period">
+            <button
+              (click)="changePeriod(item)"
+              ngbDropdownItem
+              [class.selected]="item == selectedPeriod"
+            >
+              {{ item.value }}
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </header>
+  <section *ngIf="!loading && !loadingTurbineData">
+    <div class="fixed_table" id="fixed_table" *ngIf="activeTab == 'charts'">
+      <div class="fixed_table_header flex" *ngIf="header">
+        <div class="fixed-column flex flex_none date">
+          {{ header }}
+        </div>
+        <div
+          id="table_header_scroller"
+          class="fixed_scroll_wrapper overflow_hidden flex"
+        >
+          <div
+            *ngFor="let column of columns"
+            class="card-custom flex_none"
+            [style.width]="
+              'max(324px, (100vw - 192px) / ' + columns.length + ')'
+            "
+          >
+            {{ column }}
+          </div>
+          <div class="spacer flex_none"></div>
+        </div>
+      </div>
+      <div class="fixed_table_content flex">
+        <div
+          id="table_body_header_scroller"
+          class="fixed-column flex flex_none flex_column overflow_hidden"
+        >
+          <div class="flex flex_column">
+            <div class="flex" *ngFor="let row of rows">
+              <div
+                class="card-custom flex_none {{ row.type }}"
+                [ngClass]="{ 'has-unit': row.unit }"
+              >
+              <span class="row-title">{{ row.title }}</span
+                ><span *ngIf="row.units" class="unit">{{ row.units }}</span>
+                <div class="wave-discription-wrapper">
+                  <ng-container *ngFor="let item of row.signals">
+                    <div
+                      class="wave-discription"
+                      *ngIf="item.name"
+                      [ngClass]="{ live: item.is_live }"
+                    >
+                      <div>
+                        <hr [style.borderColor]="item.series.color" />
+                        {{ item.name }}
+                      </div>
+                      <div class="live-tag">
+                        <div class="circle"></div>
+                        LIVE
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+                <fa-icon
+                  (click)="toggleGraph(row)"
+                  [icon]="faExternalLink"
+                  [classes]="['open-chart']"
+                >
+                </fa-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          id="table_body_content_scroller"
+          class="fixed_scroll_wrapper overflow_auto"
+          (scroll)="onScroll($event)"
+        >
+          <div class="scroll-content">
+            <div class="flex" *ngFor="let row of rows">
+                <ng-container *ngFor="let item of row.data; let i = index">
+                    <div
+                      class="card-custom {{ row.type }}"
+                      *ngIf="row.type != 'direction'"
+                      [style.width]="
+                        'max(324px, (100vw - 192px) / ' + columns.length + ')'
+                      "
+                      [style.height]="row.height + 'px'"
+                    >
+                  <ng-container *ngIf="row.type == 'icon'">
+                    <fa-icon
+                      *ngIf="item == 'go'"
+                      [icon]="faCheckCircle"
+                      [classes]="['tick']"
+                    >
+                    </fa-icon>
+                    <fa-icon
+                      *ngIf="item == 'no-go'"
+                      [icon]="faExclamation"
+                      [classes]="['excalamation']"
+                    ></fa-icon>
+                    <!-- <fa-icon [icon]="faExclamationTriangle" [classes]="['excalamation-tirangle']"></fa-icon> -->
+                  </ng-container>
+                </div>
+                <div
+                  *ngIf="row.type == 'direction'"
+                  class="card-custom {{ row.type }}"
+                  [style.width]="
+                    'max(324px / ('+row.data.length+'/'+columns.length+'), (100vw - 192px) / ' + row.data.length + ')'
+                  "
+                >
+                  <div class="direction">
+                    <fa-icon
+                      [icon]="faArrowDown"
+                      style="transform: rotate({{ item }}deg)"
+                    ></fa-icon>
+                    <span>{{ item }}</span>
+                  </div>
+                </div>
+                <div
+                  class="chart-wrapper"
+                  *ngIf="row.type == 'chart' && i == 0"
+                  [style.height]="row.height + 'px'"
+                >
+                  <canvas
+                    height="{{row.height || 192}}"
+                    baseChart
+                    [datasets]="row.config.data"
+                    [labels]="row.config.labels"
+                    [options]="row.config.options"
+                    [legend]="false"
+                    [type]="row.config.type"
+                    [style.width]="
+                      'calc((max(324px, (100vw - 192px) / ' +
+                      columns.length +
+                      ') * ' +
+                      columns.length +
+                      ') - 24px)'
+                    "
+                  >
+                  </canvas>
+                </div>
+              </ng-container>
+              <div class="spacer flex_none"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="activeTab == 'map'" class="map-container">
+      <div class="map-top-container">
+        <div id="map"></div>
+        <div class="layers">
+          <p class="title">{{ selectedTurbineSignal.description }}</p>
+          <p
+            *ngIf="
+              turbineSignalData.type != 'degrees' &&
+              turbineSignalData.type != 'boolean'
+            "
+          >
+            {{ turbineSignalData.val }}
+          </p>
+          <fa-icon
+            [icon]="faArrowDown"
+            style="transform: rotate({{ turbineSignalData.val }}deg)"
+            *ngIf="turbineSignalData.type == 'degrees'"
+          >
+          </fa-icon>
+          <div *ngIf="turbineSignalData.type == 'boolean'">
+            <fa-icon
+              *ngIf="turbineSignalData.val"
+              [icon]="faCheckCircle"
+              [classes]="['tick']"
+            >
+            </fa-icon>
+            <fa-icon
+              *ngIf="!turbineSignalData.val"
+              [icon]="faExclamation"
+              [classes]="['excalamation']"
+            >
+            </fa-icon>
+          </div>
+          <!-- <div>
+                        <div class="radio" *ngFor="let layer of layers;let i = index;">
+                            <input type="radio" id="toggle{{i}}" [checked]="selectedLayer == layer"
+                                (change)="onLayerChange(layer)">
+                            <label for="toggle{{i}}">
+                                <span class="checkmark"></span>{{layer.text}}
+                            </label>
+                        </div>
+                    </div> -->
+        </div>
+      </div>
+      <div class="map-bottom-container">
+        <div class="dd-container">
+          <div ngbDropdown class="d-inline-block dd">
+            <button ngbDropdownToggle>
+              {{ selectedTurbine.key }}
+              <fa-icon [icon]="faChevronDown"></fa-icon>
+            </button>
+            <div ngbDropdownMenu class="dd-menu">
+              <ng-container *ngFor="let item of turbines">
+                <button
+                  (click)="changeTurbine(item, true)"
+                  ngbDropdownItem
+                  [class.selected]="item == selectedTurbine"
+                >
+                  {{ item.key }}
+                </button>
+              </ng-container>
+            </div>
+          </div>
+          <div ngbDropdown class="d-inline-block dd">
+            <button ngbDropdownToggle>
+              {{ selectedTurbineSignal.description }}
+              <fa-icon [icon]="faChevronDown"></fa-icon>
+            </button>
+            <div ngbDropdownMenu class="dd-menu">
+              <ng-container *ngFor="let item of turbineSignals">
+                <button
+                  (click)="changeTurbineSignal(item)"
+                  ngbDropdownItem
+                  [class.selected]="item == selectedTurbineSignal"
+                >
+                  {{ item.description }}
+                </button>
+              </ng-container>
+            </div>
+          </div>
+          <div ngbDropdown class="d-inline-block dd">
+            <button ngbDropdownToggle>
+              {{ selectedPeriod.value }}
+              <fa-icon [icon]="faChevronDown"></fa-icon>
+            </button>
+            <div ngbDropdownMenu class="dd-menu">
+              <ng-container *ngFor="let item of period">
+                <button
+                  (click)="changePeriod(item, true)"
+                  ngbDropdownItem
+                  [class.selected]="item == selectedPeriod"
+                >
+                  {{ item.value }}
+                </button>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="slider-coontainer">
+          <fa-icon
+            *ngIf="!playing"
+            [icon]="faPlayCircle"
+            (click)="toggleSlider()"
+          ></fa-icon>
+          <fa-icon
+            *ngIf="playing"
+            [icon]="faPauseCircle"
+            (click)="toggleSlider()"
+          ></fa-icon>
+          <div>
+            <div class="slider-wrapper">
+              <mat-slider
+                [max]="maxSlider"
+                [min]="0"
+                [step]="1"
+                [(ngModel)]="slider"
+                (ngModelChange)="onSliderChange($event)"
+              >
+              </mat-slider>
+            </div>
+            <div class="canvas-wrapper">
+              <canvas
+                baseChart
+                *ngIf="showMapChart"
+                [labels]="mapChart.labels"
+                [datasets]="mapChart.data"
+                [options]="mapChart.options"
+                [legend]="false"
+                [type]="'bar'"
+              >
+              </canvas>
+            </div>
+          </div>
+        </div>
+        <div class="time-contianer">
+          <div>{{ header }}</div>
+          <ng-container *ngFor="let column of columns">
+            <div>{{ column }}</div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section *ngIf="popup.show" class="popup">
+    <header>
+      <span class="title">Wave Spectral Moments</span>
+      <div class="left">
+        <span class="switch">
+          <span [class.active]="selectedPopupPeriod === '24h'" (click)="changePopupPeriod('24h')">24h Forecast</span>
+          <span [class.active]="selectedPopupPeriod === 'p30d'" (click)="changePopupPeriod('p30d')">Past 30d</span>
+          <span [class.active]="selectedPopupPeriod === 'p90d'" (click)="changePopupPeriod('p90d')">Past 90d</span>
+          <span [class.active]="selectedPopupPeriod === 'p360d'" (click)="changePopupPeriod('p360d')">Past 360d</span>
+          <span [class.active]="selectedPopupPeriod === 'custom'" (click)="changePopupPeriod('custom')">Date Range</span>
+        </span>
+        <div class="date-picker">
+          <input placeholder="Start Date" name="startDate" ngbDatepicker #sd="ngbDatepicker" [(ngModel)]="popupFrom" >
+          <fa-icon [icon]="faCalender" (click)="sd.toggle()"></fa-icon>
+        </div>
+        <div class="date-picker">
+          <input placeholder="End Date" name="endDate" ngbDatepicker #ed="ngbDatepicker" [(ngModel)]="popupTo" [minDate]="from">
+          <fa-icon [icon]="faCalender" (click)="ed.toggle()"></fa-icon>
+        </div>
+      </div>
+      <div class="right">
+        <fa-icon
+          [icon]="faTimes"
+          [classes]="['close']"
+          (click)="toggleGraph()"
+        ></fa-icon>
+      </div>
+    </header>
+    <div class="graph-wrapper">
+      <div class="details">
+        <span class="row-title">{{ popup.data.title }}</span
+        ><span *ngIf="popup.data.units" class="unit">{{ popup.data.units }}</span>
+        <div class="wave-discription-wrapper">
+          <div
+            class="wave-discription"
+            [ngClass]="{ live: item.live }"
+            *ngFor="let item of popup.data.signals"
+          >
+            <div>
+              <hr [style.borderColor]="item.series.color" />
+              {{ item.name }}
+            </div>
+            <div class="live-tag">
+              <div class="circle"></div>
+              LIVE
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chart">
+        <canvas
+          baseChart
+          [datasets]="popup.data.config.data"
+          [labels]="popup.data.config.labels"
+          [options]="popup.data.config.options"
+          [legend]="false"
+          [type]="popup.data.config.type"
+        >
+        </canvas>
+      </div>
+    </div>
+  </section>
+</div>

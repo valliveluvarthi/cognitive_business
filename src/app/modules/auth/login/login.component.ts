@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   formSubmitted: boolean = false;
   title: string = "User Login";
+  selectedSite = null;
 
   constructor(
     private fb: FormBuilder,
@@ -38,6 +39,16 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  retrieveAndSetSites() {
+    this.util.retrieveSitesList().subscribe( (response:any) => {
+      if(response.length > 0){
+        this.util.setSites(response);
+        this.selectedSite = response[0];
+        this.util.setSelectedSite(response[0]);
+      }
+    });
+  }
+
   onSubmit() {
     this.formSubmitted = true;
 
@@ -47,6 +58,7 @@ export class LoginComponent implements OnInit {
 
       this.userService.login({ email: username, password }).subscribe((data) => {
         this.formSubmitted = false;
+        this.retrieveAndSetSites();
         this.getAdminUsers(username);
       },
       (err) => {
@@ -68,10 +80,10 @@ export class LoginComponent implements OnInit {
     if (returnUrl) {
       queryParams = this.urlService.getQueryParams(returnUrl);
       returnUrl = this.urlService.shortenUrlIfNecessary(returnUrl);
-    } else {
-      returnUrl = `/${PATHS.HOME}`;
+    } else {       
+      returnUrl = this.selectedSite.key ? `/${PATHS.SITES}`.replace(':site', this.selectedSite.key) : "";
     }
-
+    
     this.router.navigate([returnUrl], queryParams);
   }
 

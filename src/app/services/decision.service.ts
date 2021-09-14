@@ -6,6 +6,7 @@ import * as moment from 'moment-timezone';
 
 import { ApiConstant, API_URL } from '../enums';
 import { map } from 'rxjs/operators';
+import { CommonUtilService } from './common-util.service';
 
 @Injectable({
   providedIn: 'root',
@@ -50,7 +51,7 @@ export class DecisionService {
     },
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private util: CommonUtilService) {}
 
   getSites() {
     return this.http.get(ApiConstant.SITES);
@@ -132,7 +133,13 @@ export class DecisionService {
   }
 
   changeSignalLimits(data, siteKey, limitTemplate) {
-    return this.http.post(ApiConstant.CHANGE_SIGNAL_LIMITS.replace('{{siteKey}}', siteKey).replace('{{limitTemplate}}', limitTemplate), data);
+    return this.http.post(
+      ApiConstant.CHANGE_SIGNAL_LIMITS.replace('{{siteKey}}', siteKey).replace(
+        '{{limitTemplate}}',
+        limitTemplate
+      ),
+      data
+    );
   }
 
   getForcastBySignalKeyWithoutTurbines(site, range, signalKey) {
@@ -168,27 +175,26 @@ export class DecisionService {
   }
 
   getTurbineData(site, turbine, type) {
+    const range = this.getRangeByType(type); 
     const params: HttpParams = new HttpParams({
       fromObject: {
         dataType: 'all',
-        ...this.getRangeByType(type),
+        ...range,
       },
     });
     return forkJoin({
       forecastSignals: this.getTurbineForecastSignals(params, site, turbine),
       forecast: this.getTurbineForecastData(params, site, turbine),
       live: this.getTurbineLiveData(params, site, turbine),
-      lightning: this.getTurbineDataBySignal(
-        params,
+      lightning: this.getForcastBySignalKeyWithoutTurbines(
         site,
-        turbine,
-        'lightning'
+        range,
+        'thunderstorm'
       ),
-      windspeed: this.getTurbineDataBySignal(
-        params,
+      windspeed: this.getForcastBySignalKeyWithoutTurbines(
         site,
-        turbine,
-        'windspeed'
+        range,
+        'windspeed_ms'
       ),
     });
   }
@@ -269,8 +275,8 @@ export class DecisionService {
         '{{turbineKey}}',
         turbine
       ) +
-      '/' +
-      signal,
+        '/' +
+        signal,
       { params }
     );
   }
@@ -349,17 +355,12 @@ export class DecisionService {
     const riskData = [];
     const lightning = data.lightning || [];
     const limits = data.siteData.limits;
+    
     for (let i = 0; i < lightning.length; i++) {
-      if (lightning[i] > limits.lightning) {
-        riskData.push({
-          data: (lightning[i] * 100).toFixed(0) + '%',
-          class: 'danger',
-        });
+      if (lightning[i] == 0) {
+        riskData.push('go');
       } else {
-        riskData.push({
-          data: (lightning[i] * 100).toFixed(0) + '%',
-          class: '',
-        });
+        riskData.push('no-go');
       }
     }
     return riskData;
@@ -369,6 +370,7 @@ export class DecisionService {
     const riskData = [];
     const windspeed = data.windspeed || [];
     const limits = data.siteData.limits;
+    
     for (let i = 0; i < windspeed.length; i++) {
       if (windspeed[i] > limits.windspeed) {
         riskData.push({
@@ -422,7 +424,7 @@ export class DecisionService {
     });
     rows.push({
       title: 'Storm Risk',
-      type: 'percentage',
+      type: 'icon',
       units: '',
       nowIndex,
       data: [...this.getStormRisk(data)],
@@ -844,4 +846,82 @@ export class DecisionService {
       chartData: this.getChartRows(site, type),
     });
   }
+
+  /* STEP: fun => getPopupChartData 
+      definition : Retrieve char signal data
+    */
+  getPopupChartData(signals, range, site, turbine) {
+    const routes: any = {};
+    const params: HttpParams = new HttpParams({
+      fromObject: {
+        ...range,
+      },
+    });
+
+    if (signals.length > 0) {
+      signals.forEach((signal) => {
+        if (signal.key && signal.route) {
+          routes[signal.key] = this.http.get(
+            `${API_URL}${signal.route}`
+              .replace('{siteKey}', site)
+              .replace('{turbineKey}', turbine),
+            { params }
+          );
+        }
+      });
+    }
+    
+    return forkJoin(routes).pipe(
+      map((response: any) => {
+        let chartData = [];
+        signals.forEach((signal) => {
+          if (response[signal.key]) {
+            let chartInfo: any = {
+              data: response[signal.key].map((item, index) => item[1]),
+              label: signal.name,
+              type: signal.series.type,
+              borderColor: signal.series.color,
+              backgroundColor: signal.series.color,
+              borderWidth: 2,
+            };
+            if (signal.series.style) {
+              chartInfo.borderDash = [5, 10];
+            }
+            chartData.push(chartInfo);
+          }
+        });
+        return chartData;
+      })
+    );
+  }
+
+  getStartAndEndDate(period, from, to) {
+    const obj = {
+      from: '',
+      to: ''
+    };
+    switch (period) {
+      case '24h':
+        obj.from = moment().subtract(3, 'h').toISOString();
+        obj.to = moment().add(20,'h').toISOString();
+        break;
+      case 'p30d':
+        obj.from = moment().subtract(30, 'd').toISOString();
+        obj.to = moment().toISOString();
+        break;
+      case 'p90d':
+        obj.from = moment().subtract(90, 'd').toISOString();
+        obj.to = moment().toISOString();
+        break;
+      case 'p360d':
+        obj.from = moment().subtract(360, 'd').toISOString();
+        obj.from = moment().toISOString();
+        break;
+      case 'custom':
+        obj.from = moment(this.util.getDateString(from), 'D-M-YYYY').toISOString();
+        obj.to = moment(this.util.getDateString(to), 'D-M-YYYY').toISOString();
+    }
+    return obj;
+  }
+  
 }

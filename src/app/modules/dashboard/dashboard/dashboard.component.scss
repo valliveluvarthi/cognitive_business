@@ -1,0 +1,29 @@
+:host {
+    display: block;
+    height: 100%;
+  }
+  header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 11;
+    height: 48px;
+  }
+  .content {
+    border-top: 48px solid transparent;
+    height: 100%;
+    overflow: hidden;
+    aside {
+      overflow: auto;
+      float: left;
+      height: 100%;
+      position: relative;
+      border-right: 1px solid #ccc;
+    }
+    section {
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: 100%;
+    }
+  }
+  

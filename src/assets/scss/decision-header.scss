@@ -3,14 +3,14 @@ header {
   top: 0;
   width: 100%;
   z-index: 10;
-  padding: 0 24px 18px 24px;
+  padding: 0 24px 9px 24px;
+  height: 56px;
   display: flex;
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
   background-color: $black-24;
   > div {
-    padding: 18px 0 0;
     min-height: 58px;
     display: flex;
     align-items: center;
@@ -21,7 +21,6 @@ header {
     font-size: 24px;
     margin-right: 24px;
     color: $white-92;
-    padding: 18px 0 0;
   }
   .left {
     flex-grow: 1;

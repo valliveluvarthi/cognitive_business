@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'cb-header',
@@ -10,10 +10,17 @@ export class HeaderComponent implements OnInit {
 
   faBars = faBars;
 
-  @Output() toggleNavBar = new EventEmitter();
+  @Input() sites = [];
+  @Input() selectedSite = null;
 
-  logoCntStyle = {'display': 'inline-block', 'width': '26px', 'height': '26px', 'margin-left': '16px', 'margin-bottom': '0 !important'}
+  @Output() toggleNavBar = new EventEmitter();
+  @Output() siteOnChange = new EventEmitter();
+  @Output() onLogoClicked = new EventEmitter();
+
+  logoCntStyle = {'display': 'inline-block', 'width': '26px', 'height': '26px', 'margin-left': '16px', 'margin-bottom': '0 !important', 'cursor': 'pointer' }
   logoStyle={'width': '100%'};
+
+  faChevronDown = faChevronDown;
 
   constructor() { }
 
@@ -22,6 +29,14 @@ export class HeaderComponent implements OnInit {
 
   toggleNav() {
     this.toggleNavBar.emit('');
+  }
+
+  siteOnClickHnd(item) {
+    this.siteOnChange.emit(item);
+  }
+
+  logoOnClickHnd() {
+    this.onLogoClicked.emit();
   }
 
 }

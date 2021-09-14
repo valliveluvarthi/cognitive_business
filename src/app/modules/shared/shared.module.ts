@@ -8,13 +8,15 @@ import { NavComponent } from './nav/nav.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { LogoComponent } from './logo/logo.component';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [PageNotFoundComponent, NavComponent, HeaderComponent, FooterComponent, LogoComponent],
   imports: [
     CommonModule,
     RouterModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgbDropdownModule
   ],
   exports: [
     PageNotFoundComponent,

@@ -1,4 +1,15 @@
-<div>
+<div class="header__cnt">
     <fa-icon [icon]="faBars" (click)="toggleNav()"></fa-icon>
-    <cb-logo [logoCntStyle]="logoCntStyle" [logoStyle]="logoStyle" ></cb-logo>
+    <cb-logo [logoCntStyle]="logoCntStyle" [logoStyle]="logoStyle" (click)="logoOnClickHnd()"></cb-logo>
+    <div ngbDropdown class="d-inline-block dd site__selection">
+        <button ngbDropdownToggle>{{selectedSite?.key}}
+            <fa-icon [icon]="faChevronDown"></fa-icon>
+        </button>
+        <div ngbDropdownMenu class="dd-menu">
+            <ng-container *ngFor="let item of sites">
+                <button (click)="siteOnClickHnd(item)" ngbDropdownItem
+                    [class.selected]="item == selectedSite">{{item.key}}</button>
+            </ng-container>
+        </div>
+    </div>
 </div>

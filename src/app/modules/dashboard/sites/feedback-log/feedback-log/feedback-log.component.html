@@ -1,0 +1,212 @@
+<div class="wrapper" #$element>
+    <div class="loading" *ngIf="loading || loadingFeedbackData">
+        <div class="spinner-border text-custom">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <header *ngIf="!loading">
+        <span class="title">Accessibility Log</span>
+        <div class="left">
+            <!-- <div ngbDropdown class="d-inline-block dd">
+                <button ngbDropdownToggle *ngIf="selectedSite">{{selectedSite.name}}
+                    <fa-icon [icon]="faChevronDown"></fa-icon>
+                </button>
+                <div ngbDropdownMenu class="dd-menu">
+                    <ng-container *ngFor="let item of sites">
+                        <button (click)="changeSite(item)" ngbDropdownItem
+                            [class.selected]="item == selectedSite">{{item.name}}</button>
+                    </ng-container>
+                </div>
+            </div> -->
+            <div class="date-picker">
+                <input placeholder="Date" [(ngModel)]="selectedDate" (ngModelChange)="dateChanged($event)" name="date"
+                    ngbDatepicker #sd="ngbDatepicker" (click)="sd.toggle()">
+                <fa-icon [icon]="faCalender" (click)="sd.toggle()"></fa-icon>
+            </div>
+            <span class="switch">
+                <span (click)="moveDate('getPrev', 7)" title="-7 days">
+                    <fa-icon [icon]="faChevronLeft"></fa-icon>
+                    <fa-icon [icon]="faChevronLeft"></fa-icon>
+                </span>
+                <span (click)="moveDate('getPrev', 1)" title="-1 day">
+                    <fa-icon [icon]="faChevronLeft"></fa-icon>
+                </span>
+                <span (click)="moveDate('getPrev', 'today')" title="Today">
+                    <fa-icon [icon]="faToday"></fa-icon>
+                </span>
+                <span (click)="moveDate('getNext', 1)" title="+1 day">
+                    <fa-icon [icon]="faChevronRight"></fa-icon>
+                </span>
+                <span (click)="moveDate('getNext', 7)" title="+7 days">
+                    <fa-icon [icon]="faChevronRight"></fa-icon>
+                    <fa-icon [icon]="faChevronRight"></fa-icon>
+                </span>
+            </span>
+        </div>
+        <div class="right">
+            <span class="switch">
+                <span (click)="togglePopup()">Transfer Overview</span>
+            </span>
+        </div>
+    </header>
+    <section class="content" *ngIf="!loading && !loadingFeedbackData">
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <div></div>
+                        </th>
+                        <ng-container *ngFor="let column of columns;">
+                            <th>
+                                <div *ngIf="column.today" [class.today]="column.today">
+                                    <span>Today</span>
+                                </div>
+                                <div *ngIf="!column.today">
+                                    <span class="month">{{column.month}}</span>
+                                    <span>{{column.dayOfWeek + ' ' + column.date}}</span>
+                                </div>
+                            </th>
+                        </ng-container>
+                    </tr>
+                </thead>
+            </table>
+            <table>
+                <tbody>
+                    <tr *ngFor="let row of rows;">
+                        <td>
+                            <div class="time">{{row.name}}</div>
+                        </td>
+                        <ng-container *ngFor="let item of row.items;let i = index;">
+                            <td>
+                                <div *ngIf="item.hasValue" class="hasValue" [class.today]="item.today">
+                                    <div>
+                                        <span class="icon-wrapper success" *ngIf="item.success"
+                                            (click)="toggleAddEditPopup(item)">
+                                            <fa-icon [icon]="faCheckCircle" [classes]="['tick']">
+                                            </fa-icon>
+                                        </span>
+                                        <span class="icon-wrapper cancelled" *ngIf="!item.success"
+                                            (click)="toggleAddEditPopup(item)">
+                                            <fa-icon [icon]="faExclamation" [classes]="['excalamation']">
+                                            </fa-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div *ngIf="!item.hasValue" class="no-value" [class.today]="item.today">
+                                    <div>
+                                        <span class="icon-wrapper success">
+                                            <fa-icon [icon]="faCheckCircle" [classes]="['tick']"
+                                                (click)="toggleAddEditPopup(item, true)">
+                                            </fa-icon>
+                                        </span>
+                                        <span class="icon-wrapper cancelled">
+                                            <fa-icon [icon]="faExclamation" [classes]="['excalamation']"
+                                                (click)="toggleAddEditPopup(item, false)">
+                                            </fa-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section *ngIf="popup.show" class="popup-container" (click)="togglePopup()">
+        <div class="popup-content" (click)="$event.stopPropagation();">
+            <header>
+                <span class="title">Transfer Overview</span>
+                <!-- <div ngbDropdown class="d-inline-block dd">
+                    <button ngbDropdownToggle>{{popup.selectedSite.name}}
+                        <fa-icon [icon]="faChevronDown"></fa-icon>
+                    </button>
+                    <div ngbDropdownMenu class="dd-menu">
+                        <ng-container *ngFor="let item of sites">
+                            <button (click)="changePopupSite(item)" ngbDropdownItem
+                                [class.selected]="item == popup.selectedSite">{{item.name}}</button>
+                        </ng-container>
+                    </div>
+                </div> -->
+                <div class="left">
+                    <span class="switch">
+                        <span [class.active]="popup.filter == '365d'" (click)="changePopupFilter('365d')">Past
+                            360d</span>
+                        <span [class.active]="popup.filter == 'range'" (click)="changePopupFilter('range')">Date
+                            Range</span>
+                    </span>
+                    <ng-container *ngIf="popup.filter == 'range'">
+                        <div class="date-picker">
+                            <input placeholder="Start Date" name="startDate" ngbDatepicker #sd="ngbDatepicker"
+                                [(ngModel)]="popup.from" (ngModelChange)="startDateChanged($event, 'from')">
+                            <fa-icon [icon]="faCalender" (click)="sd.toggle()"></fa-icon>
+                        </div>
+                        <div class="date-picker">
+                            <input placeholder="End Date" name="endDate" ngbDatepicker #ed="ngbDatepicker"
+                                [(ngModel)]="popup.to" [minDate]="popup.from"
+                                (ngModelChange)="startDateChanged($event, 'to')">
+                            <fa-icon [icon]="faCalender" (click)="ed.toggle()"></fa-icon>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="right">
+                    <fa-icon [icon]="faTimes" [classes]="['close']" (click)="togglePopup()"></fa-icon>
+                </div>
+            </header>
+            <div class="body-content">
+                <div class="loading" *ngIf="popup.loading">
+                    <div class="spinner-border text-custom">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <ng-container *ngIf="!popup.loading">
+                    <div class="calendar-container">
+                        <ngb-datepicker #dp [startDate]="{month: popup.data.month, year: popup.data.year}"
+                            [displayMonths]="popup.data.monthsToDisplay" outsideDays="hidden" navigation="none"
+                            [firstDayOfWeek]="7" [dayTemplate]="customDay">
+                            <ng-template ngbDatepickerContent>
+                                <div *ngFor="let month of dp.state.months">
+                                    <div class="month-text">{{ getMonthYearText(month) }}</div>
+                                    <ngb-datepicker-month [month]="month"></ngb-datepicker-month>
+                                </div>
+                            </ng-template>
+                        </ngb-datepicker>
+                    </div>
+                    <div class="note">
+                        <div class="color no-transfer"></div>
+                        <span class="text">No Transfers Recorded</span>
+                        <div class="color all-cancelled"></div>
+                        <span class="text">All Transfers Cancelled</span>
+                        <div class="color cancelled-success"></div>
+                        <span class="text">Canceled + Successful Transfers</span>
+                        <div class="color all-sucess"></div>
+                        <span class="text">All Transfers Successful</span>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </section>
+    <section *ngIf="addEditPopup.show" class="popup-container" (click)="toggleAddEditPopup()">
+        <div class="popup-content add-edit-popup" (click)="$event.stopPropagation();">
+            <cb-add-edit-logs [loading]="loadingEditLogData" [data]="editLogData" [selectedData]="addEditPopup.data"
+                [forSuccess]="addEditPopup.success" (onClose)="onCloseAddEditLog($event)" [siteData]="selectedSite">
+            </cb-add-edit-logs>
+        </div>
+    </section>
+</div>
+<ng-template #customDay let-date let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled"
+    let-focused="focused">
+    <div *ngIf="currentMonth && hasData(date)" [class]="getClass(date)" [ngbPopover]="popContent"
+        triggers="mouseenter:mouseleave" container="body" popoverClass="overview-popover"></div>
+    <div *ngIf="currentMonth && !hasData(date)" class="no-transfer"></div>
+    <ng-template #popContent>
+        <div class="selected-date">{{getHeader(date)}}</div>
+        <ng-container *ngFor="let log of getLogs(date)">
+            <div>
+                <div class="color {{log.class}}"></div>
+                <span class="text">{{log.text}}</span>
+            </div>
+        </ng-container>
+    </ng-template>
+</ng-template>

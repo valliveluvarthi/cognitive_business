@@ -13,19 +13,18 @@ export class RoutingUtilityService {
     {
       sectionLabel: "Dashboards",
       items: [
-        { path: [`/${PATHS.HOME}/${PATHS.DAILY_DASHBOARD}`], label: "Daily Decision", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] },
-        { path: [`/${PATHS.HOME}/${PATHS.WEEKLY_DASHBOARD}`], label: "Weekly Decision", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] },
-        { path: [`/${PATHS.HOME}/${PATHS.FEEDBACK_LOG}`], label: "Accessibility Log", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] },
-        { path: [`/${PATHS.HOME}/${PATHS.SITE_ACCESSIBILITY}`], label: "Accessibility Reporting", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] },
-        { path: [`/${PATHS.HOME}/${PATHS.TIDE}`], label: "Tide", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] }
+        { path: [`/${PATHS.SITES}/${PATHS.DAILY_DASHBOARD}`], label: "Daily Dashboard", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] },
+        { path: [`/${PATHS.SITES}/${PATHS.WEEKLY_DASHBOARD}`], label: "Weekly Dashboard", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] },
+        { path: [`/${PATHS.SITES}/${PATHS.FEEDBACK_LOG}`], label: "Accessibility Log", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] },
+        { path: [`/${PATHS.SITES}/${PATHS.SITE_ACCESSIBILITY}`], label: "Accessibility Reporting", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] },
+        { path: [`/${PATHS.SITES}/${PATHS.TIDE}`], label: "Tide", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] }
       ]
     },
     {
       sectionLabel: "Admin",
       items: [
-        { path: [`/${PATHS.HOME}/${PATHS.USER_NOTIFICATIONS}`], label: "User Notifications", accessibility: [ROLES.ADMIN] },
-        { path: [`/${PATHS.HOME}/${PATHS.USER_MANAGEMENT}`], label: "User Management", accessibility: [ROLES.ADMIN] },
-        { path: [`/${PATHS.HOME}/${PATHS.SITES}`], label: "Sites", accessibility: [ROLES.ADMIN] }
+        { path: [`/${PATHS.ADMIN}/${PATHS.USER_NOTIFICATIONS}`], label: "User Notifications", accessibility: [ROLES.ADMIN] },
+        { path: [`/${PATHS.ADMIN}/${PATHS.USER_MANAGEMENT}`], label: "User Management", accessibility: [ROLES.ADMIN] }
       ]
     },
     {
