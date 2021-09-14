@@ -106,7 +106,10 @@ export class EditSitesComponent implements OnInit {
     let siteKey = row.site;
     this.ELEMENT_DATA.splice(i, 1);
     this.adminService.deleteSiteFromUser(userId, siteKey).subscribe((data: Array<Object>) => {
-
+      this.util.notification.success({
+        title: 'Success',
+        msg: "Site deleted successfully."
+      });
     },
       (err) => {
         this.util.notification.error({
