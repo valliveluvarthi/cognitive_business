@@ -9,8 +9,9 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { DecisionService } from 'src/app/services/decision.service';
 import { environment } from '../../../../../../environments/environment';
 import { CommonUtilService } from 'src/app/services/common-util.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
+import { PATHS } from 'src/app/enums';
 @Component({
   selector: 'cb-daily-dashboard',
   templateUrl: './daily-dashboard.component.html',
@@ -133,7 +134,8 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
   constructor(
     private decisionService: DecisionService,
     private util: CommonUtilService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
     ) {
     
     mapboxgl.accessToken = environment.mapKey;
@@ -149,6 +151,9 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       if(this.selectedSite){
         this.getSiteData();
       } 
+      else if(this.selectedSite == null){
+        this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
+      }
     });
     this.reloadData(this.getReloadTime());
   }

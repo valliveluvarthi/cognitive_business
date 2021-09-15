@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { faCalendarWeek, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { PATHS } from 'src/app/enums';
 
 import { CommonUtilService } from 'src/app/services/common-util.service';
 import { DecisionService } from 'src/app/services/decision.service';
@@ -53,7 +55,8 @@ export class SiteAccessibilityComponent implements OnInit, OnDestroy {
     private decisionService: DecisionService,
     private util: CommonUtilService,
     private siteService: SiteAccessibilityService,
-    private calendar: NgbCalendar
+    private calendar: NgbCalendar,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -66,6 +69,9 @@ export class SiteAccessibilityComponent implements OnInit, OnDestroy {
         this.fetchReportingData();
         this.fetchGraphData();
       } 
+      else if(this.selectedSite == null){
+        this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
+      }
     });
   }
 

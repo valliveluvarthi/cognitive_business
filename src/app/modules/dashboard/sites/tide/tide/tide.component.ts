@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { faCalendarDay, faChevronDown, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { NgbCalendar, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment-timezone';
+import { PATHS } from 'src/app/enums';
 
 import { CommonUtilService } from 'src/app/services/common-util.service';
 import { DecisionService } from 'src/app/services/decision.service';
@@ -69,7 +71,8 @@ export class TideComponent implements OnInit, OnDestroy {
     private decisionService: DecisionService,
     private util: CommonUtilService,
     private calendar: NgbCalendar,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -79,7 +82,9 @@ export class TideComponent implements OnInit, OnDestroy {
       this.selectedSite = site ? site : null;
       if(this.selectedSite){
         this.getThreshold();
-      } 
+      } else if(this.selectedSite == null){
+        this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
+      }
     });
   }
 

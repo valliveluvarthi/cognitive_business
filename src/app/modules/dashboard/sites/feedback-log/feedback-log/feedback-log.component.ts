@@ -8,6 +8,8 @@ import * as $ from 'jquery';
 import { CommonUtilService } from 'src/app/services/common-util.service';
 import { DecisionService } from 'src/app/services/decision.service';
 import { FeedbackLogService } from 'src/app/services/feedback-log.service';
+import { PATHS } from 'src/app/enums';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cb-feedback-log',
@@ -63,7 +65,8 @@ export class FeedbackLogComponent implements OnInit, OnDestroy {
     private decisionService: DecisionService,
     private feedbackService: FeedbackLogService,
     private util: CommonUtilService,
-    private calendar: NgbCalendar
+    private calendar: NgbCalendar,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -76,6 +79,9 @@ export class FeedbackLogComponent implements OnInit, OnDestroy {
         this.fetchFeedbackLogData();
         this.fetchEditLogData();
       } 
+      else if(this.selectedSite == null){
+        this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
+      }
     });
   }
 

@@ -21,6 +21,8 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { CommonUtilService } from 'src/app/services/common-util.service';
 import { environment } from '../../../../../../environments/environment';
 import { DecisionService } from 'src/app/services/decision.service';
+import { Router } from '@angular/router';
+import { PATHS } from 'src/app/enums';
 
 @Component({
   selector: 'cb-weekly-dashboard',
@@ -148,7 +150,8 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private decisionService: DecisionService,
-    private util: CommonUtilService
+    private util: CommonUtilService,
+    private router: Router,
   ) {
     mapboxgl.accessToken = environment.mapKey;
     this.layers = this.decisionService.getAvailableLayers();
@@ -162,6 +165,9 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
       if(this.selectedSite){
         this.getSiteData();
       } 
+      else if(this.selectedSite == null){
+        this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
+      }
     });
   }
 
