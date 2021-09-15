@@ -6,8 +6,8 @@ import { CommonUtilService } from 'src/app/services/common-util.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 export interface UserElement {
-  site: string;
-  name: string;
+  email: string;
+  id: string;
   siteRole: string;
 }
 
@@ -33,6 +33,7 @@ export class EditUserInfoComponent implements OnInit {
   USER_DATA: UserData[] = [];
   selectedUserRole: string = "";
   selectedUser: string = "";
+  dupllicateEntry: boolean = false;
 
   @Input() headerTitle: number;
   @Input() dialogType: string;
@@ -73,7 +74,7 @@ export class EditUserInfoComponent implements OnInit {
         }
         this.USER_DATA.push(user);
       });
-      if(this.USER_DATA.length > 0){
+      if (this.USER_DATA.length > 0) {
         this.userId = this.USER_DATA[0].id;
         this.selectedUser = this.USER_DATA[0].email;
         this.form.controls['user'].setValue(this.selectedUser);
@@ -88,7 +89,17 @@ export class EditUserInfoComponent implements OnInit {
   }
   getSiteUsers() {
     this.adminService.getSiteUsers(this.siteKey).subscribe((data: Array<Object>) => {
-      //code will be added on getting the site users list
+      console.log(data);
+      this.ELEMENT_DATA = [];
+      data.forEach((element, index) => {
+        let user: UserElement = {
+          email: element['email'],
+          id: element['id'],
+          siteRole: element['siteRole']
+        }
+        this.ELEMENT_DATA.push(user);
+        this.form.addControl(user.email, this.fb.control(user.siteRole));
+      });
     },
       (err) => {
         this.util.notification.error({
@@ -100,7 +111,7 @@ export class EditUserInfoComponent implements OnInit {
   getUserRoles() {
     this.adminService.getSiteRoles().subscribe((data) => {
       this.userRoles = data;
-      if(this.userRoles.length > 0){
+      if (this.userRoles.length > 0) {
         this.selectedUserRole = this.userRoles[0];
         this.form.controls['role'].setValue(this.selectedUserRole);
       }
@@ -112,14 +123,31 @@ export class EditUserInfoComponent implements OnInit {
         });
       });
   }
-  selectUserRole(selectedRole, i,row) {
+  selectUserRole(selectedRole, i, row) {
     this.selectedUserRole = selectedRole;
     if (i === '') {
       this.form.controls['role'].setValue(selectedRole);
       this.form.controls['role'].setErrors(null);
     } else {
-      this.form.controls[row.site].setValue(selectedRole);
-      this.form.controls[row.site].setErrors(null);
+      this.form.controls[row.email].setValue(selectedRole);
+      this.form.controls[row.email].setErrors(null);
+      // to update the role info 
+      let sitekey = this.item.key;
+      let data = {
+        role: this.form.controls[row.email].value,
+      }
+      this.adminService.addUserToSite(row.id, sitekey, data).subscribe((data: Array<Object>) => {
+        this.util.notification.success({
+          title: 'Success',
+          msg: "User role updated successfully."
+        });
+      },
+        (err) => {
+          this.util.notification.error({
+            title: "Error",
+            msg: err
+          });
+        });
     }
   }
   selectSiteUser(selectedUser) {
@@ -127,10 +155,18 @@ export class EditUserInfoComponent implements OnInit {
     this.selectedUser = selectedUser.email;
     this.form.controls['user'].setValue(selectedUser.email);
     this.form.controls['user'].setErrors(null);
+
+    this.ELEMENT_DATA.forEach(element => {
+      if (element.email === selectedUser.email) {
+        this.dupllicateEntry = true;
+      } else {
+        this.dupllicateEntry = false;
+      }
+    })
   }
   onDelete(i, row) {
     let userId = row.id;
-    let siteKey = this.item.key;;
+    let siteKey = this.item.key;
     this.ELEMENT_DATA.splice(i, 1);
     this.adminService.deleteUserFromSite(userId, siteKey).subscribe((data: Array<Object>) => {
       this.util.notification.success({
@@ -148,22 +184,29 @@ export class EditUserInfoComponent implements OnInit {
   addUserToSite() {
     let sitekey = this.item.key;
     let data = {
-      role : this.form.controls['role'].value,
+      role: this.form.controls['role'].value,
     }
-
-    this.adminService.addUserToSite(this.userId,sitekey,data).subscribe((data: Array<Object>) => {
-      this.util.notification.success({
-        title: 'Success',
-        msg: "User add to site successfully."
+    if (this.dupllicateEntry === true) {
+      this.util.notification.warn({
+        title: 'Warning',
+        msg: "This user already exists."
       });
-      this.activeModal.dismiss();
-    },
-      (err) => {
-        this.util.notification.error({
-          title: "Error",
-          msg: err
+    }
+    else {
+      this.adminService.addUserToSite(this.userId, sitekey, data).subscribe((data: Array<Object>) => {
+        this.util.notification.success({
+          title: 'Success',
+          msg: "User add to site successfully."
         });
-      });
+        this.activeModal.dismiss();
+      },
+        (err) => {
+          this.util.notification.error({
+            title: "Error",
+            msg: err
+          });
+        });
+    }
   }
 }
 

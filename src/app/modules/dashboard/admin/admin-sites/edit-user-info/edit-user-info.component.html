@@ -14,17 +14,17 @@
                         Role
                     </div>
                     <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-
+                        &nbsp;
                     </div>
                 </div>
                 <div class="row" *ngFor="let row of ELEMENT_DATA; let i = index;">
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 column-padding">
-                        <span>{{row.site}}</span>
+                        <span>{{row.email}}</span>
                     </div>
                     <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                         <div ngbDropdown class="d-inline-block dd dropdown-input">
                             <mat-form-field class="example-full-width ip-field" appearance="fill" ngbDropdownToggle>
-                                <input matInput formControlName="{{row.site}}"  value="{{selectedUserRole}}" readonly />
+                                <input matInput formControlName="{{row.email}}" readonly />
                                 <fa-icon [icon]="faChevronDown"
                                     class="icon-circle icon-cross dropdown-input-down-arrow"></fa-icon>
                             </mat-form-field>
@@ -38,9 +38,9 @@
                         </div>
                     </div>
                     <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 column-button-padding">
-                        <span class="delete" (click)="onDelete(i,row)">
+                        <button mat-icon-button class="delete" (click)="onDelete(i,row)">
                             <mat-icon aria-label="Delete">delete</mat-icon>
-                        </span>
+                        </button>
                     </div>
                 </div>
                 <div class="row">
@@ -78,9 +78,9 @@
                         </div>
                     </div>
                     <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 column-button-padding">
-                        <span class="add" (click)="addUserToSite()">
+                        <button mat-icon-button class="add" (click)="addUserToSite()">
                             <mat-icon aria-label="Add">add</mat-icon>
-                        </span>
+                        </button>
                     </div>
                 </div>
 
