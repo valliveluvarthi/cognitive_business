@@ -130,6 +130,8 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
   $TableBodyContentScroller: any;
   $TableBodyHeaderScroller: any;
   @ViewChild('$element', { static: true }) $element: ElementRef;
+  swh_max: any;
+  swh_min: any;
 
   constructor(
     private decisionService: DecisionService,
@@ -226,6 +228,9 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       let result = await this.decisionService.setDailyRows(response, this.selectedSite, this.siteData, this.selectedTurbine.key, this.selectedPeriod.key);
       this.forcastData = result.forcastData; 
       this.columns = result.columns; 
+      let indexOfNow = this.columns.indexOf("Now");
+      this.swh_max = this.forcastData?.["VHM0_max"]?.[indexOfNow];
+      this.swh_min = this.forcastData?.["VHM0"]?.[indexOfNow];
       this.rows = result.rows;
       this.setCurrentHourData(result);
 

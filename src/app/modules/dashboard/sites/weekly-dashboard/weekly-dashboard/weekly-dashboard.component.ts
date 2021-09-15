@@ -84,8 +84,8 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         tooltip: {
           callbacks: {
             label: (context) => {
-              let date:any = moment(this.forcastData['from'][context.dataIndex]).format('MMM Do, h:mm');              
-              return context.dataset.label + " : "+ context.dataset.data[context.dataIndex] + ' on ' + date;
+              let date: any = moment(this.forcastData['from'][context.dataIndex]).format('MMM Do, h:mm');
+              return context.dataset.label + " : " + context.dataset.data[context.dataIndex] + ' on ' + date;
             }
           }
         }
@@ -147,6 +147,8 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
   $TableBodyContentScroller: any;
   $TableBodyHeaderScroller: any;
   @ViewChild('$element', { static: true }) $element: ElementRef;
+  swh_max: any;
+  swh_min: any;
 
   constructor(
     private decisionService: DecisionService,
@@ -160,12 +162,12 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedPeriod = this.period[0];
-    this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe( site => {
+    this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe(site => {
       this.selectedSite = site ? site : null;
-      if(this.selectedSite){
+      if (this.selectedSite) {
         this.getSiteData();
-      } 
-      else if(this.selectedSite == null){
+      }
+      else if (this.selectedSite == null) {
         this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
       }
     });
@@ -236,7 +238,17 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         this.forcastData = result.forcastData;
         this.columns = result.columns;
         this.rows = result.rows;
+        let currentDate = moment().format("MMM Do");
+        currentDate = currentDate.substring(0, currentDate.length - 2);
+        let indexOfCurrentDay = this.columns.indexOf(currentDate);
+        let currentHour = moment().hours();
 
+        let entriesPerDay = 24;
+        let index = (indexOfCurrentDay * entriesPerDay) + (currentHour - 1); 
+        console.log(index);
+        this.swh_max = this.forcastData?.["VHM0_max"]?.[index];
+        this.swh_min = this.forcastData?.["VHM0"]?.[index];
+        
         this.loading = false;
         this.setInitData();
       });
@@ -532,13 +544,13 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
 
   changePopupPeriod(period) {
     this.selectedPopupPeriod = period;
-    let range = this.decisionService.getStartAndEndDate(this.selectedPopupPeriod,this.popupFrom, this.popupTo);
-    this.decisionService.getPopupChartData(this.popup.data['signals'],range, this.selectedSite.key, this.selectedTurbine.key).subscribe( data => {
+    let range = this.decisionService.getStartAndEndDate(this.selectedPopupPeriod, this.popupFrom, this.popupTo);
+    this.decisionService.getPopupChartData(this.popup.data['signals'], range, this.selectedSite.key, this.selectedTurbine.key).subscribe(data => {
       this.popup.data['config']['data'] = [];
       this.popup.data['config']['labels'] = [];
       this.popup.data['config'] = {
-        ...this.popup.data['config'], 
-        data, 
+        ...this.popup.data['config'],
+        data,
         labels: this.decisionService.gerRandomDigits(data[0].data.length)
       };
     });
