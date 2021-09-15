@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from 'src/app/guards/auth.guard';
 import { PATHS } from '../../enums';
+import { ContactAdminComponent } from './dashboard/contact-admin/contact-admin.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard]
   },
+  {
+    path : PATHS.CONTACT_ADMIN,
+    component : ContactAdminComponent
+  }
 ];
 
 @NgModule({

@@ -31,19 +31,26 @@ export class DashboardComponent implements OnInit {
     this.navItems = this.routingUtilityService.getCurrentLoggedInUserNavItems();
     this.selectedNavIndex = this.navItems.length > 0 ? 1 : 0;
     this.selectedSite = this.utility.getSelectedSite();
-    
-    if(this.selectedSite) {
-      this.sites = this.utility.getSelectedSite();
-      let path = `/${PATHS.SITES}/${PATHS.DAILY_DASHBOARD}`;
-      this.redirectToPath(currentPageUrl);
-    }else {
-      this.utility.retrieveSitesList().subscribe( (response:any) => {
-        if(response.length > 0){
+    if (this.selectedSite) {
+      this.sites = this.utility.getSites();
+      if (this.sites.length === 0) {
+        this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
+      } else {
+        this.redirectToPath(currentPageUrl);
+      }
+    } else {
+      this.utility.retrieveSitesList().subscribe((response: any) => {
+        if (response.length > 0) {
           this.sites = response;
-          this.selectedSite = response[0];
-          this.utility.setSites(response);
-          this.utility.setSelectedSite(response[0]);
-          this.redirectToPath(currentPageUrl);
+          if (this.sites.length === 0) {
+            this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
+          } else {
+            this.selectedSite = response[0];
+            this.utility.setSites(response);
+            this.utility.setSelectedSite(response[0]);
+            let path = `/${PATHS.SITES}/${PATHS.DAILY_DASHBOARD}`.replace(':site', this.selectedSite.key);
+            this.redirectToPath((currentPageUrl && currentPageUrl === "/" ? path : currentPageUrl));
+          }
         }
       });
     }
@@ -56,8 +63,8 @@ export class DashboardComponent implements OnInit {
     const children = tree.root.children[PRIMARY_OUTLET];
     const segments = children.segments;
     let currentItem = null;
-    
-    if(segments.length && segments.length > 0){
+
+    if (segments.length && segments.length > 0) {
       currentItem = this.navItems.find((item) => item.path[0] && segments[segments.length - 1].path && item.path[0].includes(segments[segments.length - 1].path));
     }
     this.selectedNavIndex = (currentItem && currentItem.index) ? currentItem.index : null;
@@ -72,10 +79,10 @@ export class DashboardComponent implements OnInit {
         this.userService.logout();
         break;
       default:
-        if(event && event.path && event.path.length ) {
-          event.path[0] = event.path[0].startsWith(`/${PATHS.SITES}`) ? 
-                          event.path[0].replace(':site', this.selectedSite.key):
-                          event.path[0];
+        if (event && event.path && event.path.length) {
+          event.path[0] = event.path[0].startsWith(`/${PATHS.SITES}`) ?
+            event.path[0].replace(':site', this.selectedSite.key) :
+            event.path[0];
 
           this.router.navigate(event.path);
         }
@@ -88,10 +95,10 @@ export class DashboardComponent implements OnInit {
   }
 
   redirectToPath(path) {
-    if(path && path.length > 0) {
+    if (path && path.length > 0) {
       this.router.navigate([path]);
-    }else {
-      this.router.navigate([path.replace(':site',this.selectedSite.key)]);
+    } else {
+      this.router.navigate([path.replace(':site', this.selectedSite.key)]);
     }
     this.computeSelectedNavIndex(path);
   }
@@ -99,15 +106,15 @@ export class DashboardComponent implements OnInit {
   siteOnChange(site) {
     this.selectedSite = site;
     this.utility.setSelectedSite(site);
-    if(this.router.url.startsWith("/sites")){
+    if (this.router.url.startsWith("/sites")) {
       const urlTree = this.router.parseUrl(this.router.url);
-      urlTree.root.children['primary'].segments[1].path = this.selectedSite.key;  
-      this.router.navigateByUrl(urlTree);  
+      urlTree.root.children['primary'].segments[1].path = this.selectedSite.key;
+      this.router.navigateByUrl(urlTree);
     }
   }
 
   navigateToHome() {
-    let path = `/${PATHS.SITES.replace(":site",this.selectedSite.key)}/${PATHS.DAILY_DASHBOARD}`;
+    let path = `/${PATHS.SITES.replace(":site", this.selectedSite.key)}/${PATHS.DAILY_DASHBOARD}`;
     // this.router.navigate([path]);
     window.location.replace(path);
   }
