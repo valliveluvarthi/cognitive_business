@@ -33,7 +33,7 @@ export class EditUserInfoComponent implements OnInit {
   USER_DATA: UserData[] = [];
   selectedUserRole: string = "";
   selectedUser: string = "";
-  dupllicateEntry: boolean = false;
+  duplicateEntry: boolean = false;
 
   @Input() headerTitle: number;
   @Input() dialogType: string;
@@ -155,14 +155,6 @@ export class EditUserInfoComponent implements OnInit {
     this.selectedUser = selectedUser.email;
     this.form.controls['user'].setValue(selectedUser.email);
     this.form.controls['user'].setErrors(null);
-
-    this.ELEMENT_DATA.forEach(element => {
-      if (element.email === selectedUser.email) {
-        this.dupllicateEntry = true;
-      } else {
-        this.dupllicateEntry = false;
-      }
-    })
   }
   onDelete(i, row) {
     let userId = row.id;
@@ -186,7 +178,13 @@ export class EditUserInfoComponent implements OnInit {
     let data = {
       role: this.form.controls['role'].value,
     }
-    if (this.dupllicateEntry === true) {
+    let user = this.form.controls['user'].value;
+    this.duplicateEntry = this.ELEMENT_DATA.some(function (u) {
+      if (u.email === user)
+        return true;
+      return false;
+    })
+    if (this.duplicateEntry === true) {
       this.util.notification.warn({
         title: 'Warning',
         msg: "This user already exists."

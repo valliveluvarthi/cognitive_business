@@ -11,7 +11,7 @@ export interface UserElement {
   siteRole: string;
 }
 export interface SiteData {
-  site : string;
+  site: string;
 }
 
 @Component({
@@ -30,6 +30,7 @@ export class EditSitesComponent implements OnInit {
   SITE_DATA: SiteData[] = [];
   selectedUserRole: string = "";
   selectedUserSite: string = "";
+  duplicateEntry: boolean = false;
 
   @Input() headerTitle: number;
   @Input() dialogType: string;
@@ -54,7 +55,7 @@ export class EditSitesComponent implements OnInit {
     this.getUserRoles();
     this.allSites();
   }
-  allSites(){
+  allSites() {
     this.adminService.getAllSites().subscribe((data: Array<Object>) => {
       this.SITE_DATA = [];
       data.forEach((element, index) => {
@@ -63,7 +64,7 @@ export class EditSitesComponent implements OnInit {
         }
         this.SITE_DATA.push(site);
       });
-      if(this.SITE_DATA.length > 0){
+      if (this.SITE_DATA.length > 0) {
         this.selectedUserSite = this.SITE_DATA[0].site;
         this.form.controls['site'].setValue(this.selectedUserSite);
       }
@@ -86,7 +87,7 @@ export class EditSitesComponent implements OnInit {
           siteRole: element['siteRole']
         }
         this.ELEMENT_DATA.push(user);
-        this.form.addControl(user.site, this.fb.control(this.item.role));
+        this.form.addControl(user.site, this.fb.control(user.siteRole));
       });
     },
       (err) => {
@@ -99,7 +100,7 @@ export class EditSitesComponent implements OnInit {
   getUserRoles() {
     this.adminService.getSiteRoles().subscribe((data) => {
       this.userRoles = data;
-      if(this.userRoles.length > 0){
+      if (this.userRoles.length > 0) {
         this.selectedUserRole = this.userRoles[0];
       }
     },
@@ -110,7 +111,7 @@ export class EditSitesComponent implements OnInit {
         });
       });
   }
-  selectUserRole(selectedRole, i,row) {
+  selectUserRole(selectedRole, i, row) {
     this.selectedUserRole = selectedRole;
     if (i === '') {
       this.form.controls['role'].setValue(selectedRole);
@@ -118,6 +119,23 @@ export class EditSitesComponent implements OnInit {
     } else {
       this.form.controls[row.site].setValue(selectedRole);
       this.form.controls[row.site].setErrors(null);
+
+      let userId = this.item.id;
+      let data = {
+        role: this.form.controls[row.site].value,
+      }
+      this.adminService.addSiteToUser(userId, row.site, data).subscribe((data: Array<Object>) => {
+        this.util.notification.success({
+          title: 'Success',
+          msg: "Site updated successfully."
+        });
+      },
+        (err) => {
+          this.util.notification.error({
+            title: "Error",
+            msg: err
+          });
+        });
     }
   }
   selectUserSite(selectedSite) {
@@ -145,20 +163,34 @@ export class EditSitesComponent implements OnInit {
   addSiteToUser() {
     let userId = this.item.id;
     let data = {
-      role : this.form.controls['role'].value,
+      role: this.form.controls['role'].value,
     }
-    this.adminService.addSiteToUser(userId,this.form.controls['site'].value,data).subscribe((data: Array<Object>) => {
-      this.util.notification.success({
-        title: 'Success',
-        msg: "User add to site successfully."
+    let site = this.form.controls['site'].value;
+    this.duplicateEntry = this.ELEMENT_DATA.some(function (u) {
+      if (u.site === site)
+        return true;
+      return false;
+    })
+    if (this.duplicateEntry === true) {
+      this.util.notification.warn({
+        title: 'Warning',
+        msg: "This site already exists."
       });
-      this.activeModal.dismiss();
-    },
-      (err) => {
-        this.util.notification.error({
-          title: "Error",
-          msg: err
+    }
+    else {
+      this.adminService.addSiteToUser(userId, this.form.controls['site'].value, data).subscribe((data: Array<Object>) => {
+        this.util.notification.success({
+          title: 'Success',
+          msg: "User add to site successfully."
         });
-      });
+        this.activeModal.dismiss();
+      },
+        (err) => {
+          this.util.notification.error({
+            title: "Error",
+            msg: err
+          });
+        });
+    }
   }
 }
