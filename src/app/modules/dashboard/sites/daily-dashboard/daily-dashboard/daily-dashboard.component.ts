@@ -235,7 +235,6 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       this.swh_min = this.forcastData?.["VHM0"]?.[indexOfNow];
       let previousHour = this.predictionData[indexOfNow-1];
       let previoushour_arr = previousHour[0].split(" ");
-      // this.presentHour = parseInt(previoushour_arr[0]) + 1;
       if(previousHour[0] === "12 PM"){
         this.presentHour = "1 PM";
       }else if(previousHour[0] === "12 AM"){
