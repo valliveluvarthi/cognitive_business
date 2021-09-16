@@ -149,6 +149,9 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('$element', { static: true }) $element: ElementRef;
   swh_max: any;
   swh_min: any;
+  popup_loading: boolean = false;
+  presentHour: string;
+  currentDateLabels: any[];
 
   constructor(
     private decisionService: DecisionService,
@@ -168,7 +171,7 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         this.getSiteData();
       }
       else if (this.selectedSite == null) {
-        this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
+        this.router.navigateByUrl(PATHS.ACCESS_DENIED);
       }
     });
   }
@@ -242,13 +245,30 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         currentDate = currentDate.substring(0, currentDate.length - 2);
         let indexOfCurrentDay = this.columns.indexOf(currentDate);
         let currentHour = moment().hours();
-
+        this.presentHour = moment().format('LT');
+        let hourarray = this.presentHour.split(" ");
+        console.log(hourarray);
+        if (currentHour < 12) {
+          this.presentHour = currentHour.toString() + " " + hourarray[1];
+        }
+        else if (currentHour === 12) {
+          this.presentHour = "12 " + hourarray[1];
+        } else if (currentHour > 12) {
+          this.presentHour = (currentHour - 12).toString() + " " + hourarray[1];
+        }
         let entriesPerDay = 24;
-        let index = (indexOfCurrentDay * entriesPerDay) + (currentHour - 1); 
+        let index = (indexOfCurrentDay * entriesPerDay) + (currentHour - 1);
         console.log(index);
         this.swh_max = this.forcastData?.["VHM0_max"]?.[index];
         this.swh_min = this.forcastData?.["VHM0"]?.[index];
-        
+
+      let cd = currentDate + ", " + this.presentHour;
+
+        this.currentDateLabels = [];
+        for (let i = 0; i < 24; i++) {
+          this.currentDateLabels.push(cd);
+        }
+
         this.loading = false;
         this.setInitData();
       });
@@ -543,6 +563,7 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
   }
 
   changePopupPeriod(period) {
+    this.popup_loading = true;
     this.selectedPopupPeriod = period;
     let range = this.decisionService.getStartAndEndDate(this.selectedPopupPeriod, this.popupFrom, this.popupTo);
     this.decisionService.getPopupChartData(this.popup.data['signals'], range, this.selectedSite.key, this.selectedTurbine.key).subscribe(data => {
@@ -553,6 +574,7 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         data,
         labels: this.decisionService.gerRandomDigits(data[0].data.length)
       };
+      this.popup_loading = false;
     });
   }
 }

@@ -61,7 +61,7 @@
       <span class="key">SWH<sub>min</sub>:</span>
       <span class="value">&nbsp;{{swh_min}}</span>
       <span class="key">at</span>
-      <span class="value">2pm</span>
+      <span class="value">{{presentHour}}</span>
     </div>
   </header>
   <section *ngIf="!loading && !loadingTurbineData">
@@ -130,7 +130,7 @@
                 </div>
                 <div class="chart-wrapper" *ngIf="row.type == 'chart' && i == 0" [style.height]="row.height + 'px'">
                   <canvas height="{{row.height || 192}}" baseChart [datasets]="row.config.data"
-                    [labels]="row.config.labels" [options]="row.config.options" [legend]="false"
+                    [labels]="currentDateLabels" [options]="row.config.options" [legend]="false"
                     [type]="row.config.type" [style.width]="
                       'calc((max(324px, (100vw - 192px) / ' +
                       columns.length +
@@ -290,7 +290,12 @@
         </div>
       </div>
       <div class="chart">
-        <canvas baseChart [datasets]="popup.data.config.data" [labels]="popup.data.config.labels"
+        <div class="loading" *ngIf="popup_loading">
+          <div class="spinner-border text-custom" role="status">
+              <span class="visually-hidden">Loading...</span>
+          </div>
+      </div>
+        <canvas baseChart [datasets]="popup.data.config.data" [labels]="currentDateLabels"
           [options]="popup.data.config.options" [legend]="false" [type]="popup.data.config.type">
         </canvas>
       </div>

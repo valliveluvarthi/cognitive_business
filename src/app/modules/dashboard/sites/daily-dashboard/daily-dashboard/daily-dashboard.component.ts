@@ -132,6 +132,9 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('$element', { static: true }) $element: ElementRef;
   swh_max: any;
   swh_min: any;
+  popup_loading: boolean = false;
+  presentHour: any;
+  currentDateLabels: any[];
 
   constructor(
     private decisionService: DecisionService,
@@ -154,7 +157,7 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
         this.getSiteData();
       } 
       else if(this.selectedSite == null){
-        this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
+        this.router.navigateByUrl(PATHS.ACCESS_DENIED);
       }
     });
     this.reloadData(this.getReloadTime());
@@ -231,6 +234,20 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       let indexOfNow = this.columns.indexOf("Now");
       this.swh_max = this.forcastData?.["VHM0_max"]?.[indexOfNow];
       this.swh_min = this.forcastData?.["VHM0"]?.[indexOfNow];
+      let previousHour = this.predictionData[indexOfNow-1];
+      this.presentHour = parseInt(previousHour[0].charAt(0)) + 1;
+      if(previousHour[0] === "11 AM"){
+        this.presentHour = this.presentHour.toString() + " PM";
+      }else{
+        this.presentHour = this.presentHour.toString() + " AM"
+      }
+      let currentDate = moment().format("MMM Do");
+      currentDate = currentDate.substring(0, currentDate.length - 2) + ", " + this.presentHour;
+      
+      this.currentDateLabels = [];
+      for(let i = 0 ; i < 24 ; i++ ){
+        this.currentDateLabels.push(currentDate);
+      }
       this.rows = result.rows;
       this.setCurrentHourData(result);
 
@@ -519,6 +536,7 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
   }
 
   changePopupPeriod(period) {
+    this.popup_loading = true;
     this.selectedPopupPeriod = period;
     let range = this.decisionService.getStartAndEndDate(this.selectedPopupPeriod, this.popupFrom, this.popupTo);
     this.decisionService.getPopupChartData(this.popup.data['signals'],range, this.selectedSite.key, this.selectedTurbine.key).subscribe( data => {
@@ -527,6 +545,7 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
         data, 
         labels: this.decisionService.gerRandomDigits(data[0].data.length)
       };
+      this.popup_loading = false;
     });
   }
   
