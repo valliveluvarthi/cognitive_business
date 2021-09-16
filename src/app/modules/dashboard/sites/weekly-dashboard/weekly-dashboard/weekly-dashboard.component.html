@@ -74,11 +74,11 @@
     </div>
     <div class="right" *ngIf="!loadingTurbineData">
       <span class="key">SWH<sub>max</sub>:</span>
-      <span class="value">&nbsp;{{ swh_max }}</span>
+      <span class="value">&nbsp;{{swh_max}}</span>
       <span class="key">SWH<sub>min</sub>:</span>
-      <span class="value">&nbsp;{{ swh_min }}</span>
+      <span class="value">&nbsp;{{swh_min}}</span>
       <span class="key">at</span>
-      <span class="value">2pm</span>
+      <span class="value">{{presentHour}}</span>
     </div>
   </header>
   <section *ngIf="!loading && !loadingTurbineData">
@@ -490,14 +490,13 @@
         </div>
       </div>
       <div class="chart">
-        <canvas
-          baseChart
-          [datasets]="popup.data.config.data"
-          [labels]="popup.data.config.labels"
-          [options]="popup.data.config.options"
-          [legend]="false"
-          [type]="popup.data.config.type"
-        >
+        <div class="loading" *ngIf="popup_loading">
+          <div class="spinner-border text-custom" role="status">
+              <span class="visually-hidden">Loading...</span>
+          </div>
+      </div>
+        <canvas baseChart [datasets]="popup.data.config.data" [labels]="popup.data.config.labels"
+          [options]="popup.data.config.options" [legend]="false" [type]="popup.data.config.type">
         </canvas>
       </div>
     </div>
