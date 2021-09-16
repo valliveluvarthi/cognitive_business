@@ -151,7 +151,6 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
   swh_min: any;
   popup_loading: boolean = false;
   presentHour: string;
-  currentDateLabels: any[];
 
   constructor(
     private decisionService: DecisionService,
@@ -262,13 +261,7 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         this.swh_max = this.forcastData?.["VHM0_max"]?.[index];
         this.swh_min = this.forcastData?.["VHM0"]?.[index];
 
-      let cd = currentDate + ", " + this.presentHour;
-
-        this.currentDateLabels = [];
-        for (let i = 0; i < 24; i++) {
-          this.currentDateLabels.push(cd);
-        }
-
+        let cd = currentDate + ", " + this.presentHour;
         this.loading = false;
         this.setInitData();
       });
@@ -402,6 +395,14 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
 
   toggleGraph(data: any = { config: {} }) {
     let chartData = JSON.parse(JSON.stringify(data));
+    console.log(this.forcastData['from']);
+    
+    let modifiedlabels = [];
+    for (let i = 0; i < this.forcastData['from'].length; i++) {
+      let currentDateTime = moment(this.forcastData['from'][i]).format('MMM D, h A');
+      modifiedlabels.push(currentDateTime);
+    }
+    chartData.config.labels = modifiedlabels;
     if (chartData && chartData.config && chartData.config.options) {
       chartData.config.options.responsive = true;
       chartData.config.options.maintainAspectRatio = false;
@@ -571,8 +572,8 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
       this.popup.data['config']['labels'] = [];
       this.popup.data['config'] = {
         ...this.popup.data['config'],
-        data,
-        labels: this.decisionService.gerRandomDigits(data[0].data.length)
+        data: data.data,
+        labels: data.labels
       };
       this.popup_loading = false;
     });

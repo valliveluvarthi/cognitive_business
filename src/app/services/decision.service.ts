@@ -28,6 +28,7 @@ export class DecisionService {
               family: 'Roboto',
               weight: 400,
             },
+            autoSkip: true,
             maxRotation: 0,
             minRotation: 0,
           },
@@ -408,36 +409,36 @@ export class DecisionService {
       hour == now && (nowIndex = i);
       columns.push(hour == now ? 'Now' : hour);
     }
-    rows.push({
-      title: 'Go / No-Go',
-      type: 'icon',
-      nowIndex,
-      data: [...this.getGoNOGODataDaily(data)],
-      signals: [],
-    });
-    rows.push({
-      title: 'WAVES output',
-      type: 'icon',
-      nowIndex,
-      data: [...this.getPrediction(data)],
-      signals: [],
-    });
-    rows.push({
-      title: 'Storm Risk',
-      type: 'icon',
-      units: '',
-      nowIndex,
-      data: [...this.getStormRisk(data)],
-      signals: [],
-    });
-    rows.push({
-      title: 'Wind Speed',
-      type: 'percentage',
-      units: 'mph',
-      nowIndex,
-      data: [...this.getWindSpeed(data)],
-      signals: [],
-    });
+    // rows.push({
+    //   title: 'Go / No-Go',
+    //   type: 'icon',
+    //   nowIndex,
+    //   data: [...this.getGoNOGODataDaily(data)],
+    //   signals: [],
+    // });
+    // rows.push({
+    //   title: 'WAVES output',
+    //   type: 'icon',
+    //   nowIndex,
+    //   data: [...this.getPrediction(data)],
+    //   signals: [],
+    // });
+    // rows.push({
+    //   title: 'Storm Risk',
+    //   type: 'icon',
+    //   units: '',
+    //   nowIndex,
+    //   data: [...this.getStormRisk(data)],
+    //   signals: [],
+    // });
+    // rows.push({
+    //   title: 'Wind Speed',
+    //   type: 'percentage',
+    //   units: 'mph',
+    //   nowIndex,
+    //   data: [...this.getWindSpeed(data)],
+    //   signals: [],
+    // });
 
     dynamicRows.forEach((element) => {
       rows.push({ nowIndex, ...element });
@@ -524,14 +525,14 @@ export class DecisionService {
       columns.push(from.format('MMM D'));
       from.add(1, 'day');
     }
-    for (let i = 0; i < 1; i++) {
-      rows.push({
-        title: 'Go / No-Go',
-        type: 'icon',
-        data: [...this.getGoNoGOData(data)],
-        signals: [],
-      });
-    }
+    // for (let i = 0; i < 1; i++) {
+    //   rows.push({
+    //     title: 'Go / No-Go',
+    //     type: 'icon',
+    //     data: [...this.getGoNoGOData(data)],
+    //     signals: [],
+    //   });
+    // }
 
     dynamicRows.forEach((element) => {
       if (element.type === 'chart') {
@@ -676,14 +677,59 @@ export class DecisionService {
         let chartData = [];
         row.signals.forEach((signal) => {
           if (data[signal.key]) {
-            if (row.type === 'chart') {
+            if (row.type === 'limit') {
+              row.data = data[signal.key].map((item, index) => {
+                if(signal.lowerLimit !== null){
+                  if(signal.lowerLimit > +item[1]) {
+                    return "go"
+                  }else{
+                    return "no-go"
+                  }
+                }
+                else if(signal.upperLimit !== null){
+                  if(signal.upperLimit > +item[1]) {
+                    return "no-go"
+                  }else{
+                    return "go"
+                  }
+                }
+              });
+            }else if (row.type === 'chart') {
+              let backgroundColor = signal.series.color; 
+              if(signal.series.type === "bar"){
+                backgroundColor = [];
+              }
+              let chartinfo = data[signal.key].map((item, index) => {
+                if(signal.series.type === "bar"){
+                  let color = signal.series.color;
+                  if(signal.lowerLimit || signal.upperLimit){
+                    if(signal.lowerLimit !== null){
+                      if(signal.lowerLimit > +item[1]) {
+                        color =  "rgb(71, 178, 80)";
+                      }else{
+                        color =  "rgb(255, 90, 89)";
+                      }
+                    }
+                    else if(signal.upperLimit !== null){
+                      if(signal.upperLimit > +item[1]) {
+                        color =  "rgb(255, 90, 89)";
+                      }else{
+                        color =  "rgb(71, 178, 80)";
+                      }
+                    }
+                  }
+                  backgroundColor.push(color);
+                }
+                return (item[1] == 0 || item[1] == "") ? null : item[1];
+              });
               let chartInfo: any = {
-                data: data[signal.key].map((item, index) => item[1]),
+                data: chartinfo,
                 label: signal.name,
                 type: signal.series.type,
-                borderColor: signal.series.color,
-                backgroundColor: signal.series.color,
+                borderColor: backgroundColor,
+                backgroundColor: backgroundColor,
                 borderWidth: 2,
+                spanGaps: true,
               };
               if (signal.series.style) {
                 chartInfo.borderDash = [5, 10];
@@ -874,15 +920,21 @@ export class DecisionService {
     return forkJoin(routes).pipe(
       map((response: any) => {
         let chartData = [];
+        let labels = [];
         signals.forEach((signal) => {
           if (response[signal.key]) {
             let chartInfo: any = {
-              data: response[signal.key].map((item, index) => item[1]),
+              data: response[signal.key].map((item, index) => {
+                labels.push(moment(item[0]).format('MMM D, h a'));
+                // return (item[1] == 0 || item[1] == "") ? null : item[1]
+                return (item[1] == 0 || item[1] == "") ? item[1] : item[1]
+              }),
               label: signal.name,
               type: signal.series.type,
               borderColor: signal.series.color,
               backgroundColor: signal.series.color,
               borderWidth: 2,
+              spanGaps: true,
             };
             if (signal.series.style) {
               chartInfo.borderDash = [5, 10];
@@ -890,7 +942,8 @@ export class DecisionService {
             chartData.push(chartInfo);
           }
         });
-        return chartData;
+        // console.log("chartData : ",chartData);
+        return {data: chartData, labels: labels};
       })
     );
   }

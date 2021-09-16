@@ -134,7 +134,6 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
   swh_min: any;
   popup_loading: boolean = false;
   presentHour: any;
-  currentDateLabels: any[];
 
   constructor(
     private decisionService: DecisionService,
@@ -244,10 +243,6 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       let currentDate = moment().format("MMM Do");
       currentDate = currentDate.substring(0, currentDate.length - 2) + ", " + this.presentHour;
       
-      this.currentDateLabels = [];
-      for(let i = 0 ; i < 24 ; i++ ){
-        this.currentDateLabels.push(currentDate);
-      }
       this.rows = result.rows;
       this.setCurrentHourData(result);
 
@@ -376,6 +371,7 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
 
   toggleGraph(data: any = { config: {} }) {
     let chartData = JSON.parse(JSON.stringify(data));
+    chartData.config.labels = this.columns;
     if (chartData && chartData.config && chartData.config.options) {
       chartData.config.options.responsive = true;
       chartData.config.options.maintainAspectRatio = false;
@@ -542,8 +538,8 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
     this.decisionService.getPopupChartData(this.popup.data['signals'],range, this.selectedSite.key, this.selectedTurbine.key).subscribe( data => {
       this.popup.data['config'] = {
         ...this.popup.data['config'], 
-        data, 
-        labels: this.decisionService.gerRandomDigits(data[0].data.length)
+        data: data.data,
+        labels: data.labels
       };
       this.popup_loading = false;
     });

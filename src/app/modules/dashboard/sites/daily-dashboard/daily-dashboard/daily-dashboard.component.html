@@ -138,7 +138,7 @@
                                 <div class="chart-wrapper" *ngIf="row.type == 'chart' && i == 0"
                                     [style.height]="row.height + 'px'">
                                     <canvas height="{{row.height || 192}}" baseChart [datasets]="row.config.data"
-                                        [labels]="currentDateLabels" [options]="row.config.options" [legend]="false"
+                                        [labels]="row.config.labels" [options]="row.config.options" [legend]="false"
                                         [type]="row.config.type"
                                         [style.width]="'calc((max(100px, (100vw - 192px) / '+columns.length+') * '+columns.length+') - 24px)'"
                                         >
@@ -285,7 +285,7 @@
                         <span class="visually-hidden">Loading...</span>
                     </div>
                 </div>
-                <canvas baseChart [datasets]="popup.data.config.data" [labels]="currentDateLabels"
+                <canvas baseChart [datasets]="popup.data.config.data" [labels]="popup.data.config.labels"
                     [options]="popup.data.config.options" [legend]="false" [type]="popup.data.config.type">
                 </canvas>
             </div>
