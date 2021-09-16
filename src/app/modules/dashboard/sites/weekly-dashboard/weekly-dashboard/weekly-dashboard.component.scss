@@ -200,6 +200,7 @@ section {
     width: 324px;
     &.direction {
       width: 162px;
+      overflow: visible;
     }
   }
   .fixed_table_content {
@@ -209,6 +210,12 @@ section {
       }
     }
   }
+}
+
+.direction__label{
+  overflow: visible;
+  white-space: nowrap;
+  z-index: 1;
 }
 
 @media screen and (max-width: 768px) {

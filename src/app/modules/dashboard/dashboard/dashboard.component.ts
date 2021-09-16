@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
     if (this.selectedSite) {
       this.sites = this.utility.getSites();
       if (this.sites.length === 0) {
-        this.router.navigateByUrl(PATHS.ACCESS_DENIED);
+        this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
       } else {
         this.redirectToPath(currentPageUrl);
       }
@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit {
         if (response.length > 0) {
           this.sites = response;
           if (this.sites.length === 0) {
-            this.router.navigateByUrl(PATHS.ACCESS_DENIED);
+            this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
           } else {
             this.selectedSite = response[0];
             this.utility.setSites(response);
@@ -61,11 +61,15 @@ export class DashboardComponent implements OnInit {
   computeSelectedNavIndex(path: string) {
     const tree = this.router.parseUrl(path);
     const children = tree.root.children[PRIMARY_OUTLET];
-    const segments = children.segments;
+    let segments = null;
     let currentItem = null;
-
-    if (segments.length && segments.length > 0) {
-      currentItem = this.navItems.find((item) => item.path[0] && segments[segments.length - 1].path && item.path[0].includes(segments[segments.length - 1].path));
+    if(children && children.segments){
+      segments = children.segments;
+      if(segments && segments.length && segments.length > 0){
+        currentItem = this.navItems.find((item) => item.path[0] && segments[segments.length - 1].path && item.path[0].includes(segments[segments.length - 1].path));
+      }
+    }else{
+      currentItem = this.navItems[0];
     }
     this.selectedNavIndex = (currentItem && currentItem.index) ? currentItem.index : null;
   }

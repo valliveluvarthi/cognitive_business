@@ -89,6 +89,10 @@ export class EditSitesComponent implements OnInit {
         this.ELEMENT_DATA.push(user);
         this.form.addControl(user.site, this.fb.control(user.siteRole));
       });
+      if(this.ELEMENT_DATA.length > 0){
+        this.selectedUserSite = this.ELEMENT_DATA[0].site;
+        this.form.controls['site'].setValue(this.selectedUserSite);
+      }
     },
       (err) => {
         this.util.notification.error({

@@ -38,10 +38,9 @@ const routes: Routes = [
     },
   },
   {
-    path: '',
-    redirectTo: PATHS.DAILY_DASHBOARD,
-    pathMatch: 'full',
-  },
+    path: '**',
+    redirectTo: '/', pathMatch: 'full'
+  }
 ];
 
 @NgModule({

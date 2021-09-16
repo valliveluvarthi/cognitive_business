@@ -149,8 +149,6 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('$element', { static: true }) $element: ElementRef;
   swh_max: any;
   swh_min: any;
-  popup_loading: boolean = false;
-  presentHour: string;
 
   constructor(
     private decisionService: DecisionService,
@@ -170,7 +168,7 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         this.getSiteData();
       }
       else if (this.selectedSite == null) {
-        this.router.navigateByUrl(PATHS.ACCESS_DENIED);
+        this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
       }
     });
   }
@@ -244,24 +242,13 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         currentDate = currentDate.substring(0, currentDate.length - 2);
         let indexOfCurrentDay = this.columns.indexOf(currentDate);
         let currentHour = moment().hours();
-        this.presentHour = moment().format('LT');
-        let hourarray = this.presentHour.split(" ");
-        console.log(hourarray);
-        if (currentHour < 12) {
-          this.presentHour = currentHour.toString() + " " + hourarray[1];
-        }
-        else if (currentHour === 12) {
-          this.presentHour = "12 " + hourarray[1];
-        } else if (currentHour > 12) {
-          this.presentHour = (currentHour - 12).toString() + " " + hourarray[1];
-        }
+
         let entriesPerDay = 24;
-        let index = (indexOfCurrentDay * entriesPerDay) + (currentHour - 1);
+        let index = (indexOfCurrentDay * entriesPerDay) + (currentHour - 1); 
         console.log(index);
         this.swh_max = this.forcastData?.["VHM0_max"]?.[index];
         this.swh_min = this.forcastData?.["VHM0"]?.[index];
-
-        let cd = currentDate + ", " + this.presentHour;
+        
         this.loading = false;
         this.setInitData();
       });
@@ -395,14 +382,6 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
 
   toggleGraph(data: any = { config: {} }) {
     let chartData = JSON.parse(JSON.stringify(data));
-    console.log(this.forcastData['from']);
-    
-    let modifiedlabels = [];
-    for (let i = 0; i < this.forcastData['from'].length; i++) {
-      let currentDateTime = moment(this.forcastData['from'][i]).format('MMM D, h A');
-      modifiedlabels.push(currentDateTime);
-    }
-    chartData.config.labels = modifiedlabels;
     if (chartData && chartData.config && chartData.config.options) {
       chartData.config.options.responsive = true;
       chartData.config.options.maintainAspectRatio = false;
@@ -440,8 +419,8 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
     this.mapChart.data[0].data =
       this.forcastData[this.selectedTurbineSignal.key];
     this.mapChart.data[0].label = this.selectedTurbineSignal.description;
-    for (let i = 0; i < this.forcastData['prediction'].length; i++) {
-      const element = this.forcastData['prediction'][i];
+    for (let i = 0; i < this.forcastData['gonogo'].length; i++) {
+      const element = this.forcastData['gonogo'][i];
       if (element == 1) {
         colors.push('rgb(71, 178, 80)');
       } else {
@@ -453,8 +432,6 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.showMapChart = true;
     }, 100);
-    console.log("Forcast Data : ", this.forcastData);
-    console.log("map Chart : ", this.mapChart)
   }
 
   setCurrentHourSignalData() {
@@ -564,7 +541,6 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
   }
 
   changePopupPeriod(period) {
-    this.popup_loading = true;
     this.selectedPopupPeriod = period;
     let range = this.decisionService.getStartAndEndDate(this.selectedPopupPeriod, this.popupFrom, this.popupTo);
     this.decisionService.getPopupChartData(this.popup.data['signals'], range, this.selectedSite.key, this.selectedTurbine.key).subscribe(data => {
@@ -572,10 +548,9 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
       this.popup.data['config']['labels'] = [];
       this.popup.data['config'] = {
         ...this.popup.data['config'],
-        data: data.data,
-        labels: data.labels
+        data,
+        labels: this.decisionService.gerRandomDigits(data[0].data.length)
       };
-      this.popup_loading = false;
     });
   }
 }

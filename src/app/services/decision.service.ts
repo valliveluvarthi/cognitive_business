@@ -28,7 +28,6 @@ export class DecisionService {
               family: 'Roboto',
               weight: 400,
             },
-            autoSkip: true,
             maxRotation: 0,
             minRotation: 0,
           },
@@ -720,7 +719,7 @@ export class DecisionService {
                   }
                   backgroundColor.push(color);
                 }
-                return (item[1] == 0 || item[1] == "") ? null : item[1];
+                return item[1];
               });
               let chartInfo: any = {
                 data: chartinfo,
@@ -729,7 +728,7 @@ export class DecisionService {
                 borderColor: backgroundColor,
                 backgroundColor: backgroundColor,
                 borderWidth: 2,
-                spanGaps: true,
+                spanGaps: false,
               };
               if (signal.series.style) {
                 chartInfo.borderDash = [5, 10];
@@ -920,21 +919,15 @@ export class DecisionService {
     return forkJoin(routes).pipe(
       map((response: any) => {
         let chartData = [];
-        let labels = [];
         signals.forEach((signal) => {
           if (response[signal.key]) {
             let chartInfo: any = {
-              data: response[signal.key].map((item, index) => {
-                labels.push(moment(item[0]).format('MMM D, h a'));
-                // return (item[1] == 0 || item[1] == "") ? null : item[1]
-                return (item[1] == 0 || item[1] == "") ? item[1] : item[1]
-              }),
+              data: response[signal.key].map((item, index) => item[1]),
               label: signal.name,
               type: signal.series.type,
               borderColor: signal.series.color,
               backgroundColor: signal.series.color,
               borderWidth: 2,
-              spanGaps: true,
             };
             if (signal.series.style) {
               chartInfo.borderDash = [5, 10];
@@ -942,8 +935,7 @@ export class DecisionService {
             chartData.push(chartInfo);
           }
         });
-        // console.log("chartData : ",chartData);
-        return {data: chartData, labels: labels};
+        return chartData;
       })
     );
   }

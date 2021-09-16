@@ -1,7 +1,7 @@
 @import "variables";
 
 .mat-icon{
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   cursor: pointer;
 }
 .content-wrapper{
@@ -118,11 +118,10 @@ input[type="text"]:focus-visible{
   background-color:$white-92;
 }
 
-.add,.delete{
+.add{
   color: $white-92;
   font-size: 1rem;
   cursor: pointer;
-  background-color: #1f1f1f;
 }
 .container{
   margin-top: 1rem;
@@ -136,7 +135,7 @@ input[type="text"]:focus-visible{
     font-size: 0.9rem;
   }
   &-button-padding{
-    padding-top: 0.5rem;
+    padding-top: 1.1rem;
     text-align: center;
     padding-left: 1rem;
   }

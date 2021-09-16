@@ -17,5 +17,5 @@ export enum PATHS {
     USER_MANAGEMENT = 'user-management',
     SITES_ADMIN = 'sites',
     TIDE = 'tide',
-    ACCESS_DENIED = 'access-denied'
+    CONTACT_ADMIN = 'access-denied'
 }

@@ -70,7 +70,7 @@ export class SiteAccessibilityComponent implements OnInit, OnDestroy {
         this.fetchGraphData();
       } 
       else if(this.selectedSite == null){
-        this.router.navigateByUrl(PATHS.ACCESS_DENIED);
+        this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
       }
     });
   }

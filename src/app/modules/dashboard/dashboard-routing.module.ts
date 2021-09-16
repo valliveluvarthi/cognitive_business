@@ -23,7 +23,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path : PATHS.ACCESS_DENIED,
+    path : PATHS.CONTACT_ADMIN,
     component : ContactAdminComponent
   }
 ];
