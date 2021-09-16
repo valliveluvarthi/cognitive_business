@@ -33,7 +33,7 @@ export class AdminSitesComponent implements OnInit {
     this.getUserRoles();
   }
   getSitesList() {
-    this.adminService.getSitesList().subscribe((data: Array<Object>) => {
+    this.adminService.getAllSites().subscribe((data: Array<Object>) => {
       this.ELEMENT_DATA = [];
       data.forEach(element => {
         let user: UserElement = {

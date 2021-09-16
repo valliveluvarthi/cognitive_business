@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
     if (this.selectedSite) {
       this.sites = this.utility.getSites();
       if (this.sites.length === 0) {
-        this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
+        this.router.navigateByUrl(PATHS.ACCESS_DENIED);
       } else {
         this.redirectToPath(currentPageUrl);
       }
@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit {
         if (response.length > 0) {
           this.sites = response;
           if (this.sites.length === 0) {
-            this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
+            this.router.navigateByUrl(PATHS.ACCESS_DENIED);
           } else {
             this.selectedSite = response[0];
             this.utility.setSites(response);

@@ -168,7 +168,7 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         this.getSiteData();
       }
       else if (this.selectedSite == null) {
-        this.router.navigateByUrl(PATHS.CONTACT_ADMIN);
+        this.router.navigateByUrl(PATHS.ACCESS_DENIED);
       }
     });
   }
