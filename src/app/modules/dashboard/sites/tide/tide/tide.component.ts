@@ -38,11 +38,11 @@ export class TideComponent implements OnInit, OnDestroy {
     scales: {
       x: {
         grid: {
-          display: false,
+          display: true,
           borderColor: 'rgba(0,0,0,0)'
         },
         ticks: {
-          display: false
+          display: true
         }
       },
       y: {
@@ -197,7 +197,7 @@ export class TideComponent implements OnInit, OnDestroy {
     for (let i = 0; i < data.length; i++) {
       const element = data[i];
       points.push(+element[1]);
-      const date = moment(element[0]).tz(this.selectedSite.timezone).format('DD-MM-YYYY h A');
+      const date = moment(element[0]).tz(this.selectedSite.timezone).format('MMM D, h A');
       this.labels.push(date);
     }
     this.data.push({ data: points, label: 'Tide', borderColor: '#47b250', backgroundColor: '#47b250', borderWidth: 2 });
