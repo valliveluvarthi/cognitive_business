@@ -54,6 +54,23 @@
           </ng-container>
         </div>
       </div>
+      <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab == 'map'">
+        <button ngbDropdownToggle>
+          {{ selectedTurbineSignal.description }}
+          <fa-icon [icon]="faChevronDown"></fa-icon>
+        </button>
+        <div ngbDropdownMenu class="dd-menu">
+          <ng-container *ngFor="let item of turbineSignals">
+            <button
+              (click)="changeTurbineSignal(item)"
+              ngbDropdownItem
+              [class.selected]="item == selectedTurbineSignal"
+            >
+              {{ item.description }}
+            </button>
+          </ng-container>
+        </div>
+      </div>
       <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab != 'map'">
         <button ngbDropdownToggle>
           {{ selectedPeriod.value }}
@@ -74,11 +91,11 @@
     </div>
     <div class="right" *ngIf="!loadingTurbineData">
       <span class="key">SWH<sub>max</sub>:</span>
-      <span class="value">&nbsp;{{swh_max}}</span>
+      <span class="value">&nbsp;{{ swh_max }}</span>
       <span class="key">SWH<sub>min</sub>:</span>
-      <span class="value">&nbsp;{{swh_min}}</span>
+      <span class="value">&nbsp;{{ swh_min }}</span>
       <span class="key">at</span>
-      <span class="value">{{presentHour}}</span>
+      <span class="value">{{ presentHour }}</span>
     </div>
   </header>
   <section *ngIf="!loading && !loadingTurbineData">
@@ -161,7 +178,7 @@
                   "
                   [style.height]="row.height + 'px'"
                 >
-                  <!-- <ng-container *ngIf="row.type == 'limit'">
+                   <!-- <ng-container *ngIf="row.type == 'limit'">
                     <fa-icon
                       *ngIf="item == 'go'"
                       [icon]="faCheckCircle"
@@ -307,7 +324,7 @@
         </div>
       </div>
       <div class="map-bottom-container">
-        <div class="dd-container">
+        <!-- <div class="dd-container">
           <div ngbDropdown class="d-inline-block dd">
             <button ngbDropdownToggle>
               {{ selectedTurbine.key }}
@@ -359,7 +376,7 @@
               </ng-container>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="slider-coontainer">
           <fa-icon
             *ngIf="!playing"
@@ -492,11 +509,17 @@
       <div class="chart">
         <div class="loading" *ngIf="popup_loading">
           <div class="spinner-border text-custom" role="status">
-              <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden">Loading...</span>
           </div>
-      </div>
-        <canvas baseChart [datasets]="popup.data.config.data" [labels]="popup.data.config.labels"
-          [options]="popup.data.config.options" [legend]="false" [type]="popup.data.config.type">
+        </div>
+        <canvas
+          baseChart
+          [datasets]="popup.data.config.data"
+          [labels]="popup.data.config.labels"
+          [options]="popup.data.config.options"
+          [legend]="false"
+          [type]="popup.data.config.type"
+        >
         </canvas>
       </div>
     </div>

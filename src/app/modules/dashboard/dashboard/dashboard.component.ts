@@ -33,11 +33,11 @@ export class DashboardComponent implements OnInit {
     this.selectedSite = this.utility.getSelectedSite();
     if (this.selectedSite) {
       this.sites = this.utility.getSites();
-      if (this.sites.length === 0) {
-        this.router.navigateByUrl(PATHS.ACCESS_DENIED);
-      } else {
-        this.redirectToPath(currentPageUrl);
-      }
+      // if (this.sites.length === 0) {
+      //   this.router.navigateByUrl(PATHS.ACCESS_DENIED);
+      // } else {
+      //   this.redirectToPath(currentPageUrl);
+      // }
     } else {
       this.utility.retrieveSitesList().subscribe((response: any) => {
         if (response.length > 0) {

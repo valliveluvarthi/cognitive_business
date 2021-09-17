@@ -75,7 +75,7 @@ export class FeedbackLogComponent implements OnInit, OnDestroy {
     this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe( site => {
       this.selectedSite = site ? site : null;
       this.popup.selectedSite = this.selectedSite;
-      if(this.selectedSite){
+      if(this.selectedSite && this.selectedSite !== "init"){
         this.fetchFeedbackLogData();
         this.fetchEditLogData();
       } 

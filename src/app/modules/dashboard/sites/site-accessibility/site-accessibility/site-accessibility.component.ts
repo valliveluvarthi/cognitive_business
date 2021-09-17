@@ -63,7 +63,7 @@ export class SiteAccessibilityComponent implements OnInit, OnDestroy {
     // this.fetchSitesData();
     this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe( site => {
       this.selectedSite = site ? site : null;
-      if(this.selectedSite){
+      if(this.selectedSite && this.selectedSite !== "init"){
         this.loadingReports = true;
         this.loadingGraphs = true;
         this.fetchReportingData();

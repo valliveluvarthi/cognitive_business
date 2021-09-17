@@ -80,7 +80,7 @@ export class TideComponent implements OnInit, OnDestroy {
     this.setPopupDate();
     this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe( site => {
       this.selectedSite = site ? site : null;
-      if(this.selectedSite){
+      if(this.selectedSite && this.selectedSite !== "init"){
         this.getThreshold();
       } else if(this.selectedSite == null){
         this.router.navigateByUrl(PATHS.ACCESS_DENIED);

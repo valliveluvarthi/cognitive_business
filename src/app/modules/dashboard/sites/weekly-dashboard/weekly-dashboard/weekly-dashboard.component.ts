@@ -166,7 +166,7 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
     this.selectedPeriod = this.period[0];
     this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe(site => {
       this.selectedSite = site ? site : null;
-      if (this.selectedSite) {
+      if (this.selectedSite && this.selectedSite !== "init") {
         this.getSiteData();
       }
       else if (this.selectedSite == null) {
@@ -246,7 +246,6 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         let currentHour = moment().hours();
         this.presentHour = moment().format('LT');
         let hourarray = this.presentHour.split(" ");
-        console.log(hourarray);
         if (currentHour < 12) {
           this.presentHour = currentHour.toString() + " " + hourarray[1];
         }
@@ -395,8 +394,6 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
 
   toggleGraph(data: any = { config: {} }) {
     let chartData = JSON.parse(JSON.stringify(data));
-    console.log(this.forcastData['from']);
-    
     let modifiedlabels = [];
     for (let i = 0; i < this.forcastData['from'].length; i++) {
       let currentDateTime = moment(this.forcastData['from'][i]).format('MMM D, h A');

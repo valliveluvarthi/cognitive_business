@@ -152,7 +152,7 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
     this.selectedPeriod = this.period[0];
     this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe( site => {
       this.selectedSite = site ? site : null;
-      if(this.selectedSite){
+      if(this.selectedSite && this.selectedSite !== "init"){
         this.getSiteData();
       } 
       else if(this.selectedSite == null){
@@ -234,11 +234,14 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       this.swh_max = this.forcastData?.["VHM0_max"]?.[indexOfNow];
       this.swh_min = this.forcastData?.["VHM0"]?.[indexOfNow];
       let previousHour = this.predictionData[indexOfNow-1];
-      this.presentHour = parseInt(previousHour[0].charAt(0)) + 1;
-      if(previousHour[0] === "11 AM"){
-        this.presentHour = this.presentHour.toString() + " PM";
-      }else{
-        this.presentHour = this.presentHour.toString() + " AM"
+      let previoushour_arr = previousHour[0].split(" ");
+      if(previousHour[0] === "12 PM"){
+        this.presentHour = "1 PM";
+      }else if(previousHour[0] === "12 AM"){
+        this.presentHour = "1 AM";
+      }
+      else{
+        this.presentHour = parseInt(previoushour_arr[0]) + 1 + " " + previoushour_arr[1];
       }
       let currentDate = moment().format("MMM Do");
       currentDate = currentDate.substring(0, currentDate.length - 2) + ", " + this.presentHour;

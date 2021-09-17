@@ -15,7 +15,7 @@ export class CommonUtilService {
   private sites = [];
   private selectedSite = null;
 
-  selectedSiteSub = new BehaviorSubject(null); 
+  selectedSiteSub = new BehaviorSubject("init"); 
   private notificationOptions = {
     timeOut: 3000,
     maxStack: 2,

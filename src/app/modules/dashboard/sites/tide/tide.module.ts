@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbDatepickerModule, NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgChartsModule } from 'ng2-charts';
+import { ChartsModule } from 'ng2-charts';
 
 import { TideRoutingModule } from './tide-routing.module';
 import { TideComponent } from './tide/tide.component';
@@ -19,7 +19,7 @@ import { TideComponent } from './tide/tide.component';
     NgbDatepickerModule,
     NgbDropdownModule,
     NgbModalModule,
-    NgChartsModule,
+    ChartsModule,
     FontAwesomeModule,
     TideRoutingModule
   ]

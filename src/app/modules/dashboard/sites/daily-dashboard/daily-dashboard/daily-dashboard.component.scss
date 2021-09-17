@@ -118,7 +118,7 @@ section {
       .slider-coontainer {
         padding-top: 16px;
         padding-left: 28px;
-        height: 85px;
+        height: 147px;
         display: flex;
         flex-direction: row;
         > fa-icon {
@@ -126,6 +126,7 @@ section {
           color: $white-88;
           cursor: pointer;
           margin-right: 22px;
+          margin-top: -16px;
         }
         > div {
           flex-grow: 1;
@@ -134,7 +135,7 @@ section {
             width: calc(100% + 18px);
             position: absolute;
             bottom: -25px;
-            height: 75px !important;
+            height: 128px !important;
             left: -20px;
           }
           .slider-wrapper {
