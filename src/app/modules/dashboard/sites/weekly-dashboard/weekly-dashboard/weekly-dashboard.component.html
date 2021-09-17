@@ -449,7 +449,6 @@
           >
           <span
             [class.active]="selectedPopupPeriod === 'custom'"
-            (click)="changePopupPeriod('custom')"
             >Date Range</span
           >
         </span>
@@ -460,6 +459,7 @@
             ngbDatepicker
             #sd="ngbDatepicker"
             [(ngModel)]="popupFrom"
+            (ngModelChange)="date('custom')"
           />
           <fa-icon [icon]="faCalender" (click)="sd.toggle()"></fa-icon>
         </div>
@@ -471,6 +471,7 @@
             #ed="ngbDatepicker"
             [(ngModel)]="popupTo"
             [minDate]="from"
+            (ngModelChange)="date('custom')"
           />
           <fa-icon [icon]="faCalender" (click)="ed.toggle()"></fa-icon>
         </div>

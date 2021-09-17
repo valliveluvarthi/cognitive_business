@@ -573,4 +573,39 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
       this.popup_loading = false;
     });
   }
+  date(period) {
+    if (this.popupFrom != null && this.popupTo != null) {
+     
+     let from_date = new Date(this.popupFrom.year, (this.popupFrom.month - 1), this.popupFrom.day);
+     let to_date = new Date(this.popupTo.year, (this.popupTo.month - 1), this.popupTo.day);
+
+      if (from_date < to_date) {
+        this.popup_loading = true;
+        this.selectedPopupPeriod = period;
+        let range = this.decisionService.getStartAndEndDate(this.selectedPopupPeriod, this.popupFrom, this.popupTo);
+        this.decisionService.getPopupChartData(this.popup.data['signals'], range, this.selectedSite.key, this.selectedTurbine.key).subscribe(data => {
+          this.popup.data['config'] = {
+            ...this.popup.data['config'],
+            data: data.data,
+            labels: data.labels
+          };
+          this.popup_loading = false;
+        });
+      }
+      else {
+        this.loading = false;
+        this.util.notification.error({
+          title: 'ERROR',
+          msg: 'Start date is less than end date.'
+        });
+      }
+    }
+    else {
+      this.loading = false;
+      this.util.notification.error({
+        title: 'ERROR',
+        msg: 'Enter valid dates.'
+      });
+    }
+  }
 }

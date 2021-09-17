@@ -140,22 +140,22 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
     private util: CommonUtilService,
     private route: ActivatedRoute,
     private router: Router,
-    ) {
-    
+  ) {
+
     mapboxgl.accessToken = environment.mapKey;
     this.layers = this.decisionService.getAvailableLayers();
     this.selectedLayer = this.layers[0];
-    
+
   }
 
   ngOnInit(): void {
     this.selectedPeriod = this.period[0];
-    this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe( site => {
+    this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe(site => {
       this.selectedSite = site ? site : null;
-      if(this.selectedSite && this.selectedSite !== "init"){
+      if (this.selectedSite && this.selectedSite !== "init") {
         this.getSiteData();
-      } 
-      else if(this.selectedSite == null){
+      }
+      else if (this.selectedSite == null) {
         this.router.navigateByUrl(PATHS.ACCESS_DENIED);
       }
     });
@@ -170,24 +170,24 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
     Definition => Recurring function
     param {}: mini => take time to recall function.
   */
-    reloadData(mini) {
-      if(mini) {
-        setTimeout(() => {
-          this.loadPageData();
-          this.reloadData(this.getReloadTime());    
-        },1000 * 60 * mini)
-      }
+  reloadData(mini) {
+    if (mini) {
+      setTimeout(() => {
+        this.loadPageData();
+        this.reloadData(this.getReloadTime());
+      }, 1000 * 60 * mini)
     }
-  
-    /* STEP: fun => getReloadTime 
-      Definition => Return time of next hour.
-      param {}: mini => take time to recall function.
-    */
-    getReloadTime() {
-      let currentMinute = +moment(new Date().setSeconds(0)).format('mm');
-      return 61 - currentMinute;
-    }
-  
+  }
+
+  /* STEP: fun => getReloadTime 
+    Definition => Return time of next hour.
+    param {}: mini => take time to recall function.
+  */
+  getReloadTime() {
+    let currentMinute = +moment(new Date().setSeconds(0)).format('mm');
+    return 61 - currentMinute;
+  }
+
   // fetchData() {
   //   this.loading = true;
   //   this.decisionService.getSites().subscribe((response: any) => {
@@ -219,33 +219,33 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
 
   /* STEP: fun => loadPageData 
      definition => loading a data for page
-  */ 
+  */
   loadPageData() {
-    this.decisionService.loadPageData(this.selectedSite.key, this.selectedTurbine.key, this.selectedPeriod.key, "daily").subscribe( async (response) =>  {
+    this.decisionService.loadPageData(this.selectedSite.key, this.selectedTurbine.key, this.selectedPeriod.key, "daily").subscribe(async (response) => {
       this.turbineSignals = response.turbineData.forecastSignals;
-      this.selectedTurbineSignal = this.turbineSignals[0];     
+      this.selectedTurbineSignal = this.turbineSignals[0];
       const range = this.decisionService.getRangeByType(this.selectedPeriod.key);
-      this.setHeader(range);      
+      this.setHeader(range);
 
       let result = await this.decisionService.setDailyRows(response, this.selectedSite, this.siteData, this.selectedTurbine.key, this.selectedPeriod.key);
-      this.forcastData = result.forcastData; 
-      this.columns = result.columns; 
+      this.forcastData = result.forcastData;
+      this.columns = result.columns;
       let indexOfNow = this.columns.indexOf("Now");
       this.swh_max = this.forcastData?.["VHM0_max"]?.[indexOfNow];
       this.swh_min = this.forcastData?.["VHM0"]?.[indexOfNow];
-      let previousHour = this.predictionData[indexOfNow-1];
+      let previousHour = this.predictionData[indexOfNow - 1];
       let previoushour_arr = previousHour[0].split(" ");
-      if(previousHour[0] === "12 PM"){
+      if (previousHour[0] === "12 PM") {
         this.presentHour = "1 PM";
-      }else if(previousHour[0] === "12 AM"){
+      } else if (previousHour[0] === "12 AM") {
         this.presentHour = "1 AM";
       }
-      else{
+      else {
         this.presentHour = parseInt(previoushour_arr[0]) + 1 + " " + previoushour_arr[1];
       }
       let currentDate = moment().format("MMM Do");
       currentDate = currentDate.substring(0, currentDate.length - 2) + ", " + this.presentHour;
-      
+
       this.rows = result.rows;
       this.setCurrentHourData(result);
 
@@ -273,7 +273,7 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
         this.turbines = this.siteData.turbines;
         this.selectedTurbine = this.turbines[0];
         this.loading = false;
-         // STEP: 1 Retrieve chart data
+        // STEP: 1 Retrieve chart data
         this.loadPageData();
       } else {
         this.loading = false;
@@ -415,7 +415,7 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       const element = this.rows[0].data[i];
       if (element === "go") {
         colors.push('rgb(71, 178, 80)');
-      } else if (element === "no-go"){
+      } else if (element === "no-go") {
         colors.push('rgb(255, 90, 89)');
       }
     }
@@ -538,14 +538,49 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
     this.popup_loading = true;
     this.selectedPopupPeriod = period;
     let range = this.decisionService.getStartAndEndDate(this.selectedPopupPeriod, this.popupFrom, this.popupTo);
-    this.decisionService.getPopupChartData(this.popup.data['signals'],range, this.selectedSite.key, this.selectedTurbine.key).subscribe( data => {
+    this.decisionService.getPopupChartData(this.popup.data['signals'], range, this.selectedSite.key, this.selectedTurbine.key).subscribe(data => {
       this.popup.data['config'] = {
-        ...this.popup.data['config'], 
+        ...this.popup.data['config'],
         data: data.data,
         labels: data.labels
       };
       this.popup_loading = false;
     });
   }
-  
+  date(period) {
+    if (this.popupFrom != null && this.popupTo != null) {
+     
+     let from_date = new Date(this.popupFrom.year, (this.popupFrom.month - 1), this.popupFrom.day);
+     let to_date = new Date(this.popupTo.year, (this.popupTo.month - 1), this.popupTo.day);
+
+      if (from_date < to_date) {
+        this.popup_loading = true;
+        this.selectedPopupPeriod = period;
+        let range = this.decisionService.getStartAndEndDate(this.selectedPopupPeriod, this.popupFrom, this.popupTo);
+        this.decisionService.getPopupChartData(this.popup.data['signals'], range, this.selectedSite.key, this.selectedTurbine.key).subscribe(data => {
+          this.popup.data['config'] = {
+            ...this.popup.data['config'],
+            data: data.data,
+            labels: data.labels
+          };
+          this.popup_loading = false;
+        });
+      }
+      else {
+        this.loading = false;
+        this.util.notification.error({
+          title: 'ERROR',
+          msg: 'Start date is less than end date.'
+        });
+      }
+    }
+    else {
+      this.loading = false;
+      this.util.notification.error({
+        title: 'ERROR',
+        msg: 'Enter valid dates.'
+      });
+    }
+  }
+
 }

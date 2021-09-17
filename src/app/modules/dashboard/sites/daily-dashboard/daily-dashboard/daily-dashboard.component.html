@@ -258,14 +258,14 @@
                     <span [class.active]="selectedPopupPeriod === 'p30d'" (click)="changePopupPeriod('p30d')">Past 30d</span>
                     <span [class.active]="selectedPopupPeriod === 'p90d'" (click)="changePopupPeriod('p90d')">Past 90d</span>
                     <span [class.active]="selectedPopupPeriod === 'p360d'" (click)="changePopupPeriod('p360d')">Past 360d</span>
-                    <span [class.active]="selectedPopupPeriod === 'custom'" (click)="changePopupPeriod('custom')">Date Range</span>
+                    <span [class.active]="selectedPopupPeriod === 'custom'">Date Range</span>
                 </span>
                 <div class="date-picker">
-                    <input placeholder="Start Date" name="startDate" ngbDatepicker #sd="ngbDatepicker" [(ngModel)]="popupFrom" >
+                    <input placeholder="Start Date" name="startDate" ngbDatepicker #sd="ngbDatepicker" [(ngModel)]="popupFrom" (ngModelChange)="date('custom')">
                     <fa-icon [icon]="faCalender" (click)="sd.toggle()"></fa-icon>
                 </div>
                 <div class="date-picker">
-                    <input placeholder="End Date" name="endDate" ngbDatepicker #ed="ngbDatepicker" [(ngModel)]="popupTo" [minDate]="from">
+                    <input placeholder="End Date" name="endDate" ngbDatepicker #ed="ngbDatepicker" [(ngModel)]="popupTo" [minDate]="from" (ngModelChange)="date('custom')">
                     <fa-icon [icon]="faCalender" (click)="ed.toggle()"></fa-icon>
                 </div>
             </div>
