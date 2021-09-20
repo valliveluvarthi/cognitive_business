@@ -80,6 +80,8 @@ export class DecisionService {
   mergePredectionData(response, siteData) {
     const data = [];
     const { confidence, prediction } = response;
+    console.log("confidence : ", confidence);
+    console.log("prediction : ", prediction);
     const now = moment().tz(siteData.timezone).format('DD h A');
     for (let i = 0; i < prediction.vectors.length; i++) {
       const element = prediction.vectors[i];

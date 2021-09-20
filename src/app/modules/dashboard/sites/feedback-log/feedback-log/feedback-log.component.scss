@@ -277,11 +277,16 @@ ngb-datepicker {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 880px) {
   section {
-    border-top: 0;
-    height: unset;
+    border-top: 112px solid transparent;
   }
+  header {
+    height: 112px;
+  }
+}
+
+@media screen and (max-width: 768px) {
   .content {
     overflow: hidden;
     padding: 20px 10px;

@@ -219,12 +219,15 @@ section {
   z-index: 1;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (min-width: 630px) and (max-width: 1073px) {
   section {
-    border-top: 0;
-    height: unset;
+    border-top: 112px solid transparent;
+  }
+  header {
+    height: 112px;
   }
 }
+
 ::ng-deep {
   .circle {
     width: 20px;

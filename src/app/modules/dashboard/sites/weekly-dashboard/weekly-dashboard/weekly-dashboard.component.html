@@ -34,7 +34,7 @@
           </ng-container>
         </div>
       </div> -->
-      <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab != 'map'">
+      <div ngbDropdown class="d-inline-block dd">
         <button
           ngbDropdownToggle
           *ngIf="selectedTurbine && selectedTurbine.key"
@@ -71,7 +71,7 @@
           </ng-container>
         </div>
       </div>
-      <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab != 'map'">
+      <!-- <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab != 'map'">
         <button ngbDropdownToggle>
           {{ selectedPeriod.value }}
           <fa-icon [icon]="faChevronDown"></fa-icon>
@@ -87,7 +87,7 @@
             </button>
           </ng-container>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="right" *ngIf="!loadingTurbineData">
       <span class="key">SWH<sub>max</sub>:</span>
@@ -459,7 +459,7 @@
             ngbDatepicker
             #sd="ngbDatepicker"
             [(ngModel)]="popupFrom"
-            (ngModelChange)="date('custom')"
+            (ngModelChange)="onRangeChange('custom')"
           />
           <fa-icon [icon]="faCalender" (click)="sd.toggle()"></fa-icon>
         </div>
@@ -470,8 +470,8 @@
             ngbDatepicker
             #ed="ngbDatepicker"
             [(ngModel)]="popupTo"
-            [minDate]="from"
-            (ngModelChange)="date('custom')"
+            [minDate]="popupFrom"
+            (ngModelChange)="onRangeChange('custom')"
           />
           <fa-icon [icon]="faCalender" (click)="ed.toggle()"></fa-icon>
         </div>

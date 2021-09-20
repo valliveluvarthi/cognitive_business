@@ -44,7 +44,7 @@
                     </ng-container>
                 </div>
             </div>
-            <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab != 'map'">
+            <!-- <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab != 'map'">
                 <button ngbDropdownToggle>{{selectedPeriod.value}}
                     <fa-icon [icon]="faChevronDown"></fa-icon>
                 </button>
@@ -54,7 +54,7 @@
                             [class.selected]="item == selectedPeriod">{{item.value}}</button>
                     </ng-container>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="right" *ngIf="!loadingTurbineData">
             <!-- <div class="live-tag">
@@ -151,8 +151,7 @@
                                     <canvas height="{{row.height || 192}}" baseChart [datasets]="row.config.data"
                                         [labels]="row.config.labels" [options]="row.config.options" [legend]="false"
                                         [type]="row.config.type"
-                                        [style.width]="'calc((max(100px, (100vw - 192px) / '+columns.length+') * '+columns.length+') - 24px)'"
-                                        >
+                                    >
                                     </canvas>
                                 </div>
                             </ng-container>
@@ -261,11 +260,11 @@
                     <span [class.active]="selectedPopupPeriod === 'custom'">Date Range</span>
                 </span>
                 <div class="date-picker">
-                    <input placeholder="Start Date" name="startDate" ngbDatepicker #sd="ngbDatepicker" [(ngModel)]="popupFrom" (ngModelChange)="date('custom')">
+                    <input placeholder="Start Date" name="startDate" ngbDatepicker #sd="ngbDatepicker" [(ngModel)]="popupFrom" (ngModelChange)="onRangeChange('custom')">
                     <fa-icon [icon]="faCalender" (click)="sd.toggle()"></fa-icon>
                 </div>
                 <div class="date-picker">
-                    <input placeholder="End Date" name="endDate" ngbDatepicker #ed="ngbDatepicker" [(ngModel)]="popupTo" [minDate]="from" (ngModelChange)="date('custom')">
+                    <input placeholder="End Date" name="endDate" ngbDatepicker #ed="ngbDatepicker" [(ngModel)]="popupTo" [minDate]="popupFrom" (ngModelChange)="onRangeChange('custom')">
                     <fa-icon [icon]="faCalender" (click)="ed.toggle()"></fa-icon>
                 </div>
             </div>

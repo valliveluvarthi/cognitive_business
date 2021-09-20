@@ -437,11 +437,11 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
     this.mapChart.data[0].data =
       this.forcastData[this.selectedTurbineSignal.key];
     this.mapChart.data[0].label = this.selectedTurbineSignal.description;
-    for (let i = 0; i < this.forcastData['gonogo'].length; i++) {
-      const element = this.forcastData['gonogo'][i];
-      if (element == 1) {
+    for (let i = 0; i < this.rows[0].data.length; i++) {
+      const element = this.rows[0].data[i];
+      if (element === "go") {
         colors.push('rgb(71, 178, 80)');
-      } else {
+      } else if (element === "no-go") {
         colors.push('rgb(255, 90, 89)');
       }
     }
@@ -513,6 +513,10 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
       const color = prediction[1][element.key];
       const span = document.createElement('span');
       span.className = 'circle ' + color;
+      span.setAttribute("title",element.key);
+      span.addEventListener("click",() => {
+        this.changeTurbine(element);
+      });
       const marker = new mapboxgl.Marker({
         element: span,
       })
@@ -573,7 +577,7 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
       this.popup_loading = false;
     });
   }
-  date(period) {
+  onRangeChange(period) {
     if (this.popupFrom != null && this.popupTo != null) {
      
      let from_date = new Date(this.popupFrom.year, (this.popupFrom.month - 1), this.popupFrom.day);
@@ -596,16 +600,16 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.util.notification.error({
           title: 'ERROR',
-          msg: 'Start date is less than end date.'
+          msg: 'Start date is grater than end date.'
         });
       }
     }
-    else {
-      this.loading = false;
-      this.util.notification.error({
-        title: 'ERROR',
-        msg: 'Enter valid dates.'
-      });
-    }
+    // else {
+    //   this.loading = false;
+    //   this.util.notification.error({
+    //     title: 'ERROR',
+    //     msg: 'Enter valid dates.'
+    //   });
+    // }
   }
 }

@@ -150,12 +150,12 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedPeriod = this.period[0];
-    this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe(site => {
+    this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe( site => {
       this.selectedSite = site ? site : null;
-      if (this.selectedSite && this.selectedSite !== "init") {
+      if(this.selectedSite && this.selectedSite !== "init"){
         this.getSiteData();
-      }
-      else if (this.selectedSite == null) {
+      } 
+      else if(this.selectedSite == null){
         this.router.navigateByUrl(PATHS.ACCESS_DENIED);
       }
     });
@@ -460,6 +460,7 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       return;
     }
     let prediction;
+    console.log("predictionData : ",this.predictionData)
     for (let i = 0; i < this.predictionData.length; i++) {
       const element = this.predictionData[i];
       if (element[0] == 'Now') {
@@ -480,11 +481,16 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
 
   setMarkersByPrediction(prediction) {
     this.clearAllMarkers();
+    console.log("prediction : ",prediction);
     for (let i = 0; i < this.turbines.length; i++) {
       const element = this.turbines[i];
       const color = prediction[1][element.key];
       const span = document.createElement('span');
       span.className = 'circle ' + color;
+      span.setAttribute("title",element.key);
+      span.addEventListener("click",() => {
+        this.changeTurbine(element);
+      })
       const marker = new mapboxgl.Marker({
         element: span
       }).setLngLat([element.longitude, element.latitude]).addTo(this.map);
@@ -547,7 +553,7 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       this.popup_loading = false;
     });
   }
-  date(period) {
+  onRangeChange(period) {
     if (this.popupFrom != null && this.popupTo != null) {
      
      let from_date = new Date(this.popupFrom.year, (this.popupFrom.month - 1), this.popupFrom.day);
@@ -570,17 +576,17 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.util.notification.error({
           title: 'ERROR',
-          msg: 'Start date is less than end date.'
+          msg: 'Start date is grater than end date.'
         });
       }
     }
-    else {
-      this.loading = false;
-      this.util.notification.error({
-        title: 'ERROR',
-        msg: 'Enter valid dates.'
-      });
-    }
+    // else {
+    //   this.loading = false;
+    //   this.util.notification.error({
+    //     title: 'ERROR',
+    //     msg: 'Enter valid dates.'
+    //   });
+    // }
   }
 
 }

@@ -196,27 +196,37 @@ section {
     }
   }
 }
-@media screen and (min-width: 750px) and (max-width: 1073px) {
+@media screen and (min-width: 630px) and (max-width: 1073px) {
   section {
-    border-top: 134px solid transparent;
+    border-top: 112px solid transparent;
+  }
+  header {
+    height: 112px;
   }
 }
-@media screen and (min-width: 660px) and (max-width: 749px) {
-  section {
-    border-top: 188px solid transparent;
-  }
-}
+// @media screen and (min-width: 660px) and (max-width: 749px) {
+//   section {
+//     border-top: 112px solid transparent;
+//   }
+//   header {
+//     height: 112px;
+//   }
+//   // section {
+//   //   border-top: 188px solid transparent;
+//   // }
+// }
 ::ng-deep {
   .circle {
     width: 20px;
     height: 20px;
     border-radius: 50%;
+    cursor: pointer;
   }
 }
 
-@media screen and (max-width: 768px) {
-  section {
-    border-top: 0;
-    height: unset;
-  }
-}
+// @media screen and (max-width: 768px) {
+//   section {
+//     border-top: 0;
+//     height: unset;
+//   }
+// }
