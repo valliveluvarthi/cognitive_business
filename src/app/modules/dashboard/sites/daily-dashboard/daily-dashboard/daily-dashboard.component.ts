@@ -161,8 +161,10 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedPeriod = this.period[0];
-    if (localStorage.getItem("activeTab") != "") {
+    if (localStorage.getItem("activeTab") != "" && localStorage.getItem("activeTab") != null) {
       this.activeTab = localStorage.getItem("activeTab");
+    }else{
+      this.activeTab = "map";
     }
     this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe(site => {
       this.selectedSite = site ? site : null;
