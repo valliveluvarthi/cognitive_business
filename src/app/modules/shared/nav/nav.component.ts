@@ -23,6 +23,7 @@ export class NavComponent implements OnInit {
   }
 
   navigate(path, index) {
+    localStorage.setItem("activeTab", "");
     this.toggleNavBar.emit({path, index});
   }
 

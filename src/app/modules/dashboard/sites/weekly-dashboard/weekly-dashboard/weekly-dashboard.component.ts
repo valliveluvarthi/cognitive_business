@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import {
   faArrowDown,
@@ -35,6 +35,10 @@ export interface tSignalObj {
   styleUrls: ['./weekly-dashboard.component.scss'],
 })
 export class WeeklyDashboardComponent implements OnInit, OnDestroy {
+  @HostListener('window:beforeunload ', ['$event'])
+  unloadHandler(event) {
+     localStorage.setItem("activeTab","");
+  }
   SIGNAL_DATA: tSignalObj[] = [];
   faChevronDown = faChevronDown;
   faCheckCircle = faCheckCircle;
@@ -171,6 +175,9 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedPeriod = this.period[0];
+    if (localStorage.getItem("activeTab") != "") {
+      this.activeTab = localStorage.getItem("activeTab");
+    }
     this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe(site => {
       this.selectedSite = site ? site : null;
       if (this.selectedSite && this.selectedSite !== "init") {
@@ -483,6 +490,14 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
     this.popup.show = false;
     this.activeTab = tab;
     this.setInitData();
+  }
+  redirectTo() {
+    console.log(this.activeTab);
+    localStorage.setItem("activeTab", this.activeTab);
+    let current_url = this.router.url;
+    current_url = current_url.replace("weekly-dashboard", PATHS.DAILY_DASHBOARD);
+    this.router.navigateByUrl(current_url);
+    console.log(current_url);
   }
 
   loadMap() {

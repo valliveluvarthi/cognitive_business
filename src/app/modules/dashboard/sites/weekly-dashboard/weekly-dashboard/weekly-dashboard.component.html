@@ -43,7 +43,7 @@
       </div>
       <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab == 'map'">
         <button ngbDropdownToggle>
-          {{ selectedTurbineSignal.description }}
+          {{ selectedTurbineSignal?.description }}
           <fa-icon [icon]="faChevronDown"></fa-icon>
         </button>
         <div ngbDropdownMenu class="dd-menu">
@@ -55,6 +55,9 @@
           </ng-container>
         </div>
       </div>
+      <span class="switch">
+        <span [class.active]="activeTab == 'daily'" (click)="redirectTo()">Daily</span>
+    </span>
       <!-- <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab != 'map'">
         <button ngbDropdownToggle>
           {{ selectedPeriod.value }}
