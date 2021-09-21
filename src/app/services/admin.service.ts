@@ -58,8 +58,8 @@ export class AdminService {
   getUserSitesList(userId){
     return this.http.get(ApiConstant.USER_SITES.replace("{{userId}}", userId));
   }
-  getSiteRoles(){
-    return this.http.get(ApiConstant.USER_ROLES);
+  getSiteRoles(siteKey){
+    return this.http.get(ApiConstant.SITE_ROLES.replace('{{siteKey}}', siteKey));
   }
   deleteSiteFromUser(userId,siteKey){
     return this.http.delete(ApiConstant.DELETE_SITE_FROM_USER.replace("{{userId}}", userId).replace('{{siteKey}}', siteKey));

@@ -52,7 +52,7 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
   faPlayCircle = faPlayCircle;
   faPauseCircle = faPauseCircle;
 
-  activeTab = 'charts';
+  activeTab = 'map';
   loading = false;
   loadingTurbineData = false;
   selectedSite;

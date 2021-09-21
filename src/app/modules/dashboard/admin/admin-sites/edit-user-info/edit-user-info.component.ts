@@ -58,7 +58,7 @@ export class EditUserInfoComponent implements OnInit {
       'role': ["", Validators.compose([Validators.required])],
     });
     this.getSiteUsers();
-    this.getUserRoles();
+    this.getSiteRoles();
     this.getAdminUsers();
   }
   getAdminUsers() {
@@ -108,8 +108,8 @@ export class EditUserInfoComponent implements OnInit {
         });
       });
   }
-  getUserRoles() {
-    this.adminService.getSiteRoles().subscribe((data) => {
+  getSiteRoles() {
+    this.adminService.getSiteRoles(this.item.key).subscribe((data) => {
       this.userRoles = data;
       if (this.userRoles.length > 0) {
         this.selectedUserRole = this.userRoles[0];

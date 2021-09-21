@@ -98,7 +98,7 @@ export class EditSitesComponent implements OnInit {
       });
   }
   getUserRoles() {
-    this.adminService.getSiteRoles().subscribe((data) => {
+    this.adminService.getUserRoles().subscribe((data) => {
       this.userRoles = data;
       if (this.userRoles.length > 0) {
         this.selectedUserRole = this.userRoles[0];
