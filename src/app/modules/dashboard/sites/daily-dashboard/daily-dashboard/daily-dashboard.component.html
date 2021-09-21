@@ -176,7 +176,7 @@
                             <span class="title">{{signal?.description}}</span>
                             <span class="title__number"
                                 *ngIf="signal.unit != 'degrees' && signal.unit != 'boolean'">{{signal.val}}</span>
-                            <fa-icon [icon]="faArrowLeft" style="transform: rotate({{signal.val}}deg)"
+                            <fa-icon [icon]="faArrowDown" style="transform: rotate({{signal.val}}deg)"
                                 *ngIf="signal.unit == 'degrees'">
                             </fa-icon>
                             <span *ngIf="signal.unit == 'boolean'">
