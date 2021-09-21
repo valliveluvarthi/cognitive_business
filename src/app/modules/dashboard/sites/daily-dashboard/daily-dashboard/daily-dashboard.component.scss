@@ -30,18 +30,27 @@ section {
         width: 100%;
       }
       .layers {
-        width: 280px;
-        background-color: $black-28;
-        padding: 24px;
-        position: relative;
+        overflow-y: scroll;
+        width: 35%;
+        background-color: #474747;
+        padding: 1rem;
+        position: relative;    
+        .signal-data:not(:last-child){
+          margin-bottom: 1.5rem;
+        }
         .title {
           color: $white-92;
           margin: 0;
-          font-size: 20px;
+          font-size: 16px;
           margin-bottom: 10px;
+          &__number{
+            float: right;
+          }
         }
         fa-icon {
           display: inline-block;
+          float: right;
+          font-size: 15px;
         }
         /* > div {
           padding: 0 24px;
@@ -171,27 +180,28 @@ section {
         }
       }
       .time-contianer {
-        height: 56px;
-        display: flex;
-        flex-direction: row;
-        div {
-          height: 56px;
-          font-size: 14px;
-          color: $white-88;
-          flex: 1;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background-color: $black-20;
-          &.now {
-            background-color: $black-16;
-          }
-          &:first-child {
-            width: 90px;
-            flex: none;
-            background-color: $black-18;
-          }
-        }
+        display: none;
+        // height: 56px;
+        // display: flex;
+        // flex-direction: row;
+        // div {
+        //   height: 56px;
+        //   font-size: 14px;
+        //   color: $white-88;
+        //   flex: 1;
+        //   display: flex;
+        //   justify-content: center;
+        //   align-items: center;
+        //   background-color: $black-20;
+        //   &.now {
+        //     background-color: $black-16;
+        //   }
+        //   &:first-child {
+        //     width: 90px;
+        //     flex: none;
+        //     background-color: $black-18;
+        //   }
+        // }
       }
     }
   }

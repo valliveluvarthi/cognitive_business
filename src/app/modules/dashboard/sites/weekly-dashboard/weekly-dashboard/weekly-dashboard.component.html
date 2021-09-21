@@ -8,14 +8,8 @@
     <span class="title">Weekly Dashboard</span>
     <div class="left">
       <span class="switch">
-        <span
-          [class.active]="activeTab == 'charts'"
-          (click)="changeTab('charts')"
-          >Charts</span
-        >
-        <span [class.active]="activeTab == 'map'" (click)="changeTab('map')"
-          >Map</span
-        >
+        <span [class.active]="activeTab == 'charts'" (click)="changeTab('charts')">Charts</span>
+        <span [class.active]="activeTab == 'map'" (click)="changeTab('map')">Map</span>
       </span>
       <!-- <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab == 'map'">
         <button ngbDropdownToggle>
@@ -35,20 +29,13 @@
         </div>
       </div> -->
       <div ngbDropdown class="d-inline-block dd">
-        <button
-          ngbDropdownToggle
-          *ngIf="selectedTurbine && selectedTurbine.key"
-        >
+        <button ngbDropdownToggle *ngIf="selectedTurbine && selectedTurbine.key">
           {{ selectedTurbine.key }}
           <fa-icon [icon]="faChevronDown"></fa-icon>
         </button>
         <div ngbDropdownMenu class="dd-menu">
           <ng-container *ngFor="let item of turbines">
-            <button
-              (click)="changeTurbine(item)"
-              ngbDropdownItem
-              [class.selected]="item == selectedTurbine"
-            >
+            <button (click)="changeTurbine(item)" ngbDropdownItem [class.selected]="item == selectedTurbine">
               {{ item.key }}
             </button>
           </ng-container>
@@ -61,11 +48,8 @@
         </button>
         <div ngbDropdownMenu class="dd-menu">
           <ng-container *ngFor="let item of turbineSignals">
-            <button
-              (click)="changeTurbineSignal(item)"
-              ngbDropdownItem
-              [class.selected]="item == selectedTurbineSignal"
-            >
+            <button (click)="changeTurbineSignal(item)" ngbDropdownItem
+              [class.selected]="item == selectedTurbineSignal">
               {{ item.description }}
             </button>
           </ng-container>
@@ -104,43 +88,26 @@
         <div class="fixed-column flex flex_none date">
           {{ header }}
         </div>
-        <div
-          id="table_header_scroller"
-          class="fixed_scroll_wrapper overflow_hidden flex"
-        >
-          <div
-            *ngFor="let column of columns"
-            class="card-custom flex_none"
-            [style.width]="
+        <div id="table_header_scroller" class="fixed_scroll_wrapper overflow_hidden flex">
+          <div *ngFor="let column of columns" class="card-custom flex_none" [style.width]="
               'max(324px, (100vw - 192px) / ' + columns.length + ')'
-            "
-          >
+            ">
             {{ column }}
           </div>
           <div class="spacer flex_none"></div>
         </div>
       </div>
       <div class="fixed_table_content flex">
-        <div
-          id="table_body_header_scroller"
-          class="fixed-column flex flex_none flex_column overflow_hidden"
-        >
+        <div id="table_body_header_scroller" class="fixed-column flex flex_none flex_column overflow_hidden">
           <div class="flex flex_column">
             <div class="flex" *ngFor="let row of rows">
-              <div
-                class="card-custom flex_none {{ row.type }}"
-                [ngClass]="{ 'has-unit': row.unit }"
-                [style.height]="row.height + 'px'"
-              >
-                <span class="row-title">{{ row.title }}</span
-                ><span *ngIf="row.units" class="unit">{{ row.units }}</span>
+              <div class="card-custom flex_none {{ row.type }}" [ngClass]="{ 'has-unit': row.unit }"
+                [style.height]="row.height + 'px'">
+                <span class="row-title">{{ row.title }}</span><span *ngIf="row.units" class="unit">{{ row.units
+                  }}</span>
                 <div class="wave-discription-wrapper">
                   <ng-container *ngFor="let item of row.signals">
-                    <div
-                      class="wave-discription"
-                      *ngIf="item.name"
-                      [ngClass]="{ live: item.is_live }"
-                    >
+                    <div class="wave-discription" *ngIf="item.name" [ngClass]="{ live: item.is_live }">
                       <div>
                         <hr [style.borderColor]="item.series.color" />
                         {{ item.name }}
@@ -152,33 +119,21 @@
                     </div>
                   </ng-container>
                 </div>
-                <fa-icon
-                  (click)="toggleGraph(row)"
-                  [icon]="faExternalLink"
-                  [classes]="['open-chart']"
-                >
+                <fa-icon (click)="toggleGraph(row)" [icon]="faExternalLink" [classes]="['open-chart']">
                 </fa-icon>
               </div>
             </div>
           </div>
         </div>
-        <div
-          id="table_body_content_scroller"
-          class="fixed_scroll_wrapper overflow_auto"
-          (scroll)="onScroll($event)"
-        >
+        <div id="table_body_content_scroller" class="fixed_scroll_wrapper overflow_auto" (scroll)="onScroll($event)">
           <div class="scroll-content">
             <div class="flex" *ngFor="let row of rows">
               <ng-container *ngFor="let item of row.data; let i = index">
-                <div
-                  class="card-custom {{ row.type }}"
-                  *ngIf="row.type != 'direction' && row.type != 'limit'"
+                <div class="card-custom {{ row.type }}" *ngIf="row.type != 'direction' && row.type != 'limit'"
                   [style.width]="
                     'max(324px, (100vw - 192px) / ' + columns.length + ')'
-                  "
-                  [style.height]="row.height + 'px'"
-                >
-                   <!-- <ng-container *ngIf="row.type == 'limit'">
+                  " [style.height]="row.height + 'px'">
+                  <!-- <ng-container *ngIf="row.type == 'limit'">
                     <fa-icon
                       *ngIf="item == 'go'"
                       [icon]="faCheckCircle"
@@ -192,10 +147,7 @@
                     ></fa-icon>
                   </ng-container> -->
                 </div>
-                <div
-                  *ngIf="row.type == 'limit'"
-                  class="card-custom {{ row.type }}"
-                  [style.height]="row.height + 'px'"
+                <div *ngIf="row.type == 'limit'" class="card-custom {{ row.type }}" [style.height]="row.height + 'px'"
                   [style.width]="
                     'max(324px / (' +
                     row.data.length +
@@ -204,26 +156,13 @@
                     '), (100vw - 192px) / ' +
                     row.data.length +
                     ')'
-                  "
-                >
-                  <fa-icon
-                    *ngIf="item == 'go'"
-                    [icon]="faCheckCircle"
-                    [classes]="['tick']"
-                    style="font-size: .6em;"
-                  >
+                  ">
+                  <fa-icon *ngIf="item == 'go'" [icon]="faCheckCircle" [classes]="['tick']" style="font-size: .6em;">
                   </fa-icon>
-                  <fa-icon
-                    *ngIf="item == 'no-go'"
-                    [icon]="faExclamation"
-                    [classes]="['excalamation']"
-                    style="font-size: .6em;"
-                  ></fa-icon>
+                  <fa-icon *ngIf="item == 'no-go'" [icon]="faExclamation" [classes]="['excalamation']"
+                    style="font-size: .6em;"></fa-icon>
                 </div>
-                <div
-                  *ngIf="row.type == 'direction'"
-                  class="card-custom {{ row.type }}"
-                  [style.width]="
+                <div *ngIf="row.type == 'direction'" class="card-custom {{ row.type }}" [style.width]="
                     'max(324px / (' +
                     row.data.length +
                     '/' +
@@ -231,45 +170,25 @@
                     '), (100vw - 192px) / ' +
                     row.data.length +
                     ')'
-                  "
-                >
+                  ">
                   <div class="direction">
-                    <fa-icon
-                      [title]="item"
-                      [icon]="faArrowDown"
-                      style="transform: rotate({{ item }}deg)"
-                    ></fa-icon>
-                    <span
-                      class="direction__label"
-                      *ngIf="
+                    <fa-icon [title]="item" [icon]="faArrowDown" style="transform: rotate({{ item }}deg)"></fa-icon>
+                    <span class="direction__label" *ngIf="
                         row.show_every_x_label &&
                         i % row.show_every_x_label === 0
-                      "
-                      >{{ item ? item : "0" }}</span
-                    >
+                      ">{{ item ? item : "0" }}</span>
                   </div>
                 </div>
-                <div
-                  class="chart-wrapper"
-                  *ngIf="row.type == 'chart' && i == 0"
-                  [style.height]="row.height + 'px'"
-                >
-                  <canvas
-                    height="{{ row.height || 192 }}"
-                    baseChart
-                    [datasets]="row.config.data"
-                    [labels]="row.config.labels"
-                    [options]="row.config.options"
-                    [legend]="false"
-                    [type]="row.config.type"
-                    [style.width]="
+                <div class="chart-wrapper" *ngIf="row.type == 'chart' && i == 0" [style.height]="row.height + 'px'">
+                  <canvas height="{{ row.height || 192 }}" baseChart [datasets]="row.config.data"
+                    [labels]="row.config.labels" [options]="row.config.options" [legend]="false"
+                    [type]="row.config.type" [style.width]="
                       'calc((max(324px, (100vw - 192px) / ' +
                       columns.length +
                       ') * ' +
                       columns.length +
                       ') - 24px)'
-                    "
-                  >
+                    ">
                   </canvas>
                 </div>
               </ng-container>
@@ -283,35 +202,38 @@
       <div class="map-top-container">
         <div id="map"></div>
         <div class="layers">
-          <p class="title">{{ selectedTurbineSignal.description }}</p>
-          <p
-            *ngIf="
+          <ng-container *ngFor="let signal of SIGNAL_DATA;let i = index;">
+            <div class="signal-data">
+              <span class="title">{{signal?.description}}</span>
+              <span class="title__number"
+                *ngIf="signal.unit != 'degrees' && signal.unit != 'boolean'">{{signal.val}}</span>
+              <fa-icon [icon]="faArrowLeft" style="transform: rotate({{signal.val}}deg)"
+                *ngIf="signal.unit == 'degrees'">
+              </fa-icon>
+              <span *ngIf="signal.unit == 'boolean'">
+                <fa-icon *ngIf="signal.val" [icon]="faCheckCircle" [classes]="['tick']">
+                </fa-icon>
+                <fa-icon *ngIf="!signal.val" [icon]="faExclamation" [classes]="['excalamation']">
+                </fa-icon>
+              </span>
+            </div>
+          </ng-container>
+          <!-- <p class="title">{{ selectedTurbineSignal.description }}</p>
+          <p *ngIf="
               turbineSignalData.type != 'degrees' &&
               turbineSignalData.type != 'boolean'
-            "
-          >
+            ">
             {{ turbineSignalData.val }}
           </p>
-          <fa-icon
-            [icon]="faArrowDown"
-            style="transform: rotate({{ turbineSignalData.val }}deg)"
-            *ngIf="turbineSignalData.type == 'degrees'"
-          >
+          <fa-icon [icon]="faArrowDown" style="transform: rotate({{ turbineSignalData.val }}deg)"
+            *ngIf="turbineSignalData.type == 'degrees'">
           </fa-icon>
           <div *ngIf="turbineSignalData.type == 'boolean'">
-            <fa-icon
-              *ngIf="turbineSignalData.val"
-              [icon]="faCheckCircle"
-              [classes]="['tick']"
-            >
+            <fa-icon *ngIf="turbineSignalData.val" [icon]="faCheckCircle" [classes]="['tick']">
             </fa-icon>
-            <fa-icon
-              *ngIf="!turbineSignalData.val"
-              [icon]="faExclamation"
-              [classes]="['excalamation']"
-            >
+            <fa-icon *ngIf="!turbineSignalData.val" [icon]="faExclamation" [classes]="['excalamation']">
             </fa-icon>
-          </div>
+          </div> -->
           <!-- <div>
                         <div class="radio" *ngFor="let layer of layers;let i = index;">
                             <input type="radio" id="toggle{{i}}" [checked]="selectedLayer == layer"
@@ -378,37 +300,17 @@
           </div>
         </div> -->
         <div class="slider-coontainer">
-          <fa-icon
-            *ngIf="!playing"
-            [icon]="faPlayCircle"
-            (click)="toggleSlider()"
-          ></fa-icon>
-          <fa-icon
-            *ngIf="playing"
-            [icon]="faPauseCircle"
-            (click)="toggleSlider()"
-          ></fa-icon>
+          <fa-icon *ngIf="!playing" [icon]="faPlayCircle" (click)="toggleSlider()"></fa-icon>
+          <fa-icon *ngIf="playing" [icon]="faPauseCircle" (click)="toggleSlider()"></fa-icon>
           <div>
             <div class="slider-wrapper">
-              <mat-slider
-                [max]="maxSlider"
-                [min]="0"
-                [step]="1"
-                [(ngModel)]="slider"
-                (ngModelChange)="onSliderChange($event)"
-              >
+              <mat-slider [max]="maxSlider" [min]="0" [step]="1" [(ngModel)]="slider"
+                (ngModelChange)="onSliderChange($event)">
               </mat-slider>
             </div>
             <div class="canvas-wrapper">
-              <canvas
-                baseChart
-                *ngIf="showMapChart"
-                [labels]="mapChart.labels"
-                [datasets]="mapChart.data"
-                [options]="mapChart.options"
-                [legend]="false"
-                [type]="'bar'"
-              >
+              <canvas baseChart *ngIf="showMapChart" [labels]="mapChart.labels" [datasets]="mapChart.data"
+                [options]="mapChart.options" [legend]="false" [type]="'bar'">
               </canvas>
             </div>
           </div>
@@ -427,75 +329,34 @@
       <span class="title">Wave Spectral Moments</span>
       <div class="left">
         <span class="switch">
-          <span
-            [class.active]="selectedPopupPeriod === '24h'"
-            (click)="changePopupPeriod('24h')"
-            >24h Forecast</span
-          >
-          <span
-            [class.active]="selectedPopupPeriod === 'p30d'"
-            (click)="changePopupPeriod('p30d')"
-            >Past 30d</span
-          >
-          <span
-            [class.active]="selectedPopupPeriod === 'p90d'"
-            (click)="changePopupPeriod('p90d')"
-            >Past 90d</span
-          >
-          <span
-            [class.active]="selectedPopupPeriod === 'p360d'"
-            (click)="changePopupPeriod('p360d')"
-            >Past 360d</span
-          >
-          <span
-            [class.active]="selectedPopupPeriod === 'custom'"
-            >Date Range</span
-          >
+          <span [class.active]="selectedPopupPeriod === '24h'" (click)="changePopupPeriod('24h')">24h Forecast</span>
+          <span [class.active]="selectedPopupPeriod === 'p30d'" (click)="changePopupPeriod('p30d')">Past 30d</span>
+          <span [class.active]="selectedPopupPeriod === 'p90d'" (click)="changePopupPeriod('p90d')">Past 90d</span>
+          <span [class.active]="selectedPopupPeriod === 'p360d'" (click)="changePopupPeriod('p360d')">Past 360d</span>
+          <span [class.active]="selectedPopupPeriod === 'custom'">Date Range</span>
         </span>
         <div class="date-picker">
-          <input
-            placeholder="Start Date"
-            name="startDate"
-            ngbDatepicker
-            #sd="ngbDatepicker"
-            [(ngModel)]="popupFrom"
-            (ngModelChange)="onRangeChange('custom')"
-          />
+          <input placeholder="Start Date" name="startDate" ngbDatepicker #sd="ngbDatepicker" [(ngModel)]="popupFrom"
+            (ngModelChange)="onRangeChange('custom')" />
           <fa-icon [icon]="faCalender" (click)="sd.toggle()"></fa-icon>
         </div>
         <div class="date-picker">
-          <input
-            placeholder="End Date"
-            name="endDate"
-            ngbDatepicker
-            #ed="ngbDatepicker"
-            [(ngModel)]="popupTo"
-            [minDate]="popupFrom"
-            (ngModelChange)="onRangeChange('custom')"
-          />
+          <input placeholder="End Date" name="endDate" ngbDatepicker #ed="ngbDatepicker" [(ngModel)]="popupTo"
+            [minDate]="popupFrom" (ngModelChange)="onRangeChange('custom')" />
           <fa-icon [icon]="faCalender" (click)="ed.toggle()"></fa-icon>
         </div>
       </div>
       <div class="right">
-        <fa-icon
-          [icon]="faTimes"
-          [classes]="['close']"
-          (click)="toggleGraph()"
-        ></fa-icon>
+        <fa-icon [icon]="faTimes" [classes]="['close']" (click)="toggleGraph()"></fa-icon>
       </div>
     </header>
     <div class="graph-wrapper">
       <div class="details">
-        <span class="row-title">{{ popup.data.title }}</span
-        ><span *ngIf="popup.data.units" class="unit">{{
+        <span class="row-title">{{ popup.data.title }}</span><span *ngIf="popup.data.units" class="unit">{{
           popup.data.units
-        }}</span>
+          }}</span>
         <div class="wave-discription-wrapper">
-          <div
-            class="wave-discription"
-            [ngClass]="{ live: item.live }"
-            *ngFor="let item of popup.data.signals"
-          >
+          <div class="wave-discription" [ngClass]="{ live: item.live }" *ngFor="let item of popup.data.signals">
             <div>
               <hr [style.borderColor]="item.series.color" />
               {{ item.name }}
@@ -513,14 +374,8 @@
             <span class="visually-hidden">Loading...</span>
           </div>
         </div>
-        <canvas
-          baseChart
-          [datasets]="popup.data.config.data"
-          [labels]="popup.data.config.labels"
-          [options]="popup.data.config.options"
-          [legend]="false"
-          [type]="popup.data.config.type"
-        >
+        <canvas baseChart [datasets]="popup.data.config.data" [labels]="popup.data.config.labels"
+          [options]="popup.data.config.options" [legend]="false" [type]="popup.data.config.type">
         </canvas>
       </div>
     </div>

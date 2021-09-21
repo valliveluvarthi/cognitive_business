@@ -723,7 +723,7 @@ export class DecisionService {
                   }
                   backgroundColor.push(color);
                 }
-                return (item[1] == 0 || item[1] == "") ? null : item[1];
+                return (item[1] == "") ? null : item[1];
               });
               let chartInfo: any = {
                 data: chartinfo,
@@ -929,7 +929,7 @@ export class DecisionService {
             let chartInfo: any = {
               data: response[signal.key].map((item, index) => {
                 labels.push(moment(item[0]).format('MMM D, h a'));
-                return (item[1] == 0 || item[1] == "") ? null : item[1]
+                return (item[1] == "") ? null : item[1]
               }),
               label: signal.name,
               type: signal.series.type,

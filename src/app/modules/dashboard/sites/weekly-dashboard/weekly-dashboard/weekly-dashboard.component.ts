@@ -24,12 +24,18 @@ import { DecisionService } from 'src/app/services/decision.service';
 import { Router } from '@angular/router';
 import { PATHS } from 'src/app/enums';
 
+export interface tSignalObj {
+  description: string;
+  unit: string;
+  val: any;
+}
 @Component({
   selector: 'cb-weekly-dashboard',
   templateUrl: './weekly-dashboard.component.html',
   styleUrls: ['./weekly-dashboard.component.scss'],
 })
 export class WeeklyDashboardComponent implements OnInit, OnDestroy {
+  SIGNAL_DATA: tSignalObj[] = [];
   faChevronDown = faChevronDown;
   faCheckCircle = faCheckCircle;
   faExclamation = faExclamationCircle;
@@ -94,10 +100,11 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
       scales: {
         x: {
           grid: {
-            display: false,
+            display: true,
             borderColor: 'rgba(0,0,0,0)',
           },
           ticks: {
+            display: true,
             color: '#a3a3a3',
             font: {
               size: 12,
@@ -260,7 +267,6 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         this.swh_max = this.forcastData?.["VHM0_max"]?.[index];
         this.swh_min = this.forcastData?.["VHM0"]?.[index];
 
-        let cd = currentDate + ", " + this.presentHour;
         this.loading = false;
         this.setInitData();
       });
@@ -428,8 +434,12 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
   loadChartWithinMapView() {
     this.mapChart.labels = [];
     if (this.selectedPeriod.key == 1) {
-      for (let i = 0; i < 120; i++) {
-        this.mapChart.labels.push('');
+      // for (let i = 0; i < 120; i++) {
+      //   this.mapChart.labels.push('');
+      // }
+      for (let i = 0; i < this.forcastData['from'].length; i++) {
+        let currentDateTime = moment(this.forcastData['from'][i]).format('MMM D, h A');
+        this.mapChart.labels.push(currentDateTime);
       }
     }
     const colors = [];
@@ -458,9 +468,19 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
       val: forecastData[this.slider],
       type: this.selectedTurbineSignal.unit,
     };
+    this.SIGNAL_DATA = [];
+    this.turbineSignals.forEach(element => {
+      let signal: tSignalObj = {
+        description: element['description'],
+        unit: element['unit'],
+        val: parseFloat(this.forcastData[element.key][this.slider]).toFixed(2)
+      }
+      this.SIGNAL_DATA.push(signal);
+    });
   }
 
   changeTab(tab) {
+    this.popup.show = false;
     this.activeTab = tab;
     this.setInitData();
   }
@@ -513,8 +533,8 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
       const color = prediction[1][element.key];
       const span = document.createElement('span');
       span.className = 'circle ' + color;
-      span.setAttribute("title",element.key);
-      span.addEventListener("click",() => {
+      span.setAttribute("title", element.key);
+      span.addEventListener("click", () => {
         this.changeTurbine(element);
       });
       const marker = new mapboxgl.Marker({
@@ -579,9 +599,9 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
   }
   onRangeChange(period) {
     if (this.popupFrom != null && this.popupTo != null) {
-     
-     let from_date = new Date(this.popupFrom.year, (this.popupFrom.month - 1), this.popupFrom.day);
-     let to_date = new Date(this.popupTo.year, (this.popupTo.month - 1), this.popupTo.day);
+
+      let from_date = new Date(this.popupFrom.year, (this.popupFrom.month - 1), this.popupFrom.day);
+      let to_date = new Date(this.popupTo.year, (this.popupTo.month - 1), this.popupTo.day);
 
       if (from_date < to_date) {
         this.popup_loading = true;

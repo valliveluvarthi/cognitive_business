@@ -12,13 +12,19 @@ import { CommonUtilService } from 'src/app/services/common-util.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { PATHS } from 'src/app/enums';
+
+export interface tSignalObj {
+  description: string;
+  unit: string;
+  val: any;
+}
 @Component({
   selector: 'cb-daily-dashboard',
   templateUrl: './daily-dashboard.component.html',
   styleUrls: ['./daily-dashboard.component.scss']
 })
 export class DailyDashboardComponent implements OnInit, OnDestroy {
-
+  SIGNAL_DATA: tSignalObj[] = [];
   faChevronDown = faChevronDown;
   faCheckCircle = faCheckCircle;
   faExclamation = faExclamationCircle;
@@ -77,10 +83,11 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       scales: {
         x: {
           grid: {
-            display: false,
+            display: true,
             borderColor: 'rgba(0,0,0,0)'
           },
           ticks: {
+            display: true,
             color: '#a3a3a3',
             font: {
               size: 12,
@@ -150,12 +157,12 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedPeriod = this.period[0];
-    this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe( site => {
+    this.selectedSiteSubscription = this.util.selectedSiteSub.subscribe(site => {
       this.selectedSite = site ? site : null;
-      if(this.selectedSite && this.selectedSite !== "init"){
+      if (this.selectedSite && this.selectedSite !== "init") {
         this.getSiteData();
-      } 
-      else if(this.selectedSite == null){
+      }
+      else if (this.selectedSite == null) {
         this.router.navigateByUrl(PATHS.ACCESS_DENIED);
       }
     });
@@ -245,6 +252,15 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       }
       let currentDate = moment().format("MMM Do");
       currentDate = currentDate.substring(0, currentDate.length - 2) + ", " + this.presentHour;
+
+      // this.turbineSignals.forEach(element => {
+      //   let signal: tSignalObj = {
+      //     description: element['description'],
+      //     unit: element['unit'],
+      //     val: parseFloat(this.forcastData[element.key][this.slider]).toFixed(2)
+      //   }
+      //   this.SIGNAL_DATA.push(signal);
+      // });
 
       this.rows = result.rows;
       this.setCurrentHourData(result);
@@ -406,7 +422,10 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       this.mapChart.labels = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
     }
     if (this.selectedPeriod.key == 3) {
-      this.mapChart.labels = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
+      this.predictionData.forEach(element => {
+        this.mapChart.labels.push(element[0]);
+      });
+      // this.mapChart.labels = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
     }
     const colors = [];
     this.mapChart.data[0].data = this.forcastData[this.selectedTurbineSignal.key];
@@ -430,9 +449,19 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
     const index = (this.slider - 1) / 2;
     const forecastData = this.forcastData[this.selectedTurbineSignal.key];
     this.turbineSignalData = { val: forecastData[index], type: this.selectedTurbineSignal.unit };
+    this.SIGNAL_DATA = [];
+    this.turbineSignals.forEach(element => {
+      let signal: tSignalObj = {
+        description: element['description'],
+        unit: element['unit'],
+        val: parseFloat(this.forcastData[element.key][this.slider]).toFixed(2)
+      }
+      this.SIGNAL_DATA.push(signal);
+    });
   }
 
   changeTab(tab) {
+    this.popup.show = false;
     this.activeTab = tab;
     this.setInitData();
   }
@@ -460,7 +489,7 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       return;
     }
     let prediction;
-    console.log("predictionData : ",this.predictionData)
+    console.log("predictionData : ", this.predictionData)
     for (let i = 0; i < this.predictionData.length; i++) {
       const element = this.predictionData[i];
       if (element[0] == 'Now') {
@@ -481,14 +510,14 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
 
   setMarkersByPrediction(prediction) {
     this.clearAllMarkers();
-    console.log("prediction : ",prediction);
+    console.log("prediction : ", prediction);
     for (let i = 0; i < this.turbines.length; i++) {
       const element = this.turbines[i];
       const color = prediction[1][element.key];
       const span = document.createElement('span');
       span.className = 'circle ' + color;
-      span.setAttribute("title",element.key);
-      span.addEventListener("click",() => {
+      span.setAttribute("title", element.key);
+      span.addEventListener("click", () => {
         this.changeTurbine(element);
       })
       const marker = new mapboxgl.Marker({
@@ -555,9 +584,9 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
   }
   onRangeChange(period) {
     if (this.popupFrom != null && this.popupTo != null) {
-     
-     let from_date = new Date(this.popupFrom.year, (this.popupFrom.month - 1), this.popupFrom.day);
-     let to_date = new Date(this.popupTo.year, (this.popupTo.month - 1), this.popupTo.day);
+
+      let from_date = new Date(this.popupFrom.year, (this.popupFrom.month - 1), this.popupFrom.day);
+      let to_date = new Date(this.popupTo.year, (this.popupTo.month - 1), this.popupTo.day);
 
       if (from_date < to_date) {
         this.popup_loading = true;
