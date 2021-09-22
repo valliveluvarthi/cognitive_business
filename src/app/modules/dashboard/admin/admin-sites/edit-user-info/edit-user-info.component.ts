@@ -109,7 +109,7 @@ export class EditUserInfoComponent implements OnInit {
       });
   }
   getSiteRoles() {
-    this.adminService.getSiteRoles(this.item.key).subscribe((data) => {
+    this.adminService.getUserRoles().subscribe((data) => {
       this.userRoles = data;
       if (this.userRoles.length > 0) {
         this.selectedUserRole = this.userRoles[0];
