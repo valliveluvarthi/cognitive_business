@@ -475,12 +475,10 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
     this.setInitData();
   }
   redirectTo() {
-    console.log(this.activeTab);
     localStorage.setItem("activeTab", this.activeTab);
     let current_url = this.router.url;
     current_url = current_url.replace("daily-dashboard", PATHS.WEEKLY_DASHBOARD);
     this.router.navigateByUrl(current_url);
-    console.log(current_url);
   }
 
   loadMap() {
@@ -506,7 +504,6 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       return;
     }
     let prediction;
-    console.log("predictionData : ", this.predictionData)
     for (let i = 0; i < this.predictionData.length; i++) {
       const element = this.predictionData[i];
       if (element[0] == 'Now') {
@@ -527,7 +524,6 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
 
   setMarkersByPrediction(prediction) {
     this.clearAllMarkers();
-    console.log("prediction : ", prediction);
     for (let i = 0; i < this.turbines.length; i++) {
       const element = this.turbines[i];
       const color = prediction[1][element.key];

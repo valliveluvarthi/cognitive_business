@@ -270,7 +270,6 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         }
         let entriesPerDay = 24;
         let index = (indexOfCurrentDay * entriesPerDay) + (currentHour - 1);
-        console.log(index);
         this.swh_max = this.forcastData?.["VHM0_max"]?.[index];
         this.swh_min = this.forcastData?.["VHM0"]?.[index];
 
@@ -492,12 +491,10 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
     this.setInitData();
   }
   redirectTo() {
-    console.log(this.activeTab);
     localStorage.setItem("activeTab", this.activeTab);
     let current_url = this.router.url;
     current_url = current_url.replace("weekly-dashboard", PATHS.DAILY_DASHBOARD);
     this.router.navigateByUrl(current_url);
-    console.log(current_url);
   }
 
   loadMap() {

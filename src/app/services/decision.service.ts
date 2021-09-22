@@ -924,11 +924,13 @@ export class DecisionService {
       map((response: any) => {
         let chartData = [];
         let labels = [];
-        signals.forEach((signal) => {
+        signals.forEach((signal,index) => {
           if (response[signal.key]) {
             let chartInfo: any = {
-              data: response[signal.key].map((item, index) => {
-                labels.push(moment(item[0]).format('MMM D, h a'));
+              data: response[signal.key].map((item) => {
+                if(index === 0){
+                  labels.push(moment(item[0]).format('MMM D, h a'));
+                }
                 return (item[1] == "") ? null : item[1]
               }),
               label: signal.name,
