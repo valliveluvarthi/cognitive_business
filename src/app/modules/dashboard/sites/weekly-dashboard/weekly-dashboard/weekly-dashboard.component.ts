@@ -23,6 +23,7 @@ import { environment } from '../../../../../../environments/environment';
 import { DecisionService } from 'src/app/services/decision.service';
 import { Router } from '@angular/router';
 import { PATHS } from 'src/app/enums';
+import { ChartOptions } from 'chart.js';
 
 export interface tSignalObj {
   description: string;
@@ -37,7 +38,7 @@ export interface tSignalObj {
 export class WeeklyDashboardComponent implements OnInit, OnDestroy {
   @HostListener('window:beforeunload ', ['$event'])
   unloadHandler(event) {
-     localStorage.setItem("activeTab","");
+    localStorage.setItem("activeTab", "");
   }
   SIGNAL_DATA: tSignalObj[] = [];
   faChevronDown = faChevronDown;
@@ -136,6 +137,52 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         },
       },
     },
+  };
+  cChart: ChartOptions = {
+    responsive: false,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            let date: any = moment(this.forcastData['from'][context.dataIndex]).format('MMM Do, h:mm');
+            return context.dataset.label + " : " + context.dataset.data[context.dataIndex] + ' on ' + date;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          display: true,
+          borderColor: 'rgba(0,0,0,0)',
+        },
+        ticks: {
+          display: true,
+          color: '#a3a3a3',
+          font: {
+            size: 12,
+            family: 'Roboto',
+          },
+          maxRotation: 0,
+          minRotation: 0,
+        },
+      },
+      y: {
+        grid: {
+          color: '#474747',
+          borderColor: 'rgba(0,0,0,0)',
+          borderDash: [1, 1],
+        },
+        ticks: {
+          mirror : true,
+          color: '#a3a3a3',
+          font: {
+            size: 12,
+            family: 'Roboto',
+          },
+        },
+      },
+    }
   };
 
   columns = [];
@@ -273,6 +320,23 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         this.swh_max = this.forcastData?.["VHM0_max"]?.[index];
         this.swh_min = this.forcastData?.["VHM0"]?.[index];
 
+        for (let i = 0; i < this.rows.length; i++) {
+
+          if (this.rows[i].type === 'chart') {
+            this.rows[i].config.labels = [];
+            for (let j = 0; j < this.forcastData['from'].length; j++) {
+              let currentDateTime = moment(this.forcastData['from'][j]).format('MMM-D, h A');
+              currentDateTime = currentDateTime.substr(3);
+
+              let currentMonth: any = moment(this.forcastData['from'][j]).month();
+              currentMonth = currentMonth + 1;
+              currentMonth = currentMonth.toString();
+
+              currentDateTime = currentMonth + currentDateTime;
+              this.rows[i].config.labels.push(currentDateTime);
+            }
+          }
+        }
         this.loading = false;
         this.setInitData();
       });

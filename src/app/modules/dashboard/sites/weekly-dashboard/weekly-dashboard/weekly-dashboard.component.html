@@ -184,7 +184,7 @@
                 </div>
                 <div class="chart-wrapper" *ngIf="row.type == 'chart' && i == 0" [style.height]="row.height + 'px'">
                   <canvas height="{{ row.height || 192 }}" baseChart [datasets]="row.config.data"
-                    [labels]="row.config.labels" [options]="row.config.options" [legend]="false"
+                    [labels]="row.config.labels" [options]="cChart" [legend]="false"
                     [type]="row.config.type" [style.width]="
                       'calc((max(324px, (100vw - 192px) / ' +
                       columns.length +

@@ -262,15 +262,6 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       let currentDate = moment().format("MMM Do");
       currentDate = currentDate.substring(0, currentDate.length - 2) + ", " + this.presentHour;
 
-      // this.turbineSignals.forEach(element => {
-      //   let signal: tSignalObj = {
-      //     description: element['description'],
-      //     unit: element['unit'],
-      //     val: parseFloat(this.forcastData[element.key][this.slider]).toFixed(2)
-      //   }
-      //   this.SIGNAL_DATA.push(signal);
-      // });
-
       this.rows = result.rows;
       for(let j=0 ; j< this.rows.length; j++){
         if(this.rows[j].type === 'chart'){
