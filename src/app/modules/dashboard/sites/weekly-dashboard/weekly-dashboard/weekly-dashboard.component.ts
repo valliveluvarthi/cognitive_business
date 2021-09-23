@@ -36,6 +36,7 @@ export interface tSignalObj {
   styleUrls: ['./weekly-dashboard.component.scss'],
 })
 export class WeeklyDashboardComponent implements OnInit, OnDestroy {
+  gonogo: any;
   @HostListener('window:beforeunload ', ['$event'])
   unloadHandler(event) {
     localStorage.setItem("activeTab", "");
@@ -209,6 +210,7 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
   swh_min: any;
   popup_loading: boolean = false;
   presentHour: string;
+  currentNowIndex:number = -1;
 
   constructor(
     private decisionService: DecisionService,
@@ -306,6 +308,8 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         let indexOfCurrentDay = this.columns.indexOf(currentDate);
         let currentHour = moment().hours();
         this.presentHour = moment().tz(this.selectedSite.timezone).format('LT');
+
+        let currentISODate = moment().tz(this.selectedSite.timezone).set({hour:0,minute:0,second:0,millisecond:0}).toISOString(); 
         let hourarray = this.presentHour.split(" ");
         let hour = hourarray[0].split(":");
         this.presentHour = hour[0] + " " + hourarray[1];
@@ -314,12 +318,15 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         let index = (indexOfCurrentDay * entriesPerDay) + (currentHour - 1);
         this.swh_max = this.forcastData?.["VHM0_max"]?.[index];
         this.swh_min = this.forcastData?.["VHM0"]?.[index];
-
+        console.log(this.rows);
         for (let i = 0; i < this.rows.length; i++) {
-
           if (this.rows[i].type === 'chart') {
             this.rows[i].config.labels = [];
             for (let j = 0; j < this.forcastData['from'].length; j++) {
+              const item = this.forcastData['from'][j];
+              if(item === currentISODate){
+                this.currentNowIndex = j;
+              }
               let currentDateTime = moment(this.forcastData['from'][j]).format('MMM-D, h A');
               currentDateTime = currentDateTime.substr(3);
 
@@ -332,6 +339,12 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
             }
           }
         }
+        for (let i = 0; i < this.rows.length; i++) {
+          if (this.rows[i].title === 'Go / No-Go') {
+           this.gonogo = this.rows[i].data[this.currentNowIndex];
+          }
+        }
+
         this.loading = false;
         this.setInitData();
       });

@@ -84,12 +84,12 @@
       <span class="key"></span>
       <span class="value">
         <ng-container
-          *ngIf="currentHourData && currentHourData['Go / No-Go'] && currentHourData['Go / No-Go'].item && currentHourData['Go / No-Go'].item == 'go'">
+          *ngIf="gonogo == 'go'">
           <fa-icon [icon]="faCheckCircle" [classes]="['tick']">
           </fa-icon>
         </ng-container>
         <ng-container
-          *ngIf="currentHourData && currentHourData['Go / No-Go'] && currentHourData['Go / No-Go'].item && currentHourData['Go / No-Go'].item == 'no-go'">
+          *ngIf="gonogo == 'no-go'">
           <fa-icon [icon]="faExclamation" [classes]="['excalamation']"></fa-icon>
         </ng-container>
       </span>
