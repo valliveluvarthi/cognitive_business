@@ -34,6 +34,7 @@ export class EditUserInfoComponent implements OnInit {
   selectedUserRole: string = "";
   selectedUser: string = "";
   duplicateEntry: boolean = false;
+  loading: boolean = false;
 
   @Input() headerTitle: number;
   @Input() dialogType: string;
@@ -88,6 +89,7 @@ export class EditUserInfoComponent implements OnInit {
       });
   }
   getSiteUsers() {
+    this.loading = true;
     this.adminService.getSiteUsers(this.siteKey).subscribe((data: Array<Object>) => {
       console.log(data);
       this.ELEMENT_DATA = [];
@@ -99,6 +101,7 @@ export class EditUserInfoComponent implements OnInit {
         }
         this.ELEMENT_DATA.push(user);
         this.form.addControl(user.email, this.fb.control(user.siteRole));
+        this.loading = false;
       });
     },
       (err) => {
@@ -109,7 +112,7 @@ export class EditUserInfoComponent implements OnInit {
       });
   }
   getSiteRoles() {
-    this.adminService.getUserRoles().subscribe((data) => {
+    this.adminService.getSiteRoles(this.item.key).subscribe((data) => {
       this.userRoles = data;
       if (this.userRoles.length > 0) {
         this.selectedUserRole = this.userRoles[0];
