@@ -32,6 +32,9 @@ export class AdminService {
   getUserRoles() {
     return this.http.get(ApiConstant.USER_ROLES);
   }
+  getSiteRoles(siteKey) {
+    return this.http.get(ApiConstant.SITE_ROLES.replace('{{siteKey}}', siteKey));
+  }
 
   updateUserInfo(userId, data) {
     return this.http.put(ApiConstant.UPDATE_USER_INFO.replace("{{userId}}", userId), data);

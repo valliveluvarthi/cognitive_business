@@ -13,6 +13,10 @@ export interface UserElement {
 export interface SiteData {
   site: string;
 }
+export interface RolesData {
+  site: string;
+  roles: any;
+}
 
 @Component({
   selector: 'cb-edit-sites',
@@ -38,6 +42,9 @@ export class EditSitesComponent implements OnInit {
   @Input() userRoles;
 
   @Output() onSuccess: EventEmitter<any> = new EventEmitter();
+  roles: RolesData[] = [];
+  loading: boolean = false;
+  allRoles: any;
 
   constructor(
     private fb: FormBuilder,
@@ -77,6 +84,7 @@ export class EditSitesComponent implements OnInit {
       });
   }
   getUserSites() {
+    this.loading = true;
     let userId = this.item.id;
     this.adminService.getUserSitesList(userId).subscribe((data: Array<Object>) => {
       this.ELEMENT_DATA = [];
@@ -89,6 +97,26 @@ export class EditSitesComponent implements OnInit {
         this.ELEMENT_DATA.push(user);
         this.form.addControl(user.site, this.fb.control(user.siteRole));
       });
+      if (this.ELEMENT_DATA.length > 0) {
+        this.ELEMENT_DATA.forEach((element) => {
+          var site = element.site;
+          this.adminService.getSiteRoles(element.site).subscribe((data: Array<Object>) => {
+            let role: RolesData = {
+              site: site,
+              roles: data
+            }
+            this.roles.push(role);
+            if (this.roles.length > 0) {
+              this.loading = false;
+              this.allRoles = this.roles[0].roles;
+              this.selectedUserRole = this.roles[0].roles[0];
+              this.form.controls['role'].setValue(this.selectedUserRole);
+            }
+          });
+
+        });
+      }
+
     },
       (err) => {
         this.util.notification.error({
@@ -100,9 +128,6 @@ export class EditSitesComponent implements OnInit {
   getUserRoles() {
     this.adminService.getUserRoles().subscribe((data) => {
       this.userRoles = data;
-      if (this.userRoles.length > 0) {
-        this.selectedUserRole = this.userRoles[0];
-      }
     },
       (err) => {
         this.util.notification.error({
@@ -139,6 +164,12 @@ export class EditSitesComponent implements OnInit {
     }
   }
   selectUserSite(selectedSite) {
+    console.log(selectedSite);
+    this.roles.forEach(element => {
+      if (element.site === selectedSite.site) {
+        this.allRoles = element.roles;
+      }
+    });
     this.selectedUserSite = selectedSite.site;
     this.form.controls['site'].setValue(selectedSite.site);
     this.form.controls['site'].setErrors(null);
