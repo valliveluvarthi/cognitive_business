@@ -31,7 +31,7 @@ section {
       }
       .layers {
         overflow-y: scroll;
-        width: 35%;
+        width: 40%;
         background-color: #474747;
         padding: 1rem;
         position: relative;    
@@ -241,5 +241,8 @@ section {
 //   }
 // }
 .chart-wrapper{
-  padding-left: 13px;
+  padding-left: 1.6rem;
+}
+.units{
+  font-size: 13px;
 }

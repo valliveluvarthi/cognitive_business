@@ -31,7 +31,7 @@ section {
       }
       .layers {
         overflow-y: scroll;
-        width: 35%;
+        width: 40%;
         background-color: #474747;
         padding: 1rem;
         position: relative;  
@@ -244,4 +244,8 @@ section {
     height: 20px;
     border-radius: 50%;
   }
+}
+
+.units{
+  font-size: 13px;
 }

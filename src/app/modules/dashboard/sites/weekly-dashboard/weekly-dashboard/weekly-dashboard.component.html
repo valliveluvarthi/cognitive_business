@@ -207,7 +207,7 @@
         <div class="layers">
           <ng-container *ngFor="let signal of SIGNAL_DATA;let i = index;">
             <div class="signal-data">
-              <span class="title">{{signal?.description}}</span>
+              <span class="title">{{signal?.description}}<span class="units">({{signal.unit}})</span></span>
               <span class="title__number"
                 *ngIf="signal.unit != 'degrees' && signal.unit != 'boolean'">{{signal.val}}</span>
               <fa-icon [icon]="faArrowDown" style="transform: rotate({{signal.val}}deg)"

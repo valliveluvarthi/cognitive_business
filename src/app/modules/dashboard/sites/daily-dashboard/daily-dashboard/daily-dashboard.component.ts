@@ -272,6 +272,11 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       // });
 
       this.rows = result.rows;
+      for(let j=0 ; j< this.rows.length; j++){
+        if(this.rows[j].type === 'chart'){
+          this.rows[j].config.options.scales.y.ticks.mirror = true;
+        }
+      }
       this.setCurrentHourData(result);
 
       this.loading = false;
@@ -431,6 +436,7 @@ export class DailyDashboardComponent implements OnInit, OnDestroy {
       this.mapChart.labels = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
     }
     if (this.selectedPeriod.key == 3) {
+      this.mapChart.labels = [];
       this.predictionData.forEach(element => {
         this.mapChart.labels.push(element[0]);
       });
