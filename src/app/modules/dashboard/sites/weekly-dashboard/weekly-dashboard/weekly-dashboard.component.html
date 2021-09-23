@@ -57,7 +57,7 @@
       </div>
       <span class="switch">
         <span [class.active]="activeTab == 'daily'" (click)="redirectTo()">Daily</span>
-    </span>
+      </span>
       <!-- <div ngbDropdown class="d-inline-block dd" *ngIf="activeTab != 'map'">
         <button ngbDropdownToggle>
           {{ selectedPeriod.value }}
@@ -81,6 +81,18 @@
       <span class="value">&nbsp;{{ swh_max }}</span>
       <span class="key">SWH<sub>min</sub>:</span>
       <span class="value">&nbsp;{{ swh_min }}</span>
+      <span class="key"></span>
+      <span class="value">
+        <ng-container
+          *ngIf="currentHourData && currentHourData['Go / No-Go'] && currentHourData['Go / No-Go'].item && currentHourData['Go / No-Go'].item == 'go'">
+          <fa-icon [icon]="faCheckCircle" [classes]="['tick']">
+          </fa-icon>
+        </ng-container>
+        <ng-container
+          *ngIf="currentHourData && currentHourData['Go / No-Go'] && currentHourData['Go / No-Go'].item && currentHourData['Go / No-Go'].item == 'no-go'">
+          <fa-icon [icon]="faExclamation" [classes]="['excalamation']"></fa-icon>
+        </ng-container>
+      </span>
       <span class="key">at</span>
       <span class="value">{{ presentHour }}</span>
     </div>
@@ -184,8 +196,8 @@
                 </div>
                 <div class="chart-wrapper" *ngIf="row.type == 'chart' && i == 0" [style.height]="row.height + 'px'">
                   <canvas height="{{ row.height || 192 }}" baseChart [datasets]="row.config.data"
-                    [labels]="row.config.labels" [options]="cChart" [legend]="false"
-                    [type]="row.config.type" [style.width]="
+                    [labels]="row.config.labels" [options]="cChart" [legend]="false" [type]="row.config.type"
+                    [style.width]="
                       'calc((max(324px, (100vw - 192px) / ' +
                       columns.length +
                       ') * ' +

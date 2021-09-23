@@ -305,16 +305,11 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         currentDate = currentDate.substring(0, currentDate.length - 2);
         let indexOfCurrentDay = this.columns.indexOf(currentDate);
         let currentHour = moment().hours();
-        this.presentHour = moment().format('LT');
+        this.presentHour = moment().tz(this.selectedSite.timezone).format('LT');
         let hourarray = this.presentHour.split(" ");
-        if (currentHour < 12) {
-          this.presentHour = currentHour.toString() + " " + hourarray[1];
-        }
-        else if (currentHour === 12) {
-          this.presentHour = "12 " + hourarray[1];
-        } else if (currentHour > 12) {
-          this.presentHour = (currentHour - 12).toString() + " " + hourarray[1];
-        }
+        let hour = hourarray[0].split(":");
+        this.presentHour = hour[0] + " " + hourarray[1];
+        
         let entriesPerDay = 24;
         let index = (indexOfCurrentDay * entriesPerDay) + (currentHour - 1);
         this.swh_max = this.forcastData?.["VHM0_max"]?.[index];
