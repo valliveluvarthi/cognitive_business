@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbDatepickerModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { ChartsModule } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 
 import { WeeklyDashboardRoutingModule } from './weekly-dashboard-routing.module';
 import { WeeklyDashboardComponent } from './weekly-dashboard/weekly-dashboard.component';
@@ -17,7 +17,7 @@ import { MatSliderModule } from '@angular/material/slider';
     FormsModule,
     NgbDropdownModule,
     NgbDatepickerModule,
-    ChartsModule,
+    NgChartsModule,
     MatSliderModule,
     FontAwesomeModule,
     WeeklyDashboardRoutingModule

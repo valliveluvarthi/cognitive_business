@@ -290,7 +290,9 @@ export class DecisionService {
   }
 
   getRangeByType(type) {
-    let from = new Date();
+    // let from = new Date();
+    let from:any = moment().add(1,'days');
+    from = new Date(from);
     let to = new Date();
     switch (type) {
       case 1: //5 days
