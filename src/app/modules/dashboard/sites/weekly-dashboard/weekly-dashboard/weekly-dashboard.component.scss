@@ -127,7 +127,7 @@ section {
       .slider-coontainer {
         padding-top: 16px;
         padding-left: 28px;
-        height: 147px;
+        height: 88%;
         display: flex;
         flex-direction: row;
         > fa-icon {
@@ -144,7 +144,7 @@ section {
             width: calc(100% + 18px);
             position: absolute;
             bottom: -25px;
-            height: 128px !important;
+            height: 168px !important;
             left: -20px;
           }
           .slider-wrapper {
@@ -158,7 +158,7 @@ section {
             ::ng-deep .mat-slider-wrapper {
               height: 10px;
               top: 10px;
-              left: 0;
+              left: 24px;
               right: 0;
               .mat-slider-track-background,
               .mat-slider-track-fill {

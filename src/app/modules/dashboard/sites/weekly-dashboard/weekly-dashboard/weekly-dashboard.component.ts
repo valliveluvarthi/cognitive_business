@@ -106,7 +106,7 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
       scales: {
         x: {
           grid: {
-            display: true,
+            display: false,
             borderColor: 'rgba(0,0,0,0)',
           },
           ticks: {
@@ -117,7 +117,7 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
               family: 'Roboto',
               weight: 400,
             },
-            maxRotation: 0,
+            maxRotation: 45,
             minRotation: 0,
           },
         },
@@ -236,11 +236,34 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl(PATHS.ACCESS_DENIED);
       }
     });
+    this.reloadData(this.getReloadTime());
   }
 
   ngOnDestroy() {
     this.selectedSiteSubscription && this.selectedSiteSubscription.unsubscribe && this.selectedSiteSubscription.unsubscribe()
   }
+
+  /* STEP: fun => reloadData 
+    Definition => Recurring function
+    param {}: mini => take time to recall function.
+  */
+    reloadData(mini) {
+      if (mini) {
+        setTimeout(() => {
+          this.loadPageData();
+          this.reloadData(this.getReloadTime());
+        }, 1000 * 60 * mini)
+      }
+    }
+  
+    /* STEP: fun => getReloadTime 
+      Definition => Return time of next hour.
+      param {}: mini => take time to recall function.
+    */
+    getReloadTime() {
+      let currentMinute = +moment(new Date().setSeconds(0)).format('mm');
+      return 61 - currentMinute;
+    }
 
   // fetchData() {
   //   this.loading = true;
@@ -318,7 +341,6 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
         let index = (indexOfCurrentDay * entriesPerDay) + (currentHour - 1);
         this.swh_max = this.forcastData?.["VHM0_max"]?.[index];
         this.swh_min = this.forcastData?.["VHM0"]?.[index];
-        console.log(this.rows);
         for (let i = 0; i < this.rows.length; i++) {
           if (this.rows[i].type === 'chart') {
             this.rows[i].config.labels = [];
@@ -525,6 +547,14 @@ export class WeeklyDashboardComponent implements OnInit, OnDestroy {
     this.mapChart.data[0].data =
       this.forcastData[this.selectedTurbineSignal.key];
     this.mapChart.data[0].label = this.selectedTurbineSignal.description;
+    // for (let i = 0; i < this.rows[0].data.length; i++) {
+    //   const element = this.rows[0].data[i];
+    //   if (element === "go") {
+    //     colors.push('rgb(71, 178, 80)');
+    //   } else if (element === "no-go") {
+    //     colors.push('rgb(255, 90, 89)');
+    //   }
+    // }
     for(let i=0; i<this.predictionData.length; i++){
       let element = this.predictionData[i][1];
       if(element[this.selectedTurbine.key] === "bg-red"){

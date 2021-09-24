@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NgbDatepickerModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgChartsModule } from 'ng2-charts';
+import { ChartsModule } from 'ng2-charts';
 import { MatSliderModule } from '@angular/material/slider';
 
 import { DailyDashboardRoutingModule } from './daily-dashboard-routing.module';
@@ -17,7 +17,7 @@ import { DailyDashboardComponent } from './daily-dashboard/daily-dashboard.compo
     FormsModule,
     NgbDropdownModule,
     NgbDatepickerModule,
-    NgChartsModule,
+    ChartsModule,
     MatSliderModule,
     FontAwesomeModule,
     DailyDashboardRoutingModule

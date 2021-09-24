@@ -13,11 +13,11 @@ export class RoutingUtilityService {
     {
       sectionLabel: "Dashboards",
       items: [
-        { path: [`/${PATHS.SITES}/${PATHS.DAILY_DASHBOARD}`], label: "Daily Dashboard", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] },
-        { path: [`/${PATHS.SITES}/${PATHS.WEEKLY_DASHBOARD}`], label: "Weekly Dashboard", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] },
-        { path: [`/${PATHS.SITES}/${PATHS.FEEDBACK_LOG}`], label: "Accessibility Log", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] },
-        { path: [`/${PATHS.SITES}/${PATHS.SITE_ACCESSIBILITY}`], label: "Accessibility Reporting", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] },
-        { path: [`/${PATHS.SITES}/${PATHS.TIDE}`], label: "Tide", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] }
+        { path: [`/${PATHS.SITES}/${PATHS.DAILY_DASHBOARD}`], label: "Daily Dashboard", accessibility: [ROLES.ADMIN, ROLES.MEMBER] },
+        { path: [`/${PATHS.SITES}/${PATHS.WEEKLY_DASHBOARD}`], label: "Weekly Dashboard", accessibility: [ROLES.ADMIN, ROLES.MEMBER] },
+        { path: [`/${PATHS.SITES}/${PATHS.FEEDBACK_LOG}`], label: "Accessibility Log", accessibility: [ROLES.ADMIN, ROLES.MEMBER] },
+        { path: [`/${PATHS.SITES}/${PATHS.SITE_ACCESSIBILITY}`], label: "Accessibility Reporting", accessibility: [ROLES.ADMIN, ROLES.MEMBER] },
+        { path: [`/${PATHS.SITES}/${PATHS.TIDE}`], label: "Tide", accessibility: [ROLES.ADMIN, ROLES.MEMBER] }
       ]
     },
     {
@@ -31,7 +31,7 @@ export class RoutingUtilityService {
     {
       sectionLabel: "",
       items: [
-        { path: "logout", label: "Logout", accessibility: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT] }
+        { path: "logout", label: "Logout", accessibility: [ROLES.ADMIN, ROLES.MEMBER] }
       ]
     },
   ]

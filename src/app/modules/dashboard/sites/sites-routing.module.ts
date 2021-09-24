@@ -20,7 +20,7 @@ const routes: Routes = [
       ),
     canActivateChild: [AuthGuard],
     data: {
-      allowedRoles: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT],
+      allowedRoles: [ROLES.ADMIN, ROLES.MEMBER],
     },
   },
   {
@@ -31,7 +31,7 @@ const routes: Routes = [
       ),
     canActivateChild: [AuthGuard],
     data: {
-      allowedRoles: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT],
+      allowedRoles: [ROLES.ADMIN, ROLES.MEMBER],
     },
   },
   {
@@ -42,7 +42,7 @@ const routes: Routes = [
       ),
     canActivateChild: [AuthGuard],
     data: {
-      allowedRoles: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT],
+      allowedRoles: [ROLES.ADMIN, ROLES.MEMBER],
     },
   },
   {
@@ -53,7 +53,7 @@ const routes: Routes = [
       ),
     canActivateChild: [AuthGuard],
     data: {
-      allowedRoles: [ROLES.ADMIN, ROLES.COORDINATOR, ROLES.MANAGEMENT],
+      allowedRoles: [ROLES.ADMIN, ROLES.MEMBER],
     },
   },
   {
